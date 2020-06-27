@@ -21,6 +21,7 @@ import {InlineResponse200} from './model/InlineResponse200';
 import {InlineResponse2001} from './model/InlineResponse2001';
 import {InlineResponse2002} from './model/InlineResponse2002';
 import {Profile} from './model/Profile';
+import {Registration} from './model/Registration';
 import {Tag} from './model/Tag';
 import {TokenObtainPair} from './model/TokenObtainPair';
 import {TokenRefresh} from './model/TokenRefresh';
@@ -105,6 +106,12 @@ export {
      * @property {module:model/Profile}
      */
     Profile,
+
+    /**
+     * The Registration model constructor.
+     * @property {module:model/Registration}
+     */
+    Registration,
 
     /**
      * The Tag model constructor.

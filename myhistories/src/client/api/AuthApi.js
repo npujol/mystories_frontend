@@ -15,6 +15,7 @@
  */
 
 import {ApiClient} from "../ApiClient";
+import {Registration} from '../model/Registration';
 import {TokenObtainPair} from '../model/TokenObtainPair';
 import {TokenRefresh} from '../model/TokenRefresh';
 
@@ -80,11 +81,17 @@ export class AuthApi {
 
 
     /**
-     * Registration, it need a email and password
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing HTTP response
+     * 
+     * @param {module:model/Registration} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Registration} and HTTP response
      */
-    authRegistrationCreateWithHttpInfo() {
-      let postBody = null;
+    authRegistrationCreateWithHttpInfo(data) {
+      let postBody = data;
+
+      // verify the required parameter 'data' is set
+      if (data === undefined || data === null) {
+        throw new Error("Missing the required parameter 'data' when calling authRegistrationCreate");
+      }
 
 
       let pathParams = {
@@ -99,7 +106,7 @@ export class AuthApi {
       let authNames = ['api_key'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
-      let returnType = null;
+      let returnType = Registration;
 
       return this.apiClient.callApi(
         '/auth/registration/', 'POST',
@@ -109,11 +116,12 @@ export class AuthApi {
     }
 
     /**
-     * Registration, it need a email and password
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}
+     * 
+     * @param {module:model/Registration} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Registration}
      */
-    authRegistrationCreate() {
-      return this.authRegistrationCreateWithHttpInfo()
+    authRegistrationCreate(data) {
+      return this.authRegistrationCreateWithHttpInfo(data)
         .then(function(response_and_data) {
           return response_and_data.data;
         });
