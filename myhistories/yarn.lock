@@ -3782,10 +3782,10 @@ eslint-plugin-cypress@^2.10.3:
   dependencies:
     globals "^11.12.0"
 
-eslint-plugin-prettier@^3.1.3:
+eslint-plugin-prettier@^3.1.4:
   version "3.1.4"
-  resolved "https://registry.npm.taobao.org/eslint-plugin-prettier/download/eslint-plugin-prettier-3.1.4.tgz?cache=0&sync_timestamp=1592175492503&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Feslint-plugin-prettier%2Fdownload%2Feslint-plugin-prettier-3.1.4.tgz#168ab43154e2ea57db992a2cd097c828171f75c2"
-  integrity sha1-Foq0MVTi6lfbmSos0JfIKBcfdcI=
+  resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-3.1.4.tgz#168ab43154e2ea57db992a2cd097c828171f75c2"
+  integrity sha512-jZDa8z76klRqo+TdGDTFJSavwbnWK2ZpqGKNZ+VvweMW516pDUMmQ2koXvxEE4JhzNvTv+radye/bWGBmA6jmg==
   dependencies:
     prettier-linter-helpers "^1.0.0"
 
