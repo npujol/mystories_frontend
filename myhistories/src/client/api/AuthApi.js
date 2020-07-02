@@ -15,6 +15,7 @@
  */
 
 import {ApiClient} from "../ApiClient";
+import {Login} from '../model/Login';
 import {Registration} from '../model/Registration';
 import {TokenObtainPair} from '../model/TokenObtainPair';
 import {TokenRefresh} from '../model/TokenRefresh';
@@ -40,11 +41,17 @@ export class AuthApi {
 
 
     /**
-     * Login, it need username or email, and password 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing HTTP response
+     * 
+     * @param {module:model/Login} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Login} and HTTP response
      */
-    authLoginCreateWithHttpInfo() {
-      let postBody = null;
+    authLoginCreateWithHttpInfo(data) {
+      let postBody = data;
+
+      // verify the required parameter 'data' is set
+      if (data === undefined || data === null) {
+        throw new Error("Missing the required parameter 'data' when calling authLoginCreate");
+      }
 
 
       let pathParams = {
@@ -59,7 +66,7 @@ export class AuthApi {
       let authNames = ['api_key'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
-      let returnType = null;
+      let returnType = Login;
 
       return this.apiClient.callApi(
         '/auth/login/', 'POST',
@@ -69,11 +76,12 @@ export class AuthApi {
     }
 
     /**
-     * Login, it need username or email, and password 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}
+     * 
+     * @param {module:model/Login} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Login}
      */
-    authLoginCreate() {
-      return this.authLoginCreateWithHttpInfo()
+    authLoginCreate(data) {
+      return this.authLoginCreateWithHttpInfo(data)
         .then(function(response_and_data) {
           return response_and_data.data;
         });

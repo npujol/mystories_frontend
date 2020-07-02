@@ -368,14 +368,20 @@ export class HistoriesApi {
     /**
      * Add a favorite to an history
      * @param {String} historySlug 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing HTTP response
+     * @param {module:model/History} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/History} and HTTP response
      */
-    historiesFavoriteCreateWithHttpInfo(historySlug) {
-      let postBody = null;
+    historiesFavoriteCreateWithHttpInfo(historySlug, data) {
+      let postBody = data;
 
       // verify the required parameter 'historySlug' is set
       if (historySlug === undefined || historySlug === null) {
         throw new Error("Missing the required parameter 'historySlug' when calling historiesFavoriteCreate");
+      }
+
+      // verify the required parameter 'data' is set
+      if (data === undefined || data === null) {
+        throw new Error("Missing the required parameter 'data' when calling historiesFavoriteCreate");
       }
 
 
@@ -392,7 +398,7 @@ export class HistoriesApi {
       let authNames = ['api_key'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
-      let returnType = null;
+      let returnType = History;
 
       return this.apiClient.callApi(
         '/histories/{history__slug}/favorite/', 'POST',
@@ -404,10 +410,11 @@ export class HistoriesApi {
     /**
      * Add a favorite to an history
      * @param {String} historySlug 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}
+     * @param {module:model/History} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/History}
      */
-    historiesFavoriteCreate(historySlug) {
-      return this.historiesFavoriteCreateWithHttpInfo(historySlug)
+    historiesFavoriteCreate(historySlug, data) {
+      return this.historiesFavoriteCreateWithHttpInfo(historySlug, data)
         .then(function(response_and_data) {
           return response_and_data.data;
         });
@@ -417,14 +424,20 @@ export class HistoriesApi {
     /**
      * Remove a favorite to an history
      * @param {String} historySlug 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing HTTP response
+     * @param {module:model/History} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/History} and HTTP response
      */
-    historiesFavoriteDeleteWithHttpInfo(historySlug) {
-      let postBody = null;
+    historiesFavoriteDeleteWithHttpInfo(historySlug, data) {
+      let postBody = data;
 
       // verify the required parameter 'historySlug' is set
       if (historySlug === undefined || historySlug === null) {
         throw new Error("Missing the required parameter 'historySlug' when calling historiesFavoriteDelete");
+      }
+
+      // verify the required parameter 'data' is set
+      if (data === undefined || data === null) {
+        throw new Error("Missing the required parameter 'data' when calling historiesFavoriteDelete");
       }
 
 
@@ -441,7 +454,7 @@ export class HistoriesApi {
       let authNames = ['api_key'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
-      let returnType = null;
+      let returnType = History;
 
       return this.apiClient.callApi(
         '/histories/{history__slug}/favorite/', 'DELETE',
@@ -453,10 +466,11 @@ export class HistoriesApi {
     /**
      * Remove a favorite to an history
      * @param {String} historySlug 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}
+     * @param {module:model/History} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/History}
      */
-    historiesFavoriteDelete(historySlug) {
-      return this.historiesFavoriteDeleteWithHttpInfo(historySlug)
+    historiesFavoriteDelete(historySlug, data) {
+      return this.historiesFavoriteDeleteWithHttpInfo(historySlug, data)
         .then(function(response_and_data) {
           return response_and_data.data;
         });
@@ -516,14 +530,20 @@ export class HistoriesApi {
     /**
      * Create speech to an history
      * @param {String} historySlug 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing HTTP response
+     * @param {module:model/History} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/History} and HTTP response
      */
-    historiesGttsCreateWithHttpInfo(historySlug) {
-      let postBody = null;
+    historiesGttsCreateWithHttpInfo(historySlug, data) {
+      let postBody = data;
 
       // verify the required parameter 'historySlug' is set
       if (historySlug === undefined || historySlug === null) {
         throw new Error("Missing the required parameter 'historySlug' when calling historiesGttsCreate");
+      }
+
+      // verify the required parameter 'data' is set
+      if (data === undefined || data === null) {
+        throw new Error("Missing the required parameter 'data' when calling historiesGttsCreate");
       }
 
 
@@ -540,7 +560,7 @@ export class HistoriesApi {
       let authNames = ['api_key'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
-      let returnType = null;
+      let returnType = History;
 
       return this.apiClient.callApi(
         '/histories/{history__slug}/gtts', 'POST',
@@ -552,10 +572,11 @@ export class HistoriesApi {
     /**
      * Create speech to an history
      * @param {String} historySlug 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}
+     * @param {module:model/History} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/History}
      */
-    historiesGttsCreate(historySlug) {
-      return this.historiesGttsCreateWithHttpInfo(historySlug)
+    historiesGttsCreate(historySlug, data) {
+      return this.historiesGttsCreateWithHttpInfo(historySlug, data)
         .then(function(response_and_data) {
           return response_and_data.data;
         });

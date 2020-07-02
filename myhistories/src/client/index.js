@@ -20,6 +20,9 @@ import {History} from './model/History';
 import {InlineResponse200} from './model/InlineResponse200';
 import {InlineResponse2001} from './model/InlineResponse2001';
 import {InlineResponse2002} from './model/InlineResponse2002';
+import {InlineResponse2003} from './model/InlineResponse2003';
+import {Login} from './model/Login';
+import {Notification} from './model/Notification';
 import {Profile} from './model/Profile';
 import {Registration} from './model/Registration';
 import {Tag} from './model/Tag';
@@ -28,6 +31,7 @@ import {TokenRefresh} from './model/TokenRefresh';
 import {User} from './model/User';
 import {AuthApi} from './api/AuthApi';
 import {HistoriesApi} from './api/HistoriesApi';
+import {NotificationsApi} from './api/NotificationsApi';
 import {ProfilesApi} from './api/ProfilesApi';
 import {TagsApi} from './api/TagsApi';
 import {UsersApi} from './api/UsersApi';
@@ -102,6 +106,24 @@ export {
     InlineResponse2002,
 
     /**
+     * The InlineResponse2003 model constructor.
+     * @property {module:model/InlineResponse2003}
+     */
+    InlineResponse2003,
+
+    /**
+     * The Login model constructor.
+     * @property {module:model/Login}
+     */
+    Login,
+
+    /**
+     * The Notification model constructor.
+     * @property {module:model/Notification}
+     */
+    Notification,
+
+    /**
      * The Profile model constructor.
      * @property {module:model/Profile}
      */
@@ -148,6 +170,12 @@ export {
     * @property {module:api/HistoriesApi}
     */
     HistoriesApi,
+
+    /**
+    * The NotificationsApi service constructor.
+    * @property {module:api/NotificationsApi}
+    */
+    NotificationsApi,
 
     /**
     * The ProfilesApi service constructor.

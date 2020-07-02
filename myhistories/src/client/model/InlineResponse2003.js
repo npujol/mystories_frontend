@@ -15,20 +15,20 @@
  */
 
 import {ApiClient} from '../ApiClient';
-import {Notification} from './Notification';
+import {Tag} from './Tag';
 
 /**
- * The InlineResponse2002 model module.
- * @module model/InlineResponse2002
+ * The InlineResponse2003 model module.
+ * @module model/InlineResponse2003
  * @version v1
  */
-export class InlineResponse2002 {
+export class InlineResponse2003 {
   /**
-   * Constructs a new <code>InlineResponse2002</code>.
-   * @alias module:model/InlineResponse2002
+   * Constructs a new <code>InlineResponse2003</code>.
+   * @alias module:model/InlineResponse2003
    * @class
    * @param count {Number} 
-   * @param results {Array.<module:model/Notification>} 
+   * @param results {Array.<module:model/Tag>} 
    */
   constructor(count, results) {
     this.count = count;
@@ -36,15 +36,15 @@ export class InlineResponse2002 {
   }
 
   /**
-   * Constructs a <code>InlineResponse2002</code> from a plain JavaScript object, optionally creating a new instance.
+   * Constructs a <code>InlineResponse2003</code> from a plain JavaScript object, optionally creating a new instance.
    * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
    * @param {Object} data The plain JavaScript object bearing properties of interest.
-   * @param {module:model/InlineResponse2002} obj Optional instance to populate.
-   * @return {module:model/InlineResponse2002} The populated <code>InlineResponse2002</code> instance.
+   * @param {module:model/InlineResponse2003} obj Optional instance to populate.
+   * @return {module:model/InlineResponse2003} The populated <code>InlineResponse2003</code> instance.
    */
   static constructFromObject(data, obj) {
     if (data) {
-      obj = obj || new InlineResponse2002();
+      obj = obj || new InlineResponse2003();
       if (data.hasOwnProperty('count'))
         obj.count = ApiClient.convertToType(data['count'], 'Number');
       if (data.hasOwnProperty('next'))
@@ -52,7 +52,7 @@ export class InlineResponse2002 {
       if (data.hasOwnProperty('previous'))
         obj.previous = ApiClient.convertToType(data['previous'], 'String');
       if (data.hasOwnProperty('results'))
-        obj.results = ApiClient.convertToType(data['results'], [Notification]);
+        obj.results = ApiClient.convertToType(data['results'], [Tag]);
     }
     return obj;
   }
@@ -61,21 +61,21 @@ export class InlineResponse2002 {
 /**
  * @member {Number} count
  */
-InlineResponse2002.prototype.count = undefined;
+InlineResponse2003.prototype.count = undefined;
 
 /**
  * @member {String} next
  */
-InlineResponse2002.prototype.next = undefined;
+InlineResponse2003.prototype.next = undefined;
 
 /**
  * @member {String} previous
  */
-InlineResponse2002.prototype.previous = undefined;
+InlineResponse2003.prototype.previous = undefined;
 
 /**
- * @member {Array.<module:model/Notification>} results
+ * @member {Array.<module:model/Tag>} results
  */
-InlineResponse2002.prototype.results = undefined;
+InlineResponse2003.prototype.results = undefined;
 
 

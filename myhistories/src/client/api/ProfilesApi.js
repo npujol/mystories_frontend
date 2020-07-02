@@ -40,14 +40,20 @@ export class ProfilesApi {
     /**
      * Follow a profile. It need a username for the profile to follow
      * @param {String} userUsername 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing HTTP response
+     * @param {module:model/Profile} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Profile} and HTTP response
      */
-    profilesFollowCreateWithHttpInfo(userUsername) {
-      let postBody = null;
+    profilesFollowCreateWithHttpInfo(userUsername, data) {
+      let postBody = data;
 
       // verify the required parameter 'userUsername' is set
       if (userUsername === undefined || userUsername === null) {
         throw new Error("Missing the required parameter 'userUsername' when calling profilesFollowCreate");
+      }
+
+      // verify the required parameter 'data' is set
+      if (data === undefined || data === null) {
+        throw new Error("Missing the required parameter 'data' when calling profilesFollowCreate");
       }
 
 
@@ -64,7 +70,7 @@ export class ProfilesApi {
       let authNames = ['api_key'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
-      let returnType = null;
+      let returnType = Profile;
 
       return this.apiClient.callApi(
         '/profiles/{user__username}/follow/', 'POST',
@@ -76,10 +82,11 @@ export class ProfilesApi {
     /**
      * Follow a profile. It need a username for the profile to follow
      * @param {String} userUsername 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}
+     * @param {module:model/Profile} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Profile}
      */
-    profilesFollowCreate(userUsername) {
-      return this.profilesFollowCreateWithHttpInfo(userUsername)
+    profilesFollowCreate(userUsername, data) {
+      return this.profilesFollowCreateWithHttpInfo(userUsername, data)
         .then(function(response_and_data) {
           return response_and_data.data;
         });
@@ -89,14 +96,20 @@ export class ProfilesApi {
     /**
      * Unfollow a profile. It need a username for the profile to follow
      * @param {String} userUsername 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing HTTP response
+     * @param {module:model/Profile} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Profile} and HTTP response
      */
-    profilesFollowDeleteWithHttpInfo(userUsername) {
-      let postBody = null;
+    profilesFollowDeleteWithHttpInfo(userUsername, data) {
+      let postBody = data;
 
       // verify the required parameter 'userUsername' is set
       if (userUsername === undefined || userUsername === null) {
         throw new Error("Missing the required parameter 'userUsername' when calling profilesFollowDelete");
+      }
+
+      // verify the required parameter 'data' is set
+      if (data === undefined || data === null) {
+        throw new Error("Missing the required parameter 'data' when calling profilesFollowDelete");
       }
 
 
@@ -113,7 +126,7 @@ export class ProfilesApi {
       let authNames = ['api_key'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
-      let returnType = null;
+      let returnType = Profile;
 
       return this.apiClient.callApi(
         '/profiles/{user__username}/follow/', 'DELETE',
@@ -125,10 +138,11 @@ export class ProfilesApi {
     /**
      * Unfollow a profile. It need a username for the profile to follow
      * @param {String} userUsername 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}
+     * @param {module:model/Profile} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Profile}
      */
-    profilesFollowDelete(userUsername) {
-      return this.profilesFollowDeleteWithHttpInfo(userUsername)
+    profilesFollowDelete(userUsername, data) {
+      return this.profilesFollowDeleteWithHttpInfo(userUsername, data)
         .then(function(response_and_data) {
           return response_and_data.data;
         });

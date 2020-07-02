@@ -73,7 +73,7 @@ export class UsersApi {
       let returnType = User;
 
       return this.apiClient.callApi(
-        '/users/({username}/', 'PATCH',
+        '/users/{username}/', 'PATCH',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType
       );
@@ -123,7 +123,7 @@ export class UsersApi {
       let returnType = User;
 
       return this.apiClient.callApi(
-        '/users/({username}/', 'GET',
+        '/users/{username}/', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType
       );
@@ -178,7 +178,7 @@ export class UsersApi {
       let returnType = User;
 
       return this.apiClient.callApi(
-        '/users/({username}/', 'PUT',
+        '/users/{username}/', 'PUT',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType
       );

@@ -15,7 +15,7 @@
  */
 
 import {ApiClient} from "../ApiClient";
-import {InlineResponse2002} from '../model/InlineResponse2002';
+import {InlineResponse2003} from '../model/InlineResponse2003';
 import {Tag} from '../model/Tag';
 
 /**
@@ -91,7 +91,7 @@ export class TagsApi {
      * @param {Object} opts Optional parameters
      * @param {Number} opts.limit Number of results to return per page.
      * @param {Number} opts.offset The initial index from which to return the results.
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/InlineResponse2002} and HTTP response
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/InlineResponse2003} and HTTP response
      */
     tagsListWithHttpInfo(opts) {
       opts = opts || {};
@@ -112,7 +112,7 @@ export class TagsApi {
       let authNames = ['api_key'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
-      let returnType = InlineResponse2002;
+      let returnType = InlineResponse2003;
 
       return this.apiClient.callApi(
         '/tags', 'GET',
@@ -126,7 +126,7 @@ export class TagsApi {
      * @param {Object} opts Optional parameters
      * @param {Number} opts.limit Number of results to return per page.
      * @param {Number} opts.offset The initial index from which to return the results.
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/InlineResponse2002}
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/InlineResponse2003}
      */
     tagsList(opts) {
       return this.tagsListWithHttpInfo(opts)
