@@ -57,11 +57,11 @@ export default {
         .dispatch(LOGIN, { email, password })
         .then(() => this.$router.push({ name: "home" }));
     }
+  },
+  computed: {
+    ...mapState({
+      errors: state => state.auth.errors
+    })
   }
-  // computed: {
-  //   ...mapState({
-  //     errors: state => state.auth.errors
-  //   })
-  // }
 };
 </script>

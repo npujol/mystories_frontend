@@ -60,11 +60,11 @@ export default {
       password: ""
     };
   },
-  // computed: {
-  //   ...mapState({
-  //     errors: state => state.auth.errors
-  //   })
-  // },
+  computed: {
+    ...mapState({
+      errors: state => state.auth.errors
+    })
+  },
   methods: {
     onSubmit() {
       this.$store
