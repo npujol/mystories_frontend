@@ -114,7 +114,7 @@ export default {
   },
   methods: {
     fetchHistories() {
-      this.$store.dispatch(FETCH_HISTORIES, this.listConfig);
+      this.$store.dispatch(FETCH_HISTORIES);
     },
     resetPagination() {
       this.listConfig.offset = 0;

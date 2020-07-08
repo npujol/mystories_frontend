@@ -45,8 +45,8 @@ export default {
           this.comment = null;
           this.errors = {};
         })
-        .catch(({ response }) => {
-          this.errors = response.data.errors;
+        .catch(response => {
+          this.errors = response.errors;
         });
     }
   }

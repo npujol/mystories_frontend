@@ -126,16 +126,16 @@ export default {
       this.inProgress = true;
       this.$store
         .dispatch(action)
-        .then(({ data }) => {
+        .then(data => {
           this.inProgress = false;
           this.$router.push({
             name: "history",
-            params: { slug: data.history.slug }
+            params: { slug: data.slug }
           });
         })
-        .catch(({ response }) => {
+        .catch(response => {
           this.inProgress = false;
-          this.errors = response.data.errors;
+          this.errors = response.errors;
         });
     },
     removeTag(tag) {
