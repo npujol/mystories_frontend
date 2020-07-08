@@ -17,33 +17,37 @@ import {ApiClient} from '../ApiClient';
 import {Profile} from './Profile';
 
 /**
- * The Login model module.
- * @module model/Login
+ * The Registration model module.
+ * @module model/Registration
  * @version v1
  */
-export class Login {
+export class Registration {
   /**
-   * Constructs a new <code>Login</code>.
-   * @alias module:model/Login
+   * Constructs a new <code>Registration</code>.
+   * @alias module:model/Registration
    * @class
    * @param email {String} 
+   * @param username {String} 
    * @param password {String} 
+   * @param profile {module:model/Profile} 
    */
-  constructor(email, password) {
+  constructor(email, username, password, profile) {
     this.email = email;
+    this.username = username;
     this.password = password;
+    this.profile = profile;
   }
 
   /**
-   * Constructs a <code>Login</code> from a plain JavaScript object, optionally creating a new instance.
+   * Constructs a <code>Registration</code> from a plain JavaScript object, optionally creating a new instance.
    * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
    * @param {Object} data The plain JavaScript object bearing properties of interest.
-   * @param {module:model/Login} obj Optional instance to populate.
-   * @return {module:model/Login} The populated <code>Login</code> instance.
+   * @param {module:model/Registration} obj Optional instance to populate.
+   * @return {module:model/Registration} The populated <code>Registration</code> instance.
    */
   static constructFromObject(data, obj) {
     if (data) {
-      obj = obj || new Login();
+      obj = obj || new Registration();
       if (data.hasOwnProperty('email'))
         obj.email = ApiClient.convertToType(data['email'], 'String');
       if (data.hasOwnProperty('username'))
@@ -62,26 +66,26 @@ export class Login {
 /**
  * @member {String} email
  */
-Login.prototype.email = undefined;
+Registration.prototype.email = undefined;
 
 /**
  * @member {String} username
  */
-Login.prototype.username = undefined;
+Registration.prototype.username = undefined;
 
 /**
  * @member {String} password
  */
-Login.prototype.password = undefined;
+Registration.prototype.password = undefined;
 
 /**
  * @member {String} token
  */
-Login.prototype.token = undefined;
+Registration.prototype.token = undefined;
 
 /**
  * @member {module:model/Profile} profile
  */
-Login.prototype.profile = undefined;
+Registration.prototype.profile = undefined;
 
 
