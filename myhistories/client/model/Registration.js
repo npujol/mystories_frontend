@@ -29,13 +29,11 @@ export class Registration {
    * @param email {String} 
    * @param username {String} 
    * @param password {String} 
-   * @param profile {module:model/Profile} 
    */
-  constructor(email, username, password, profile) {
+  constructor(email, username, password) {
     this.email = email;
     this.username = username;
     this.password = password;
-    this.profile = profile;
   }
 
   /**

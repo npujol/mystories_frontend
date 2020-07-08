@@ -27,15 +27,11 @@ export class User {
    * @alias module:model/User
    * @class
    * @param email {String} 
-   * @param username {String} 
    * @param password {String} 
-   * @param profile {module:model/Profile} 
    */
-  constructor(email, username, password, profile) {
+  constructor(email, password) {
     this.email = email;
-    this.username = username;
     this.password = password;
-    this.profile = profile;
   }
 
   /**
@@ -50,12 +46,8 @@ export class User {
       obj = obj || new User();
       if (data.hasOwnProperty('email'))
         obj.email = ApiClient.convertToType(data['email'], 'String');
-      if (data.hasOwnProperty('username'))
-        obj.username = ApiClient.convertToType(data['username'], 'String');
       if (data.hasOwnProperty('password'))
         obj.password = ApiClient.convertToType(data['password'], 'String');
-      if (data.hasOwnProperty('token'))
-        obj.token = ApiClient.convertToType(data['token'], 'String');
       if (data.hasOwnProperty('profile'))
         obj.profile = Profile.constructFromObject(data['profile']);
     }
@@ -69,19 +61,9 @@ export class User {
 User.prototype.email = undefined;
 
 /**
- * @member {String} username
- */
-User.prototype.username = undefined;
-
-/**
  * @member {String} password
  */
 User.prototype.password = undefined;
-
-/**
- * @member {String} token
- */
-User.prototype.token = undefined;
 
 /**
  * @member {module:model/Profile} profile

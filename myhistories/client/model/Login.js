@@ -28,12 +28,10 @@ export class Login {
    * @class
    * @param email {String} 
    * @param password {String} 
-   * @param profile {module:model/Profile} 
    */
-  constructor(email, password, profile) {
+  constructor(email, password) {
     this.email = email;
     this.password = password;
-    this.profile = profile;
   }
 
   /**
