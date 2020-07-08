@@ -49,7 +49,7 @@ const actions = {
     return tagsApi
       .tagsList()
       .then(data => {
-        commit(SET_TAGS, data.results);
+        commit(SET_TAGS, data);
       })
       .catch(error => {
         throw new Error(error);
@@ -67,8 +67,8 @@ const mutations = {
     state.historiesCount = data.count;
     state.isLoading = false;
   },
-  [SET_TAGS](state, tags) {
-    state.tags = tags;
+  [SET_TAGS](state, data) {
+    state.tags = data.results;
   },
   [UPDATE_HISTORY_IN_LIST](state, data) {
     state.histories = state.histories.map(history => {

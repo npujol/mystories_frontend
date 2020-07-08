@@ -54,7 +54,6 @@ export const actions = {
   async [FETCH_COMMENTS](context, historySlug) {
     JwtService.setHeader();
     const data = await historiesApi.historiesCommentsList(historySlug);
-    console.log(data);
     context.commit(SET_COMMENTS, data.results);
     return data;
   },
