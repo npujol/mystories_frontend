@@ -13,7 +13,7 @@
           <ul class="tag-list">
             <li v-for="(tag, index) of history.tagList" :key="tag + index">
               <RwvTag
-                :name="tag"
+                :tag="tag"
                 className="tag-default tag-pill tag-outline"
               ></RwvTag>
             </li>

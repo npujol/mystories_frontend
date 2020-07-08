@@ -47,7 +47,7 @@
           <div class="sidebar">
             <p>Popular Tags</p>
             <div class="tag-list">
-              <RwvTag v-for="(tag, index) in tags" :name="tag.tag" :key="index">
+              <RwvTag v-for="(tag, index) in tags" :tag="tag.tag" :key="index">
               </RwvTag>
             </div>
           </div>
