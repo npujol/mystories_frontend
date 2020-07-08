@@ -1,4 +1,4 @@
-import { TagsService, HistoryService } from "../common/api.service.js";
+import { TagsApi, HistoriesApi } from "../client";
 import { FETCH_HISTORIES, FETCH_TAGS } from "./actions.type.js";
 import {
   FETCH_START,
@@ -6,6 +6,10 @@ import {
   SET_TAGS,
   UPDATE_HISTORY_IN_LIST
 } from "./mutations.type.js";
+import jwtService from "@/common/jwt.service";
+
+const historiesApi = new HistoriesApi();
+const tagsApi = new TagsApi();
 
 const state = {
   tags: [],
@@ -30,10 +34,11 @@ const getters = {
 };
 
 const actions = {
-  [FETCH_HISTORIES]({ commit }, params) {
+  [FETCH_HISTORIES]({ commit }) {
     commit(FETCH_START);
-    return HistoryService.query(params.type, params.filters)
-      .then(({ data }) => {
+    return historiesApi
+      .historiesFeedList()
+      .then(data => {
         commit(FETCH_END, data);
       })
       .catch(error => {
@@ -41,9 +46,10 @@ const actions = {
       });
   },
   [FETCH_TAGS]({ commit }) {
-    return TagsService.get()
-      .then(({ data }) => {
-        commit(SET_TAGS, data.tags);
+    return tagsApi
+      .tagsList()
+      .then(data => {
+        commit(SET_TAGS, data.results);
       })
       .catch(error => {
         throw new Error(error);
@@ -56,9 +62,9 @@ const mutations = {
   [FETCH_START](state) {
     state.isLoading = true;
   },
-  [FETCH_END](state, { histories, historiesCount }) {
-    state.histories = histories;
-    state.historiesCount = historiesCount;
+  [FETCH_END](state, data) {
+    state.histories = data.results;
+    state.historiesCount = data.count;
     state.isLoading = false;
   },
   [SET_TAGS](state, tags) {

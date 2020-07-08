@@ -1,6 +1,10 @@
-import { HistoriesService, CommentsService } from "@/common/api.service.js";
+import { HistoriesApi } from "../client";
+import JwtService from "@/common/jwt.service";
+
 import { FETCH_HISTORY, FETCH_COMMENTS } from "./actions.type.js";
 import { SET_HISTORY, SET_COMMENTS } from "./mutations.type.js";
+
+const historiesApi = new HistoriesApi();
 
 export const state = {
   history: {},
@@ -9,18 +13,22 @@ export const state = {
 
 export const actions = {
   [FETCH_HISTORY](context, historySlug) {
-    return HistoriesService.get(historySlug)
-      .then(({ data }) => {
-        context.commit(SET_HISTORY, data.history);
+    JwtService.setHeader();
+    return historiesApi
+      .historiesRead(historySlug)
+      .then(data => {
+        context.commit(SET_HISTORY, data);
       })
       .catch(error => {
         throw new Error(error);
       });
   },
   [FETCH_COMMENTS](context, historySlug) {
-    return CommentsService.get(historySlug)
-      .then(({ data }) => {
-        context.commit(SET_COMMENTS, data.comments);
+    JwtService.setHeader();
+    return historiesApi
+      .historiesCommentsRead(historySlug)
+      .then(data => {
+        context.commit(SET_COMMENTS, data);
       })
       .catch(error => {
         throw new Error(error);
