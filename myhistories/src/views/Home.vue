@@ -11,7 +11,7 @@
         <div class="col-md-9">
           <div class="feed-toggle">
             <ul class="nav nav-pills outline-active">
-              <!-- <li v-if="isAuthenticated" class="nav-item">
+              <li v-if="isAuthenticated" class="nav-item">
                 <router-link
                   :to="{ name: 'home-my-feed' }"
                   class="nav-link"
@@ -19,8 +19,8 @@
                 >
                   Your Feed
                 </router-link>
-              </li> -->
-              <!-- <li class="nav-item">
+              </li>
+              <li class="nav-item">
                 <router-link
                   :to="{ name: 'home' }"
                   exact
@@ -29,8 +29,8 @@
                 >
                   Global Feed
                 </router-link>
-              </li> -->
-              <!-- <li class="nav-item" v-if="tag">
+              </li>
+              <li class="nav-item" v-if="tag">
                 <router-link
                   :to="{ name: 'home-tag', params: { tag } }"
                   class="nav-link"
@@ -38,7 +38,7 @@
                 >
                   <i class="ion-pound"></i> {{ tag }}
                 </router-link>
-              </li> -->
+              </li>
             </ul>
           </div>
           <router-view></router-view>
@@ -47,7 +47,7 @@
           <div class="sidebar">
             <p>Popular Tags</p>
             <div class="tag-list">
-              <RwvTag v-for="(tag, index) in tags" :name="tag" :key="index">
+              <RwvTag v-for="(tag, index) in tags" :name="tag.tag" :key="index">
               </RwvTag>
             </div>
           </div>
@@ -58,23 +58,23 @@
 </template>
 
 <script>
-// import { mapGetters } from "vuex";
-// import RwvTag from "../components/VTag.vue";
-// import { FETCH_TAGS } from "../store/actions.type.js";
+import { mapGetters } from "vuex";
+import RwvTag from "../components/VTag.vue";
+import { FETCH_TAGS } from "../store/actions.type.js";
 
 export default {
-  name: "home"
-  // components: {
-  //   RwvTag
-  // },
-  // mounted() {
-  //   this.$store.dispatch(FETCH_TAGS);
-  // },
-  // computed: {
-  //   ...mapGetters(["isAuthenticated", "tags"]),
-  //   tag() {
-  //     return this.$route.params.tag;
-  //   }
-  // }
+  name: "home",
+  components: {
+    RwvTag
+  },
+  mounted() {
+    this.$store.dispatch(FETCH_TAGS);
+  },
+  computed: {
+    ...mapGetters(["isAuthenticated", "tags"]),
+    tag() {
+      return this.$route.params.tag;
+    }
+  }
 };
 </script>
