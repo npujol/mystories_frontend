@@ -59,7 +59,9 @@ export const actions = {
   },
   async [COMMENT_CREATE](context, payload) {
     JwtService.setHeader();
-    await historiesApi.historiesCommentsCreate(payload.slug, payload.comment);
+    await historiesApi.historiesCommentsCreate(payload.slug, {
+      body: payload.comment
+    });
     context.dispatch(FETCH_COMMENTS, payload.slug);
   },
   async [COMMENT_DESTROY](context, payload) {
@@ -69,13 +71,13 @@ export const actions = {
   },
   async [FAVORITE_ADD](context, slug) {
     JwtService.setHeader();
-    const data = await historiesApi.historiesFavoriteCreate(slug);
+    const data = await historiesApi.historiesFavoriteCreate(slug, "");
     context.commit(UPDATE_HISTORY_IN_LIST, data, { root: true });
     context.commit(SET_HISTORY, data);
   },
   async [FAVORITE_REMOVE](context, slug) {
     JwtService.setHeader();
-    const data = await historiesApi.historiesFavoriteDelete(slug);
+    const data = await historiesApi.historiesFavoriteDelete(slug, "");
     // Update list as well. This allows us to favorite an history in the Home view.
     context.commit(UPDATE_HISTORY_IN_LIST, data, { root: true });
     context.commit(SET_HISTORY, data);
@@ -115,7 +117,9 @@ export const mutations = {
     state.comments = comments;
   },
   [TAG_ADD](state, tag) {
-    state.history.tagList = state.history.tagList.concat([tag]);
+    if (state.history.tagList.indexOf(tag) === -1) {
+      state.history.tagList = state.history.tagList.concat([tag]);
+    }
   },
   [TAG_REMOVE](state, tag) {
     state.history.tagList = state.history.tagList.filter(t => t !== tag);
