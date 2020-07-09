@@ -19,6 +19,9 @@ export const saveCredentials = (username, token) => {
 export const destroyCredentials = () => {
   window.localStorage.removeItem(ID_TOKEN_KEY);
   window.localStorage.removeItem(USERNAME);
+  const apiClient = ApiClient.instance;
+  apiClient.authentications.api_key.apiKeyPrefix = "Bearer";
+  delete apiClient.authentications.api_key.apiKey;
 };
 
 export const setHeader = () => {
