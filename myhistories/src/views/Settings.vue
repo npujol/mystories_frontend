@@ -10,7 +10,7 @@
                 <input
                   class="form-control"
                   type="text"
-                  v-model="currentUser.image"
+                  v-model="currentUser.profile.image"
                   placeholder="URL of profile picture"
                 />
               </fieldset>
@@ -26,7 +26,7 @@
                 <textarea
                   class="form-control form-control-lg"
                   rows="8"
-                  v-model="currentUser.bio"
+                  v-model="currentUser.profile.bio"
                   placeholder="Short bio about you"
                 ></textarea>
               </fieldset>
@@ -36,14 +36,6 @@
                   type="text"
                   v-model="currentUser.email"
                   placeholder="Email"
-                />
-              </fieldset>
-              <fieldset class="form-group">
-                <input
-                  class="form-control form-control-lg"
-                  type="password"
-                  v-model="currentUser.password"
-                  placeholder="Password"
                 />
               </fieldset>
               <button class="btn btn-lg btn-primary pull-xs-right">
