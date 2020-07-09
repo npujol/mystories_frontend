@@ -1,5 +1,5 @@
 import { default as format } from "date-fns/format";
 
 export default date => {
-  return format(new Date(date), "mmmm d, yyyy");
+  return format(new Date(date), "dd/mm/yyyy");
 };
