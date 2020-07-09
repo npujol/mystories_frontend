@@ -8,7 +8,13 @@ import {
   CHECK_AUTH,
   UPDATE_USER
 } from "./actions.type.js";
-import { SET_AUTH, PURGE_AUTH, SET_ERROR } from "./mutations.type.js";
+import {
+  SET_AUTH,
+  PURGE_AUTH,
+  SET_ERROR,
+  SET_USER,
+  SET_PROFILE
+} from "./mutations.type.js";
 
 const authApi = new AuthApi();
 const usersApi = new UsersApi();
@@ -36,6 +42,7 @@ const actions = {
         .authLoginCreate(credentials)
         .then(data => {
           context.commit(SET_AUTH, data);
+          context.commit(SET_PROFILE, data.profile);
           resolve(data);
         })
         .catch(response => {
@@ -52,6 +59,7 @@ const actions = {
         .authRegistrationCreate(credentials)
         .then(data => {
           context.commit(SET_AUTH, data);
+          context.commit(SET_PROFILE, data.profile);
           resolve(data);
         })
         .catch(response => {
@@ -66,7 +74,8 @@ const actions = {
       usersApi
         .usersRead(JwtService.getUsername())
         .then(data => {
-          context.commit(SET_AUTH, data);
+          context.commit(SET_USER, data);
+          context.commit(SET_PROFILE, data.profile);
         })
         .catch(response => {
           context.commit(SET_ERROR, response.errors);
@@ -76,19 +85,12 @@ const actions = {
     }
   },
   [UPDATE_USER](context, payload) {
-    const { email, username, password, image, bio } = payload;
-    const user = {
-      email,
-      username,
-      bio,
-      image
-    };
-    if (password) {
-      user.password = password;
-    }
+    const { bio, image } = payload.profile;
+    const username = payload.username;
     JwtService.setHeader();
-    return usersApi.usersPartialUpdate(user.username, user).then(data => {
-      context.commit(SET_AUTH, data);
+    profilesApi.profilesPartialUpdate(username, { image, bio });
+    return usersApi.usersRead(username).then(data => {
+      context.commit(SET_USER, data);
       return data;
     });
   }
@@ -102,7 +104,12 @@ const mutations = {
     state.isAuthenticated = true;
     state.user = user;
     state.errors = {};
-    JwtService.saveCredentials(state.user.username, state.user.token);
+    JwtService.saveCredentials(user.username, user.token);
+  },
+  [SET_USER](state, user) {
+    state.isAuthenticated = true;
+    state.user = user;
+    state.errors = {};
   },
   [PURGE_AUTH](state) {
     state.isAuthenticated = false;
