@@ -37,9 +37,9 @@ const actions = {
   },
   [FETCH_PROFILE_FOLLOW](context, payload) {
     JwtService.setHeader();
-    const username = payload;
+    const { username } = payload;
     return profilesApi
-      .profilesFollowCreate(username)
+      .profilesFollowCreate(username, "")
       .then(data => {
         context.commit(SET_PROFILE, data);
         return data;
@@ -51,9 +51,9 @@ const actions = {
   },
   [FETCH_PROFILE_UNFOLLOW](context, payload) {
     JwtService.setHeader();
-    const username = payload;
+    const { username } = payload;
     return profilesApi
-      .profilesFollowDelete(username)
+      .profilesFollowDelete(username, "")
       .then(data => {
         context.commit(SET_PROFILE, data);
         return data;
