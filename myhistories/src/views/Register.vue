@@ -1,49 +1,50 @@
 <template>
-  <div class="auth-page">
-    <div class="container page">
-      <div class="row">
-        <div class="col-md-6 offset-md-3 col-xs-12">
-          <h1 class="text-xs-center">Sign up</h1>
+  <div>
+    <ul v-if="errors" class="error-messages">
+      <li v-for="(v, k) in errors" :key="k">{{ k }} {{ v | error }}</li>
+    </ul>
+
+    <form @submit.prevent="onSubmit">
+      <div class="modal-card" style="width:300px;">
+        <section class="modal-card-body">
+          <b-field label="Email">
+            <b-input
+              type="email"
+              v-model="email"
+              placeholder="Email"
+              maxlength="30"
+            >
+            </b-input>
+          </b-field>
+
+          <b-field label="Username">
+            <b-input
+              v-model="username"
+              placeholder="Username"
+              maxlength="30"
+            ></b-input>
+          </b-field>
+
+          <b-field label="Password">
+            <b-input
+              type="password"
+              v-model="password"
+              placeholder="Password"
+              password-reveal
+            >
+            </b-input>
+          </b-field>
+          <b-button native-type="submit">
+            Sign up
+          </b-button>
           <p class="text-xs-center">
             <router-link :to="{ name: 'login' }">
               Have an account?
             </router-link>
           </p>
-          <ul v-if="errors" class="error-messages">
-            <li v-for="(v, k) in errors" :key="k">{{ k }} {{ v | error }}</li>
-          </ul>
-          <form @submit.prevent="onSubmit">
-            <fieldset class="form-group">
-              <input
-                class="form-control form-control-lg"
-                type="text"
-                v-model="username"
-                placeholder="Username"
-              />
-            </fieldset>
-            <fieldset class="form-group">
-              <input
-                class="form-control form-control-lg"
-                type="text"
-                v-model="email"
-                placeholder="Email"
-              />
-            </fieldset>
-            <fieldset class="form-group">
-              <input
-                class="form-control form-control-lg"
-                type="password"
-                v-model="password"
-                placeholder="Password"
-              />
-            </fieldset>
-            <button class="btn btn-lg btn-primary pull-xs-right">
-              Sign up
-            </button>
-          </form>
-        </div>
+        </section>
       </div>
-    </div>
+    </form>
   </div>
 </template>
 
