@@ -1,13 +1,32 @@
 <template>
-  <div class="history-preview">
-    <RwvHistoryMeta isPreview :history="history" />
-    <router-link :to="historyLink" class="preview-link">
-      <h1 v-text="history.title" />
-      <p v-text="history.description" />
-      <span>Read more...</span>
-      <TagList :tags="history.tagList" />
-    </router-link>
-  </div>
+  <section class="hero has-background-white-ter">
+    <div class="hero-body">
+      <div class="content-wrapper">
+        <div
+          class="columns is-vcentered has-padding-top-50 has-padding-bottom-50 "
+        >
+          <div
+            class="column is-10 is-offset-1 columns has-background-white features-box is-hidden-mobile"
+          >
+            <div class="column is-5 is-offset-1">
+              <figure class="image is-128x128">
+                <router-link
+                  :to="{
+                    name: 'profile',
+                    params: { username: history.author.username }
+                  }"
+                >
+                  <img class="is-rounded" :src="history.author.image" />
+                </router-link>
+              </figure>
+              <TagList :tags="history.tagList" />
+            </div>
+            <RwvHistoryMeta isPreview :history="history" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>

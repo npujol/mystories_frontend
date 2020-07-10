@@ -1,36 +1,46 @@
 <template>
-  <div class="history-meta">
-    <router-link
-      :to="{ name: 'profile', params: { username: history.author.username } }"
-    >
-      <img :src="history.author.image" />
-    </router-link>
-    <div class="info">
+  <div
+    class="column is-4 is-offset-1 has-margin-top-auto has-margin-bottom-auto"
+  >
+    <div class="info is-size-5">
+      <div class="title">
+        <h2 class="has-text-black is-family-secondary has-text-weight-bold">
+          {{ history.title }}
+        </h2>
+      </div>
+
       <router-link
-        :to="{ name: 'profile', params: { username: history.author.username } }"
+        :to="{
+          name: 'profile',
+          params: { username: history.author.username }
+        }"
         class="author"
       >
-        {{ history.author.username }}
+        <h2>Author: {{ history.author.username }}</h2>
       </router-link>
-      <span class="date">{{ history.createdAt | date }}</span>
+
+      <h3>{{ history.createdAt | date }}</h3>
     </div>
+    <p v-text="history.description" />
+    <router-link :to="historyLink" class="preview-link">
+      <span>Read more...</span>
+    </router-link>
+
     <rwv-history-actions
       v-if="actions"
       :history="history"
       :canModify="isCurrentUser()"
     ></rwv-history-actions>
-    <button
+    <b-button
       v-else
-      class="btn btn-sm pull-xs-right"
       @click="toggleFavorite"
       :class="{
-        'btn-primary': history.favorited,
-        'btn-outline-primary': !history.favorited
+        'button is-primary': history.favorited,
+        'button is-light': !history.favorited
       }"
     >
-      <i class="ion-heart"></i>
       <span class="counter"> {{ history.favoritesCount }} </span>
-    </button>
+    </b-button>
   </div>
 </template>
 
