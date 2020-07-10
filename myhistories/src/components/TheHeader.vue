@@ -1,86 +1,77 @@
 <!-- @format -->
 
 <template>
-  <nav class="navbar navbar-light">
-    <div class="container">
-      <router-link class="navbar-brand" :to="{ name: 'home' }"
-        >Histories</router-link
-      >
-      <ul v-if="!isAuthenticated" class="nav navbar-nav pull-xs-right">
-        <li class="nav-item">
-          <router-link
-            class="nav-link"
-            active-class="active"
-            exact
-            :to="{ name: 'home' }"
-            >Home</router-link
-          >
-        </li>
-        <li class="nav-item">
-          <router-link
-            class="nav-link"
-            active-class="active"
-            exact
-            :to="{ name: 'login' }"
-          >
-            <i class="ion-compose"></i>Sign in
+  <b-navbar spaced="true">
+    <template v-if="isAuthenticated">
+      <template slot="start">
+        <b-navbar-item append-to-body>
+          <router-link exact :to="{ name: 'home' }">
+            <a><b-icon icon="home"></b-icon></a>
           </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link
-            class="nav-link"
-            active-class="active"
-            exact
-            :to="{ name: 'register' }"
+        </b-navbar-item>
+      </template>
+      <template slot="end">
+        <b-navbar-dropdown label="Menu" append-to-body aria-role="menu">
+          <b-navbar-item
+            append-to-body
+            aria-role="menu"
+            v-if="currentUser.username"
           >
-            <i class="ion-compose"></i>Sign up
+            <router-link
+              exact
+              :to="{
+                name: 'profile',
+                params: { username: currentUser.username }
+              }"
+            >
+              <a><b-icon icon="home"></b-icon> {{ currentUser.username }} </a>
+            </router-link>
+          </b-navbar-item>
+          <hr class="dropdown-divider" />
+          <b-navbar-item append-to-body aria-role="menu">
+            <router-link exact :to="{ name: 'home' }">
+              <a><b-icon icon="home"></b-icon> &nbsp;Home</a>
+            </router-link>
+          </b-navbar-item>
+          <b-navbar-item append-to-body aria-role="menu">
+            <router-link :to="{ name: 'history-edit' }">
+              <a><b-icon icon="home"></b-icon> &nbsp;New History</a>
+            </router-link>
+          </b-navbar-item>
+          <b-navbar-item append-to-body aria-role="menu">
+            <router-link exact :to="{ name: 'settings' }">
+              <a><b-icon icon="home"></b-icon> &nbsp;Settings</a>
+            </router-link>
+          </b-navbar-item>
+        </b-navbar-dropdown>
+      </template>
+    </template>
+    <template v-else>
+      <template slot="start">
+        <b-navbar-item append-to-body>
+          <router-link exact :to="{ name: 'home' }">
+            <a><b-icon icon="home"></b-icon></a>
           </router-link>
-        </li>
-      </ul>
-      <ul v-else class="nav navbar-nav pull-xs-right">
-        <li class="nav-item">
-          <router-link
-            class="nav-link"
-            active-class="active"
-            exact
-            :to="{ name: 'home' }"
-            >Home</router-link
-          >
-        </li>
-        <li class="nav-item">
-          <router-link
-            class="nav-link"
-            active-class="active"
-            :to="{ name: 'history-edit' }"
-          >
-            <i class="ion-compose"></i>&nbsp;New History
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link
-            class="nav-link"
-            active-class="active"
-            exact
-            :to="{ name: 'settings' }"
-          >
-            <i class="ion-gear-a"></i>&nbsp;Settings
-          </router-link>
-        </li>
-        <li class="nav-item" v-if="currentUser.username">
-          <router-link
-            class="nav-link"
-            active-class="active"
-            exact
-            :to="{
-              name: 'profile',
-              params: { username: currentUser.username }
-            }"
-            >{{ currentUser.username }}</router-link
-          >
-        </li>
-      </ul>
-    </div>
-  </nav>
+        </b-navbar-item>
+      </template>
+      <template slot="end">
+        <b-navbar-item tag="div">
+          <div class="buttons">
+            <router-link exact :to="{ name: 'register' }">
+              <a class="button is-primary">
+                <strong>Sign up</strong>
+              </a>
+            </router-link>
+            <router-link exact :to="{ name: 'login' }">
+              <a class="button is-light">
+                <strong>Log in</strong>
+              </a>
+            </router-link>
+          </div>
+        </b-navbar-item>
+      </template>
+    </template>
+  </b-navbar>
 </template>
 
 <script>
