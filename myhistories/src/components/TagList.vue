@@ -1,13 +1,9 @@
 <template>
-  <ul class="tag-list">
-    <li
-      class="tag-default tag-pill tag-outline"
-      v-for="(tag, index) of tags"
-      :key="index"
-    >
-      <span v-text="tag" />
-    </li>
-  </ul>
+  <b-taglist>
+    <b-tag type="is-primary" attached v-for="(tag, index) of tags" :key="index">
+      {{ tag }}
+    </b-tag>
+  </b-taglist>
 </template>
 
 <script>
