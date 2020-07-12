@@ -23,7 +23,7 @@
             >
             </b-input>
           </b-field>
-          <b-button native-type="submit">
+          <b-button native-type="submit" class="button is-primary">
             Sign in
           </b-button>
           <p class="text-xs-center">
