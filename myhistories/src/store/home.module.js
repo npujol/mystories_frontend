@@ -6,7 +6,6 @@ import {
   SET_TAGS,
   UPDATE_HISTORY_IN_LIST
 } from "./mutations.type.js";
-import jwtService from "@/common/jwt.service";
 
 const historiesApi = new HistoriesApi();
 const tagsApi = new TagsApi();

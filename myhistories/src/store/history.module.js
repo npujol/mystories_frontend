@@ -33,7 +33,7 @@ const initialState = {
     title: "",
     description: "",
     body: "",
-    tagList: []
+    tags: []
   },
   comments: []
 };
@@ -117,12 +117,12 @@ export const mutations = {
     state.comments = comments;
   },
   [TAG_ADD](state, tag) {
-    if (state.history.tagList.indexOf(tag) === -1) {
-      state.history.tagList = state.history.tagList.concat([tag]);
+    if (state.history.tags.indexOf(tag) === -1) {
+      state.history.tags = state.history.tags.concat([tag]);
     }
   },
   [TAG_REMOVE](state, tag) {
-    state.history.tagList = state.history.tagList.filter(t => t !== tag);
+    state.history.tags = state.history.tags.filter(t => t !== tag);
   },
   [RESET_STATE]() {
     for (const f in state) {
