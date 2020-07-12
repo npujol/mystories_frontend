@@ -15,6 +15,7 @@
 
 import {ApiClient} from '../ApiClient';
 import {Profile} from './Profile';
+import {Tag} from './Tag';
 
 /**
  * The History model module.
@@ -58,8 +59,8 @@ export class History {
         obj.favoritesCount = ApiClient.convertToType(data['favoritesCount'], 'String');
       if (data.hasOwnProperty('slug'))
         obj.slug = ApiClient.convertToType(data['slug'], 'String');
-      if (data.hasOwnProperty('tagList'))
-        obj.tagList = ApiClient.convertToType(data['tagList'], ['String']);
+      if (data.hasOwnProperty('tags'))
+        obj.tags = ApiClient.convertToType(data['tags'], [Tag]);
       if (data.hasOwnProperty('title'))
         obj.title = ApiClient.convertToType(data['title'], 'String');
       if (data.hasOwnProperty('updatedAt'))
@@ -105,9 +106,9 @@ History.prototype.favoritesCount = undefined;
 History.prototype.slug = undefined;
 
 /**
- * @member {Array.<String>} tagList
+ * @member {Array.<module:model/Tag>} tags
  */
-History.prototype.tagList = undefined;
+History.prototype.tags = undefined;
 
 /**
  * @member {String} title
