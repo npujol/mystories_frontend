@@ -1,86 +1,91 @@
 <!-- @format -->
 
 <template>
-  <b-navbar>
-    <template v-if="isAuthenticated">
-      <template slot="start">
-        <b-navbar-item append-to-body>
-          <router-link exact :to="{ name: 'home' }">
-            <a><b-icon icon="home"></b-icon></a>
-          </router-link>
-        </b-navbar-item>
+  <div>
+    <v-navigation-drawer v-model="drawer" app clipped>
+      <v-list dense>
+        <v-list-item link>
+          <v-list-item-action>
+            <v-icon>mdi-view-dashboard</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title @click="linkTo('home', {})">
+              Dashboard
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <template v-if="isAuthenticated">
+          <v-list-item link>
+            <v-list-item-action>
+              <v-icon>mdi-account-circle</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title @click="linkTo('settings', {})"
+                >Profile
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item link>
+            <v-list-item-action>
+              <v-icon>mdi-pencil</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title
+                @click="
+                  linkTo('history-edit', { username: currentUser.username })
+                "
+              >
+                New History
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item link>
+            <v-list-item-action>
+              <v-icon>mdi-heart</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title @click="linkTo('profile', {})">
+                Favorited Histories
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item link>
+            <v-list-item-action>
+              <v-icon>mdi-format-list-bulleted-square</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title @click="linkTo('profile-favorites')">
+                My Histories
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </template>
+      </v-list>
+    </v-navigation-drawer>
+    <v-app-bar app clipped-left>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title>
+        <v-btn color="primary" fab small dark @click="linkTo('home', {})">
+          <v-icon>mdi-home</v-icon>
+        </v-btn>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <template v-if="!isAuthenticated">
+        <v-btn rounded color="primary" dark @click="linkTo('register', {})">
+          Sign up
+        </v-btn>
+        <hr />
+        <v-btn rounded color="normal" dark @click="linkTo('login', {})">
+          Log in
+        </v-btn>
       </template>
-      <template slot="end">
-        <b-navbar-dropdown label="Menu" append-to-body aria-role="menu">
-          <b-navbar-item append-to-body aria-role="menu">
-            <router-link exact :to="{ name: 'settings' }">
-              <a><b-icon icon="account"></b-icon> &nbsp;Profile</a>
-            </router-link>
-          </b-navbar-item>
-          <hr class="dropdown-divider" />
-          <b-navbar-item
-            append-to-body
-            aria-role="menu"
-            v-if="currentUser.username"
-          >
-            <router-link
-              exact
-              :to="{
-                name: 'profile',
-                params: { username: currentUser.username }
-              }"
-            >
-              <a><b-icon icon="home"></b-icon> My histories </a>
-            </router-link>
-          </b-navbar-item>
-          <b-navbar-item append-to-body aria-role="menu">
-            <router-link
-              exact
-              :to="{
-                name: 'profile-favorites',
-                params: { username: currentUser.username }
-              }"
-            >
-              <a><b-icon icon="home"></b-icon> &nbsp;Favorited Histories</a>
-            </router-link>
-          </b-navbar-item>
-          <b-navbar-item append-to-body aria-role="menu">
-            <router-link :to="{ name: 'history-edit' }">
-              <a><b-icon icon="home"></b-icon> &nbsp;New history</a>
-            </router-link>
-          </b-navbar-item>
-          <b-navbar-item append-to-body aria-role="menu" @click="logout">
-            <a><b-icon icon="home"></b-icon> &nbsp;Logout</a>
-          </b-navbar-item>
-        </b-navbar-dropdown>
+      <template v-else>
+        <v-btn color="primary" fab small dark @click="logout()">
+          <v-icon>mdi-logout</v-icon>
+        </v-btn>
       </template>
-    </template>
-    <template v-else>
-      <template slot="start">
-        <b-navbar-item append-to-body>
-          <router-link exact :to="{ name: 'home' }">
-            <a><b-icon icon="home"></b-icon></a>
-          </router-link>
-        </b-navbar-item>
-      </template>
-      <template slot="end">
-        <b-navbar-item tag="div">
-          <div class="buttons">
-            <router-link exact :to="{ name: 'register' }">
-              <a class="button is-primary">
-                <strong>Sign up</strong>
-              </a>
-            </router-link>
-            <router-link exact :to="{ name: 'login' }">
-              <a class="button is-light">
-                <strong>Log in</strong>
-              </a>
-            </router-link>
-          </div>
-        </b-navbar-item>
-      </template>
-    </template>
-  </b-navbar>
+    </v-app-bar>
+  </div>
 </template>
 
 <script>
@@ -89,6 +94,9 @@ import { LOGOUT } from "../store/actions.type.js";
 
 export default {
   name: "RwvHeader",
+  data: () => ({
+    drawer: null
+  }),
   computed: {
     ...mapGetters(["currentUser", "isAuthenticated"])
   },
@@ -97,6 +105,12 @@ export default {
       this.$store.dispatch(LOGOUT).then(() => {
         this.$router.push({ name: "home" });
       });
+    },
+    linkTo(route, params) {
+      if (params.length === 0) {
+        this.$router.push({ name: route });
+      }
+      this.$router.push({ name: route, params: params });
     }
   }
 };
