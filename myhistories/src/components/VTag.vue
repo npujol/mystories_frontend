@@ -1,6 +1,6 @@
 <template>
   <router-link :to="homeRoute">
-    <b-tag type="is-primary" attached> {{ tag }} </b-tag>
+    <a type="is-primary" attached> {{ tag }} </a>
   </router-link>
 </template>
 

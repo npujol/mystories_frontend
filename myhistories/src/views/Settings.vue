@@ -6,7 +6,7 @@
 
       <form @submit.prevent="updateSettings()">
         <section>
-          <b-field class="file">
+          <field class="file">
             <div
               class="image-preview"
               v-if="currentUser.profile.image.length > 0"
@@ -16,52 +16,51 @@
               </figure>
             </div>
             <hr />
-            <!-- <b-upload
+            <!-- <upload
               v-model="currentUser.profile.image"
               class="button is-primary"
               accept="image/*"
             >
-              <b-icon icon="upload"></b-icon>
-            </b-upload> -->
-            <b-input
+              <icon icon="upload"></icon>
+            </upload> -->
+            <input
               type="file"
               icon="upload"
               class="button is-primary"
               @change.native="previewImage"
               accept="image/*"
             />
-          </b-field>
-          <b-field label="Email">
-            <b-input
+          </field>
+          <field label="Email">
+            <input
               type="email"
               v-model="currentUser.email"
               placeholder="Email"
               maxlength="30"
-            >
-            </b-input>
-          </b-field>
+            />
+          </field>
 
-          <b-field label="Username">
-            <b-input
+          <field label="Username">
+            <input
               v-model="currentUser.profile.username"
               placeholder="Username"
               maxlength="30"
-            ></b-input>
-          </b-field>
+            />
+          </field>
 
-          <b-field label="Bio">
-            <b-input
+          <field label="Bio">
+            <input
               maxlength="200"
               type="textarea"
               v-model="currentUser.profile.bio"
               placeholder="Short bio about you"
-            ></b-input>
-          </b-field>
-          <b-field>
-            <b-button native-type="submit" class="button is-primary">
+            />
+          </field>
+          <field>
+            <button native-type="submit" class="button is-primary">
               Update
-            </b-button>
-          </b-field>
+            </button>
+          </field>
         </section>
       </form>
     </div>

@@ -1,7 +1,7 @@
 <template>
-  <b-taglist>
+  <div>
     <RwvTag v-for="tag in tags" :tag="tag.tag" :key="tag.pk"> </RwvTag>
-  </b-taglist>
+  </div>
 </template>
 
 <script>

@@ -39,7 +39,7 @@
       :history="history"
       :canModify="isCurrentUser()"
     ></rwv-history-actions>
-    <b-button
+    <button
       v-else
       @click="toggleFavorite"
       :class="{
@@ -48,7 +48,7 @@
       }"
     >
       <span class="counter"> {{ history.favoritesCount }} </span>
-    </b-button>
+    </button>
   </div>
 </template>
 

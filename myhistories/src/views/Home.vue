@@ -10,37 +10,35 @@
         </p>
       </div>
       <div>
-        <b-tabs type="is-boxed is-centered">
-          <b-tab-item v-if="isAuthenticated">
+        <v-tabs type="is-boxed is-centered">
+          <v-tab-item v-if="isAuthenticated">
             <template slot="header">
               <router-link :to="{ name: 'home-my-feed' }">
-                <b-icon icon="information-outline"></b-icon>
+                <icon icon="information-outline"></icon>
                 Your Feed
               </router-link>
             </template>
-          </b-tab-item>
-          <b-tab-item>
+          </v-tab-item>
+          <v-tab-item>
             <template slot="header">
               <router-link :to="{ name: 'home' }" exact>
-                <b-icon icon="home"></b-icon>
+                <icon icon="home"></icon>
                 Global Feed
               </router-link>
             </template>
-          </b-tab-item>
-          <b-tab-item v-if="tag">
+          </v-tab-item>
+          <v-tab-item v-if="tag">
             <template slot="header">
               <router-link :to="{ name: 'home-tag', params: { tag } }">
-                <b-icon icon="tag"></b-icon>
+                <icon icon="tag"></icon>
                 {{ tag }}
               </router-link>
             </template>
-          </b-tab-item>
-        </b-tabs>
+          </v-tab-item>
+        </v-tabs>
       </div>
       <div class="tags">
-        <b-taglist>
-          <RwvTag v-for="tag in tags" :tag="tag.tag" :key="tag.pk"> </RwvTag>
-        </b-taglist>
+        <RwvTag v-for="tag in tags" :tag="tag.tag" :key="tag.pk"> </RwvTag>
       </div>
     </div>
     <router-view></router-view>
