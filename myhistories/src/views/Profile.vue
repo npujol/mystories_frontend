@@ -58,7 +58,10 @@
                   class="nav-link"
                   active-class="active"
                   exact
-                  :to="{ name: 'profile-favorites' }"
+                  :to="{
+                    name: 'profile-favorites',
+                    params: { username: currentUser.username }
+                  }"
                 >
                   Favorited Histories
                 </router-link>

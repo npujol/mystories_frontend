@@ -1,7 +1,7 @@
 <!-- @format -->
 
 <template>
-  <b-navbar spaced="true">
+  <b-navbar>
     <template v-if="isAuthenticated">
       <template slot="start">
         <b-navbar-item append-to-body>
@@ -12,6 +12,12 @@
       </template>
       <template slot="end">
         <b-navbar-dropdown label="Menu" append-to-body aria-role="menu">
+          <b-navbar-item append-to-body aria-role="menu">
+            <router-link exact :to="{ name: 'settings' }">
+              <a><b-icon icon="account"></b-icon> &nbsp;Profile</a>
+            </router-link>
+          </b-navbar-item>
+          <hr class="dropdown-divider" />
           <b-navbar-item
             append-to-body
             aria-role="menu"
@@ -24,24 +30,27 @@
                 params: { username: currentUser.username }
               }"
             >
-              <a><b-icon icon="home"></b-icon> {{ currentUser.username }} </a>
+              <a><b-icon icon="home"></b-icon> My histories </a>
             </router-link>
           </b-navbar-item>
-          <hr class="dropdown-divider" />
           <b-navbar-item append-to-body aria-role="menu">
-            <router-link exact :to="{ name: 'home' }">
-              <a><b-icon icon="home"></b-icon> &nbsp;Home</a>
+            <router-link
+              exact
+              :to="{
+                name: 'profile-favorites',
+                params: { username: currentUser.username }
+              }"
+            >
+              <a><b-icon icon="home"></b-icon> &nbsp;Favorited Histories</a>
             </router-link>
           </b-navbar-item>
           <b-navbar-item append-to-body aria-role="menu">
             <router-link :to="{ name: 'history-edit' }">
-              <a><b-icon icon="home"></b-icon> &nbsp;New History</a>
+              <a><b-icon icon="home"></b-icon> &nbsp;New history</a>
             </router-link>
           </b-navbar-item>
-          <b-navbar-item append-to-body aria-role="menu">
-            <router-link exact :to="{ name: 'settings' }">
-              <a><b-icon icon="home"></b-icon> &nbsp;Settings</a>
-            </router-link>
+          <b-navbar-item append-to-body aria-role="menu" @click="logout">
+            <a><b-icon icon="home"></b-icon> &nbsp;Logout</a>
           </b-navbar-item>
         </b-navbar-dropdown>
       </template>
@@ -76,11 +85,19 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { LOGOUT } from "../store/actions.type.js";
 
 export default {
   name: "RwvHeader",
   computed: {
     ...mapGetters(["currentUser", "isAuthenticated"])
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch(LOGOUT).then(() => {
+        this.$router.push({ name: "home" });
+      });
+    }
   }
 };
 </script>

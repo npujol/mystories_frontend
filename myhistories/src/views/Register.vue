@@ -37,7 +37,7 @@
           <b-button native-type="submit" class="button is-primary">
             Sign up
           </b-button>
-          <p class="text-xs-center">
+          <p>
             <router-link :to="{ name: 'login' }">
               Have an account?
             </router-link>

@@ -19,7 +19,7 @@
                   <img class="is-rounded" :src="history.author.image" />
                 </router-link>
               </figure>
-              <TagList :tags="history.tagList" />
+              <TagList :tags="history.tags" />
             </div>
             <RwvHistoryMeta isPreview :history="history" />
           </div>
@@ -41,16 +41,6 @@ export default {
   },
   props: {
     history: { type: Object, required: true }
-  },
-  computed: {
-    historyLink() {
-      return {
-        name: "history",
-        params: {
-          slug: this.history.slug
-        }
-      };
-    }
   }
 };
 </script>

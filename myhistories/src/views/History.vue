@@ -11,11 +11,8 @@
         <div class="col-xs-12">
           <div v-html="parseMarkdown(history.body)"></div>
           <ul class="tag-list">
-            <li v-for="(tag, index) of history.tagList" :key="tag + index">
-              <RwvTag
-                :tag="tag"
-                className="tag-default tag-pill tag-outline"
-              ></RwvTag>
+            <li v-for="tag of history.tags" :key="tag.tag + tag.pk">
+              <RwvTag :tag="tag"></RwvTag>
             </li>
           </ul>
         </div>

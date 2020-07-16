@@ -9,7 +9,6 @@
               <fieldset class="form-group">
                 <input
                   type="text"
-                  class="form-control form-control-lg"
                   v-model="history.title"
                   placeholder="History Title"
                 />
@@ -42,11 +41,11 @@
                 <div class="tag-list">
                   <span
                     class="tag-default tag-pill"
-                    v-for="(tag, index) of history.tagList"
-                    :key="tag + index"
+                    v-for="tag of history.tags"
+                    :key="tag.pk"
                   >
-                    <i class="ion-close-round" @click="removeTag(tag)"> </i>
-                    {{ tag }}
+                    <i class="ion-close-round" @click="removeTag(tag.tag)"> </i>
+                    {{ tag.tag }}
                   </span>
                 </div>
               </fieldset>

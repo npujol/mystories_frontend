@@ -1,60 +1,50 @@
 <template>
-  <div class="home-page">
-    <div class="banner">
+  <section class="hero is-light">
+    <div class="hero-body">
       <div class="container">
-        <h1 class="logo-font">Histories</h1>
-        <p>A place to share your Histories.</p>
+        <p class="title">
+          Histories
+        </p>
+        <p class="subtitle">
+          A place to shared yours histories.
+        </p>
+      </div>
+      <div>
+        <b-tabs type="is-boxed is-centered">
+          <b-tab-item v-if="isAuthenticated">
+            <template slot="header">
+              <router-link :to="{ name: 'home-my-feed' }">
+                <b-icon icon="information-outline"></b-icon>
+                Your Feed
+              </router-link>
+            </template>
+          </b-tab-item>
+          <b-tab-item>
+            <template slot="header">
+              <router-link :to="{ name: 'home' }" exact>
+                <b-icon icon="home"></b-icon>
+                Global Feed
+              </router-link>
+            </template>
+          </b-tab-item>
+          <b-tab-item v-if="tag">
+            <template slot="header">
+              <router-link :to="{ name: 'home-tag', params: { tag } }">
+                <b-icon icon="tag"></b-icon>
+                {{ tag }}
+              </router-link>
+            </template>
+          </b-tab-item>
+        </b-tabs>
+      </div>
+      <div class="tags">
+        <b-taglist>
+          <RwvTag v-for="tag in tags" :tag="tag.tag" :key="tag.pk"> </RwvTag>
+        </b-taglist>
       </div>
     </div>
-    <div class="container page">
-      <div class="row">
-        <div class="col-md-9">
-          <div class="feed-toggle">
-            <ul class="nav nav-pills outline-active">
-              <li v-if="isAuthenticated" class="nav-item">
-                <router-link
-                  :to="{ name: 'home-my-feed' }"
-                  class="nav-link"
-                  active-class="active"
-                >
-                  Your Feed
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link
-                  :to="{ name: 'home' }"
-                  exact
-                  class="nav-link"
-                  active-class="active"
-                >
-                  Global Feed
-                </router-link>
-              </li>
-              <li class="nav-item" v-if="tag">
-                <router-link
-                  :to="{ name: 'home-tag', params: { tag } }"
-                  class="nav-link"
-                  active-class="active"
-                >
-                  <i class="ion-pound"></i> {{ tag }}
-                </router-link>
-              </li>
-            </ul>
-          </div>
-          <router-view></router-view>
-        </div>
-        <div class="col-md-3">
-          <div class="sidebar">
-            <p>Popular Tags</p>
-            <div class="tag-list">
-              <RwvTag v-for="(tag, index) in tags" :tag="tag.tag" :key="index">
-              </RwvTag>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <router-view></router-view>
+  </section>
 </template>
 
 <script>

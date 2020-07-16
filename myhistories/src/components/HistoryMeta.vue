@@ -5,7 +5,17 @@
     <div class="info is-size-5">
       <div class="title">
         <h2 class="has-text-black is-family-secondary has-text-weight-bold">
-          {{ history.title }}
+          <router-link
+            :to="{
+              name: 'history',
+              params: {
+                slug: history.slug
+              }
+            }"
+            class="preview-link"
+          >
+            {{ history.title }}
+          </router-link>
         </h2>
       </div>
 
@@ -16,15 +26,13 @@
         }"
         class="author"
       >
-        <h2>Author: {{ history.author.username }}</h2>
-      </router-link>
+        <p>Author: {{ history.author.username }}</p>
+        <p></p
+      ></router-link>
 
-      <h3>{{ history.createdAt | date }}</h3>
+      <p>{{ history.createdAt | date }}</p>
     </div>
     <p v-text="history.description" />
-    <router-link :to="historyLink" class="preview-link">
-      <span>Read more...</span>
-    </router-link>
 
     <rwv-history-actions
       v-if="actions"

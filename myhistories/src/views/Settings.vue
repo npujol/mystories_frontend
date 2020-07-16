@@ -1,57 +1,71 @@
 <template>
-  <div class="settings-page">
-    <div class="container page">
-      <div class="row">
-        <div class="col-md-6 offset-md-3 col-xs-12">
-          <h1 class="text-xs-center">Your Settings</h1>
-          <form @submit.prevent="updateSettings()">
-            <fieldset>
-              <fieldset class="form-group">
-                <input
-                  class="form-control"
-                  type="text"
-                  v-model="currentUser.profile.image"
-                  placeholder="URL of profile picture"
-                />
-              </fieldset>
-              <fieldset class="form-group">
-                <input
-                  class="form-control form-control-lg"
-                  type="text"
-                  v-model="currentUser.username"
-                  placeholder="Your username"
-                />
-              </fieldset>
-              <fieldset class="form-group">
-                <textarea
-                  class="form-control form-control-lg"
-                  rows="8"
-                  v-model="currentUser.profile.bio"
-                  placeholder="Short bio about you"
-                ></textarea>
-              </fieldset>
-              <fieldset class="form-group">
-                <input
-                  class="form-control form-control-lg"
-                  type="text"
-                  v-model="currentUser.email"
-                  placeholder="Email"
-                />
-              </fieldset>
-              <button class="btn btn-lg btn-primary pull-xs-right">
-                Update Settings
-              </button>
-            </fieldset>
-          </form>
-          <!-- Line break for logout button -->
-          <hr />
-          <button @click="logout" class="btn btn-outline-danger">
-            Or click here to logout.
-          </button>
-        </div>
-      </div>
+  <section>
+    <div>
+      <h1>Your Settings</h1>
+      <hr />
+
+      <form @submit.prevent="updateSettings()">
+        <section>
+          <b-field class="file">
+            <div
+              class="image-preview"
+              v-if="currentUser.profile.image.length > 0"
+            >
+              <figure class="image is-128x128">
+                <img class="is-rounded" :src="currentUser.profile.image" />
+              </figure>
+            </div>
+            <hr />
+            <!-- <b-upload
+              v-model="currentUser.profile.image"
+              class="button is-primary"
+              accept="image/*"
+            >
+              <b-icon icon="upload"></b-icon>
+            </b-upload> -->
+            <b-input
+              type="file"
+              icon="upload"
+              class="button is-primary"
+              @change.native="previewImage"
+              accept="image/*"
+            />
+          </b-field>
+          <b-field label="Email">
+            <b-input
+              type="email"
+              v-model="currentUser.email"
+              placeholder="Email"
+              maxlength="30"
+            >
+            </b-input>
+          </b-field>
+
+          <b-field label="Username">
+            <b-input
+              v-model="currentUser.profile.username"
+              placeholder="Username"
+              maxlength="30"
+            ></b-input>
+          </b-field>
+
+          <b-field label="Bio">
+            <b-input
+              maxlength="200"
+              type="textarea"
+              v-model="currentUser.profile.bio"
+              placeholder="Short bio about you"
+            ></b-input>
+          </b-field>
+          <b-field>
+            <b-button native-type="submit" class="button is-primary">
+              Update
+            </b-button>
+          </b-field>
+        </section>
+      </form>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -66,7 +80,6 @@ export default {
   methods: {
     updateSettings() {
       this.$store.dispatch(UPDATE_USER, this.currentUser).then(() => {
-        // #todo, nice toast and no redirect
         this.$router.push({ name: "home" });
       });
     },
@@ -74,6 +87,16 @@ export default {
       this.$store.dispatch(LOGOUT).then(() => {
         this.$router.push({ name: "home" });
       });
+    },
+    previewImage(event) {
+      var input = event.target;
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = e => {
+          this.currentUser.profile.image = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
     }
   }
 };
