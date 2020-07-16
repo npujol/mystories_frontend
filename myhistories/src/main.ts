@@ -4,8 +4,7 @@ import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
 
-import Buefy from 'buefy'
-import 'buefy/dist/buefy.css'
+import vuetify from './plugins/vuetify.js'
 
 
 import { CHECK_AUTH } from "./store/actions.type.js";
@@ -16,8 +15,6 @@ Vue.config.productionTip = false;
 Vue.filter("date", DateFilter);
 Vue.filter("error", ErrorFilter);
 
-Vue.use(Buefy);
-
 
 // Ensure we checked auth before each page load.
 router.beforeEach((to, from, next) =>
@@ -25,6 +22,7 @@ router.beforeEach((to, from, next) =>
 );
 
 new Vue({
+  vuetify,
   router,
   store,
   render: h => h(App)
