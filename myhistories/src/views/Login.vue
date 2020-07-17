@@ -1,9 +1,5 @@
 <template>
   <div>
-    <!-- <ul v-if="errors" class="error-messages">
-      <li v-for="(v, k) in errors" :key="k">{{ k }} {{ v | error }}</li>
-    </ul> -->
-
     <v-row align="center" justify="center">
       <v-col cols="12">
         <v-card class="elevation-12">
@@ -13,17 +9,22 @@
               <v-text-field
                 label="Email"
                 name="Email"
-                prepend-icon="mdi-account"
+                prepend-icon="mdi-mail"
+                :rules="[rules.email, rules.length(5)]"
                 type="text"
+                required
+                filled
                 v-model="email"
               ></v-text-field>
-
               <v-text-field
                 id="password"
                 label="Password"
                 name="password"
                 prepend-icon="mdi-lock"
                 type="password"
+                :rules="[rules.password, rules.length(6)]"
+                required
+                filled
                 v-model="password"
               ></v-text-field>
             </v-form>
@@ -35,6 +36,7 @@
             >
           </v-card-actions>
         </v-card>
+        <v-spacer></v-spacer>
         <p class="text-xs-center">
           <router-link :to="{ name: 'register' }">
             Need an account?
@@ -42,31 +44,6 @@
         </p>
       </v-col>
     </v-row>
-    <!-- <v-form>
-      <div class="modal-card" style="width:300px;">
-        <section class="modal-card-body">
-          <field label="Email">
-            <input
-              type="email"
-              v-model="email"
-              placeholder="Email"
-              maxlength="30"
-            />
-          </field>
-          <field label="Password">
-            <input
-              type="password"
-              v-model="password"
-              placeholder="Password"
-              password-reveal
-            />
-          </field>
-          <button native-type="submit" class="button is-primary">
-            Sign in
-          </button>
-        </section>
-      </div>
-    </v-form> -->
   </div>
 </template>
 
@@ -79,7 +56,20 @@ export default {
   data() {
     return {
       email: null,
-      password: null
+      password: null,
+      valid: false,
+      rules: {
+        email: v => (v || "").match(/@/) || "Please enter a valid email",
+        length: len => v =>
+          (v || "").length >= len ||
+          `Invalid character length, required ${len}`,
+        password: v =>
+          (v || "").match(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/
+          ) ||
+          "Password must contain an upper case letter, a numeric character, and a special character",
+        required: v => !!v || "This field is required"
+      }
     };
   },
   methods: {

@@ -1,50 +1,56 @@
 <template>
   <div>
-    <ul v-if="errors" class="error-messages">
-      <li v-for="(v, k) in errors" :key="k">{{ k }} {{ v | error }}</li>
-    </ul>
-
-    <form @submit.prevent="onSubmit">
-      <div class="modal-card" style="width:300px;">
-        <section class="modal-card-body">
-          <b-field label="Email">
-            <b-input
-              type="email"
-              v-model="email"
-              placeholder="Email"
-              maxlength="30"
-            >
-            </b-input>
-          </b-field>
-
-          <b-field label="Username">
-            <b-input
-              v-model="username"
-              placeholder="Username"
-              maxlength="30"
-            ></b-input>
-          </b-field>
-
-          <b-field label="Password">
-            <b-input
-              type="password"
-              v-model="password"
-              placeholder="Password"
-              password-reveal
-            >
-            </b-input>
-          </b-field>
-          <b-button native-type="submit" class="button is-primary">
-            Sign up
-          </b-button>
-          <p>
-            <router-link :to="{ name: 'login' }">
-              Have an account?
-            </router-link>
-          </p>
-        </section>
-      </div>
-    </form>
+    <v-row align="center" justify="center">
+      <v-col cols="12">
+        <v-card class="elevation-12">
+          <v-card-title class="headline" dark>Login</v-card-title>
+          <v-card-text>
+            <v-form>
+              <v-text-field
+                label="Username"
+                name="username"
+                prepend-icon="mdi-account"
+                :rules="rules.length(10)"
+                type="text"
+                required
+                v-model="username"
+              ></v-text-field>
+              <v-text-field
+                label="Email"
+                name="Email"
+                prepend-icon="mdi-mail"
+                :rules="[rules.email, rules.length(20)]"
+                type="text"
+                required
+                filled
+                v-model="email"
+              ></v-text-field>
+              <v-text-field
+                id="password"
+                label="Password"
+                name="password"
+                prepend-icon="mdi-lock"
+                type="password"
+                :rules="[rules.password, rules.length(6)]"
+                required
+                filled
+                v-model="password"
+              ></v-text-field>
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn class="mr-4" @click="onSubmit()">Sign up</v-btn>
+          </v-card-actions>
+        </v-card>
+        <v-spacer></v-spacer>
+        <p>
+          <router-link :to="{ name: 'login' }">
+            Have an account?
+          </router-link>
+        </p>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -58,7 +64,20 @@ export default {
     return {
       username: "",
       email: "",
-      password: ""
+      password: "",
+      valid: false,
+      rules: {
+        email: v => (v || "").match(/@/) || "Please enter a valid email",
+        length: len => v =>
+          (v || "").length >= len ||
+          `Invalid character length, required ${len}`,
+        password: v =>
+          (v || "").match(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/
+          ) ||
+          "Password must contain an upper case letter, a numeric character, and a special character",
+        required: v => !!v || "This field is required"
+      }
     };
   },
   computed: {
