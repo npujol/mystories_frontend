@@ -1,7 +1,8 @@
 <template>
-  <router-link :to="homeRoute">
+  <v-chip draggable @click="linkTo('home', { tag: tag })"> {{ tag }} </v-chip>
+  <!-- <router-link :to="homeRoute">
     <a type="is-primary" attached> {{ tag }} </a>
-  </router-link>
+  </router-link> -->
 </template>
 
 <script>
@@ -14,9 +15,17 @@ export default {
       default: () => ""
     }
   },
-  computed: {
-    homeRoute() {
-      return { name: "home-tag", params: { tag: this.tag } };
+  methods: {
+    logout() {
+      this.$store.dispatch(LOGOUT).then(() => {
+        this.$router.push({ name: "home" });
+      });
+    },
+    linkTo(route, params) {
+      if (params.length === 0) {
+        this.$router.push({ name: route });
+      }
+      this.$router.push({ name: route, params: params });
     }
   }
 };
