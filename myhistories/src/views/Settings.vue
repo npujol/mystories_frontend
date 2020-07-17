@@ -1,7 +1,6 @@
 <template>
   <v-card class="elevation-12 d-flex pa-2">
     <v-card-title class="headline" dark>Your Settings</v-card-title>
-
     <v-card-text>
       <v-form>
         <v-img height="200" width="200" :src="currentUser.profile.image">
@@ -17,7 +16,6 @@
           @change="previewImage"
         >
         </v-file-input>
-
         <v-text-field
           label="Username"
           name="username"

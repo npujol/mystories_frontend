@@ -1,73 +1,63 @@
 <template>
-  <div class="editor-page">
-    <div class="container page">
-      <div class="row">
-        <div class="col-md-10 offset-md-1 col-xs-12">
-          <RwvListErrors :errors="errors" />
-          <form @submit.prevent="onPublish(history.slug)">
-            <fieldset :disabled="inProgress">
-              <fieldset class="form-group">
-                <input
-                  type="text"
-                  v-model="history.title"
-                  placeholder="History Title"
-                />
-              </fieldset>
-              <fieldset class="form-group">
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="history.description"
-                  placeholder="What's this history about?"
-                />
-              </fieldset>
-              <fieldset class="form-group">
-                <textarea
-                  class="form-control"
-                  rows="8"
-                  v-model="history.body"
-                  placeholder="Write your history (in markdown)"
-                >
-                </textarea>
-              </fieldset>
-              <fieldset class="form-group">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter tags"
-                  v-model="tagInput"
-                  @keypress.enter.prevent="addTag(tagInput)"
-                />
-                <div class="tag-list">
-                  <span
-                    class="tag-default tag-pill"
-                    v-for="tag of history.tags"
-                    :key="tag.pk"
-                  >
-                    <i class="ion-close-round" @click="removeTag(tag.tag)"> </i>
-                    {{ tag.tag }}
-                  </span>
-                </div>
-              </fieldset>
-            </fieldset>
-            <button
-              :disabled="inProgress"
-              class="btn btn-lg pull-xs-right btn-primary"
-              type="submit"
+  <v-card class="elevation-12 d-flex pa-2">
+    <v-card-title class="headline" dark>New History</v-card-title>
+    <v-card-text>
+      <v-form>
+        <v-text-field
+          label="Title"
+          name="title"
+          prepend-icon="mdi-pencil"
+          type="text"
+          v-model="history.title"
+          placeholder="Title"
+        ></v-text-field>
+        <v-textarea
+          prepend-icon="mdi-pencil"
+          label="Description"
+          rows="5"
+          v-model="history.description"
+        ></v-textarea>
+        <v-textarea
+          label="Body"
+          prepend-icon="mdi-pencil"
+          rows="5"
+          v-model="history.body"
+        ></v-textarea>
+        <v-layout wrap>
+          <v-flex xs12>
+            <v-combobox
+              multiple
+              v-model="history.tags"
+              label="Tags"
+              append-icon
+              chips
+              deletable-chips
+              class="tag-input"
+              :search-input.sync="search"
+              @keyup.tab="updateTags"
+              @paste="updateTags"
             >
-              Publish History
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+            </v-combobox>
+          </v-flex>
+        </v-layout>
+      </v-form>
+    </v-card-text>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn
+        class="mr-4"
+        :disabled="inProgress"
+        @click="onPublish(history.slug)"
+        >Aceptar</v-btn
+      >
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import store from "@/store";
-import RwvListErrors from "@/components/ListErrors.vue";
+// import RwvListErrors from "@/components/ListErrors.vue";
 import {
   HISTORY_PUBLISH,
   HISTORY_EDIT,
@@ -79,7 +69,7 @@ import {
 
 export default {
   name: "RwvHistoryEdit",
-  components: { RwvListErrors },
+  // components: { RwvListErrors },
   props: {
     previousHistory: {
       type: Object,
@@ -111,9 +101,12 @@ export default {
   },
   data() {
     return {
-      tagInput: null,
       inProgress: false,
-      errors: {}
+      errors: {},
+      valid: false,
+      select: ["add-tags-with", "enter", "tab", "paste"],
+      items: [],
+      search: "" //sync search
     };
   },
   computed: {
@@ -137,12 +130,13 @@ export default {
           this.errors = response.errors;
         });
     },
-    removeTag(tag) {
-      this.$store.dispatch(HISTORY_EDIT_REMOVE_TAG, tag);
-    },
-    addTag(tag) {
-      this.$store.dispatch(HISTORY_EDIT_ADD_TAG, tag);
-      this.tagInput = null;
+    updateTags() {
+      this.$nextTick(() => {
+        this.select.push(...this.search.split(","));
+        this.$nextTick(() => {
+          this.search = "";
+        });
+      });
     }
   }
 };
