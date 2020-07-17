@@ -3,7 +3,7 @@
     <v-row align="center" justify="center">
       <v-col cols="12">
         <v-card class="elevation-12">
-          <v-card-title class="headline" dark>Login</v-card-title>
+          <v-card-title class="headline" dark>Register</v-card-title>
           <v-card-text>
             <v-form>
               <v-text-field
@@ -42,13 +42,15 @@
             <v-spacer></v-spacer>
             <v-btn class="mr-4" @click="onSubmit()">Sign up</v-btn>
           </v-card-actions>
+          <v-spacer></v-spacer>
+          <v-card-text>
+            <p class="text-xs-center">
+              <router-link :to="{ name: 'register' }">
+                Need an account?
+              </router-link>
+            </p></v-card-text
+          >
         </v-card>
-        <v-spacer></v-spacer>
-        <p>
-          <router-link :to="{ name: 'login' }">
-            Have an account?
-          </router-link>
-        </p>
       </v-col>
     </v-row>
   </div>

@@ -35,13 +35,15 @@
               >Sign in</v-btn
             >
           </v-card-actions>
+          <v-spacer></v-spacer>
+          <v-card-text>
+            <p class="text-xs-center">
+              <router-link :to="{ name: 'register' }">
+                Have an account?
+              </router-link>
+            </p></v-card-text
+          >
         </v-card>
-        <v-spacer></v-spacer>
-        <p class="text-xs-center">
-          <router-link :to="{ name: 'register' }">
-            Need an account?
-          </router-link>
-        </p>
       </v-col>
     </v-row>
   </div>
