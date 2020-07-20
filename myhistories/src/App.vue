@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <RwvHeader />
-
     <v-main>
       <v-container class="fill-height" fluid>
         <v-row align="center" justify="center">
@@ -18,8 +17,8 @@
         </v-row>
         <router-view></router-view>
       </v-container>
-      <RwvFooter />
     </v-main>
+    <RwvFooter />
   </div>
 </template>
 

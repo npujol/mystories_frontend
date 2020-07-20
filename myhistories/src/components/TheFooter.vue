@@ -1,18 +1,36 @@
 <template>
-  <v-footer class="footer">
-    <span>&copy; {{ new Date().getFullYear() }}</span>
-    <hr />
-    <p>
-      <router-link class="logo-font" :to="{ name: 'home', params: {} }"
-        >Histories</router-link
-      >
-      by <a href="https://github.com/npujol">Naivy Pujol Méndez</a>
-    </p>
+  <v-footer dark padless>
+    <v-card class="flex" flat tile>
+      <v-card-title class="teal">
+        <strong class="subheading"
+          >Get connected with us on social networks!</strong
+        >
+
+        <v-spacer></v-spacer>
+
+        <v-btn v-for="icon in icons" :key="icon" class="mx-4" icon>
+          <v-icon size="24px">{{ icon }}</v-icon>
+        </v-btn>
+      </v-card-title>
+
+      <v-card-text class="py-2 white--text text-center" aling="center">
+        <span
+          >&copy; {{ new Date().getFullYear() }}
+          <router-link class="logo-font" :to="{ name: 'home', params: {} }"
+            >Histories</router-link
+          >
+          by <a href="https://github.com/npujol">Naivy Pujol Méndez</a></span
+        >
+      </v-card-text>
+    </v-card>
   </v-footer>
 </template>
 
 <script>
 export default {
-  name: "RwvFooter"
+  name: "RwvFooter",
+  data: () => ({
+    icons: ["mdi-facebook", "mdi-twitter", "mdi-linkedin", "mdi-instagram"]
+  })
 };
 </script>

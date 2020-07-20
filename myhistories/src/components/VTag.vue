@@ -1,8 +1,5 @@
 <template>
   <v-chip draggable @click="linkTo('home', { tag: tag })"> {{ tag }} </v-chip>
-  <!-- <router-link :to="homeRoute">
-    <a type="is-primary" attached> {{ tag }} </a>
-  </router-link> -->
 </template>
 
 <script>

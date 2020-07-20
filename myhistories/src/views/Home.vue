@@ -1,48 +1,30 @@
 <template>
-  <section class="hero is-light">
-    <div class="hero-body">
-      <div class="container">
-        <p class="title">
-          Histories
-        </p>
-        <p class="subtitle">
-          A place to shared yours histories.
-        </p>
-      </div>
-      <div>
-        <v-tabs type="is-boxed is-centered">
-          <v-tab-item v-if="isAuthenticated">
-            <template slot="header">
-              <router-link :to="{ name: 'home-my-feed' }">
-                <icon icon="information-outline"></icon>
-                Your Feed
-              </router-link>
-            </template>
-          </v-tab-item>
-          <v-tab-item>
-            <template slot="header">
-              <router-link :to="{ name: 'home' }" exact>
-                <icon icon="home"></icon>
-                Global Feed
-              </router-link>
-            </template>
-          </v-tab-item>
-          <v-tab-item v-if="tag">
-            <template slot="header">
-              <router-link :to="{ name: 'home-tag', params: { tag } }">
-                <icon icon="tag"></icon>
-                {{ tag }}
-              </router-link>
-            </template>
-          </v-tab-item>
-        </v-tabs>
-      </div>
-      <div class="tags">
-        <RwvTag v-for="tag in tags" :tag="tag.tag" :key="tag.pk"> </RwvTag>
-      </div>
-    </div>
+  <v-card color="basil" class="mx-auto">
+    <v-card-title class="text-center justify-center">
+      <h1 class="font-weight-bold display-3 basil--text">
+        A place to shared yours histories
+      </h1>
+    </v-card-title>
+
+    <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
+      <v-tab @click="linkTo('home', {})">
+        <v-icon>mdi-home</v-icon>
+        Global Feed
+      </v-tab>
+      <v-tab v-if="isAuthenticated" @click="linkTo('home-my-feed', {})">
+        <v-icon>mdi-account-circle</v-icon>
+        Your Feed
+      </v-tab>
+      <v-tab v-if="tag" @click="linkTo('home-tag', { tag })">
+        <v-icon>mdi-tag</v-icon>
+        {{ tag }}
+      </v-tab>
+    </v-tabs>
+    <v-chip-group column active-class="primary--text">
+      <RwvTag v-for="tag in tags" :tag="tag.tag" :key="tag.pk"> </RwvTag>
+    </v-chip-group>
     <router-view></router-view>
-  </section>
+  </v-card>
 </template>
 
 <script>
@@ -52,6 +34,11 @@ import { FETCH_TAGS } from "../store/actions.type.js";
 
 export default {
   name: "home",
+  data() {
+    return {
+      tab: null
+    };
+  },
   components: {
     RwvTag
   },
@@ -62,6 +49,14 @@ export default {
     ...mapGetters(["isAuthenticated", "tags"]),
     tag() {
       return this.$route.params.tag;
+    }
+  },
+  methods: {
+    linkTo(route, params) {
+      if (params.length === 0) {
+        this.$router.push({ name: route });
+      }
+      this.$router.push({ name: route, params: params });
     }
   }
 };
