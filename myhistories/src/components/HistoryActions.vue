@@ -2,21 +2,21 @@
   <!-- Used when user is also author -->
   <span v-if="canModify">
     <router-link class="btn btn-sm btn-outline-secondary" :to="editHistoryLink">
-      <i class="ion-edit"></i> <span>&nbsp;Edit History</span>
+      <i class="ion-edit"></i> <span>&nbsp;Edit</span>
     </router-link>
     <span>&nbsp;&nbsp;</span>
-    <button class="btn btn-outline-danger btn-sm" @click="deleteHistory">
-      <i class="ion-trash-a"></i> <span>&nbsp;Delete History</span>
-    </button>
+    <v-btn class="btn btn-outline-danger btn-sm" @click="deleteHistory">
+      <i class="ion-trash-a"></i> <span>&nbsp;Delete</span>
+    </v-btn>
   </span>
   <!-- Used in HistoryView when not author -->
   <span v-else>
-    <button class="btn btn-sm btn-outline-secondary" @click="toggleFollow">
+    <v-btn class="btn btn-sm btn-outline-secondary" @click="toggleFollow">
       <i class="ion-plus-round"></i> <span>&nbsp;</span>
       <span v-text="followUserLabel" />
-    </button>
+    </v-btn>
     <span>&nbsp;&nbsp;</span>
-    <button
+    <v-btn
       class="btn btn-sm"
       @click="toggleFavorite"
       :class="toggleFavoriteButtonClasses"
@@ -24,7 +24,7 @@
       <i class="ion-heart"></i> <span>&nbsp;</span>
       <span v-text="favoriteHistoryLabel" /> <span>&nbsp;</span>
       <span class="counter" v-text="favoriteCounter" />
-    </button>
+    </v-btn>
   </span>
 </template>
 
