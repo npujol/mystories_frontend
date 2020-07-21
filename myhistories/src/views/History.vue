@@ -1,61 +1,84 @@
 <template>
-  <div class="history-page">
-    <div class="banner">
-      <div class="container">
-        <h1>{{ history.title }}</h1>
-        <RwvHistoryMeta :history="history" :actions="true"></RwvHistoryMeta>
-      </div>
-    </div>
-    <div class="container page">
-      <div class="row history-content">
-        <div class="col-xs-12">
+  <v-row align="center" justify="center">
+    <v-col cols="12" md="12">
+      <v-card>
+        <v-list-item>
+          <v-list-item-avatar color="grey"></v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title class="headline">
+              {{ history.title }}
+            </v-list-item-title>
+
+            <v-list-item-subtitle>
+              by
+
+              <v-avatar
+                @click="
+                  linkTo('profile', { username: history.author.username })
+                "
+              >
+                <img class="is-rounded" :src="history.author.image" />
+              </v-avatar>
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-img
+          src="https://cdn.vuetifyjs.com/images/cards/mountain.jpg"
+          height="194"
+        ></v-img>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <rwv-history-actions
+            :history="history"
+            :canModify="isCurrentUser()"
+          ></rwv-history-actions>
+        </v-card-actions>
+
+        <v-card-text>
+          <p>{{ history.createdAt | date }}</p>
+          <p>{{ history.description }}</p>
+          <TagList :tags="history.tags" />
+
           <div v-html="parseMarkdown(history.body)"></div>
-          <ul class="tag-list">
-            <li v-for="tag of history.tags" :key="tag.tag + tag.pk">
-              <RwvTag :tag="tag"></RwvTag>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <hr />
-      <div class="history-actions">
-        <RwvHistoryMeta :history="history" :actions="true"></RwvHistoryMeta>
-      </div>
-      <div class="row">
-        <div class="col-xs-12 col-md-8 offset-md-2">
-          <RwvCommentEditor
-            v-if="isAuthenticated"
-            :slug="slug"
-            :userImage="currentUser.image"
-          >
-          </RwvCommentEditor>
-          <p v-else>
-            <router-link :to="{ name: 'login' }">Sign in</router-link>
-            or
-            <router-link :to="{ name: 'register' }">sign up</router-link>
-            to add comments on this history.
-          </p>
-          <RwvComment
-            v-for="(comment, index) in comments"
-            :slug="slug"
-            :comment="comment"
-            :key="index"
-          >
-          </RwvComment>
-        </div>
-      </div>
-    </div>
-  </div>
+          <div class="row">
+            <div>
+              <RwvCommentEditor
+                v-if="isAuthenticated"
+                :slug="slug"
+                :userImage="currentUser.image"
+              >
+              </RwvCommentEditor>
+              <p v-else>
+                <router-link :to="{ name: 'login' }">Sign in</router-link>
+                or
+                <router-link :to="{ name: 'register' }">Sign up</router-link>
+                to add comments on this history.
+              </p>
+              <RwvComment
+                v-for="(comment, index) in comments"
+                :slug="slug"
+                :comment="comment"
+                :key="index"
+              >
+              </RwvComment>
+            </div>
+          </div>
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import marked from "marked";
 import store from "@/store";
-import RwvHistoryMeta from "@/components/HistoryMeta.vue";
 import RwvComment from "@/components/Comment.vue";
 import RwvCommentEditor from "@/components/CommentEditor.vue";
-import RwvTag from "@/components/VTag";
+import TagList from "../components/TagList.vue";
+import RwvHistoryActions from "../components/HistoryActions.vue";
+
 import { FETCH_HISTORY, FETCH_COMMENTS } from "@/store/actions.type.js";
 
 export default {
@@ -67,10 +90,10 @@ export default {
     }
   },
   components: {
-    RwvHistoryMeta,
     RwvComment,
     RwvCommentEditor,
-    RwvTag
+    TagList,
+    RwvHistoryActions
   },
   beforeRouteEnter(to, from, next) {
     Promise.all([
@@ -86,6 +109,26 @@ export default {
   methods: {
     parseMarkdown(content) {
       return marked(content);
+    },
+    linkTo(route, params) {
+      if (params.length === 0) {
+        this.$router.push({ name: route });
+      }
+      this.$router.push({ name: route, params: params });
+    },
+    isCurrentUser() {
+      if (this.currentUser.username && this.history.author.username) {
+        return this.currentUser.username === this.history.author.username;
+      }
+    },
+    toggleFavorite() {
+      if (!this.isAuthenticated) {
+        this.$router.push({ name: "login" });
+        return;
+      }
+      let action =
+        this.history.favorited === "false" ? FAVORITE_ADD : FAVORITE_REMOVE;
+      this.$store.dispatch(action, this.history.slug);
     }
   }
 };
