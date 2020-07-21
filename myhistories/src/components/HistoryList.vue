@@ -1,8 +1,8 @@
 <template>
-  <v-row class="d-flex justify-center">
+  <v-row>
     <v-col>
       <div v-if="isLoading" class="history-preview">Loading histories...</div>
-      <div v-else>
+      <div class="d-flex flex-column justify-center align-center" v-else>
         <div v-if="histories.length === 0" class="history-preview">
           No histories are here... yet.
         </div>
@@ -12,8 +12,9 @@
           :key="history.title + index"
         />
         <VPagination :pages="pages" :currentPage.sync="currentPage" />
-      </div> </v-col
-  ></v-row>
+      </div>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

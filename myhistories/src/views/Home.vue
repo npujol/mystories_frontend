@@ -1,5 +1,5 @@
 <template>
-  <v-row class="d-flex justify-center">
+  <v-row class="d-flex justify-center align-center">
     <v-col>
       <v-card color="basil" class="mx-auto">
         <v-card-title class="d-flex text-center justify-center">
