@@ -3,7 +3,7 @@
     <RwvHeader />
     <v-main>
       <v-container class="fill-height" fluid>
-        <v-row align="center" justify="center">
+        <v-row class="d-flex justify-center">
           <v-col cols="12" md="12">
             <v-tooltip right>
               <template v-slot:activator="{ on }">

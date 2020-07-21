@@ -1,5 +1,5 @@
 <template>
-  <v-row align="center" justify="center">
+  <v-row class="d-flex justify-center">
     <v-col cols="12" md="12">
       <div v-if="isLoading" class="history-preview">Loading histories...</div>
       <div v-else>

@@ -1,5 +1,5 @@
 <template>
-  <v-row align="center" justify="center">
+  <v-row class="d-flex justify-center">
     <v-col cols="12" md="10">
       <v-card>
         <v-list-item>
@@ -15,7 +15,7 @@
             >
               {{ history.title }}
             </v-list-item-title>
-              
+
             <v-list-item-subtitle>
               by
 

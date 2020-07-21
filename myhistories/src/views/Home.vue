@@ -1,9 +1,9 @@
 <template>
-  <v-row align="center" justify="center">
-    <v-col cols="12" md="12">
+  <v-row class="d-flex justify-center">
+    <v-col>
       <v-card color="basil" class="mx-auto">
-        <v-card-title class="text-center justify-center">
-          <h1 class="font-weight-bold display-3 basil--text text-center">
+        <v-card-title class="d-flex text-center justify-center">
+          <h1 class="d-flex font-weight-bold basil--text text-center">
             A place to shared yours histories
           </h1>
         </v-card-title>

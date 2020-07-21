@@ -1,5 +1,5 @@
 <template>
-  <v-row align="center" justify="center">
+  <v-row class="d-flex justify-center">
     <v-col cols="12" md="12">
       <v-card color="basil" class="mx-auto">
         <v-list-item>
@@ -71,7 +71,7 @@ export default {
     followUserLabel() {
       return `${this.profile.following === "true" ? "Following" : "Follow"} ${
         this.profile.username
-      }`;
+        }`;
     }
   },
   methods: {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row align="center" justify="center">
+    <v-row class="d-flex justify-center">
       <v-col cols="12" md="12">
         <v-card class="elevation mx-auto">
           <v-card-title class="headline" dark>Login</v-card-title>
