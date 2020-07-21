@@ -4,7 +4,7 @@
     <v-main>
       <v-container class="fill-height" fluid>
         <v-row class="d-flex justify-center">
-          <v-col cols="12" md="12">
+          <v-col>
             <v-tooltip right>
               <template v-slot:activator="{ on }">
                 <v-btn :href="source" icon large target="_blank" v-on="on">

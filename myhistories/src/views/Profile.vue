@@ -1,6 +1,6 @@
 <template>
   <v-row class="d-flex justify-center">
-    <v-col cols="12" md="12">
+    <v-col>
       <v-card color="basil" class="mx-auto">
         <v-list-item>
           <v-list-item-avatar color="grey">

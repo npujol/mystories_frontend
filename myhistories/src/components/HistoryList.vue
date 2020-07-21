@@ -1,6 +1,6 @@
 <template>
   <v-row class="d-flex justify-center">
-    <v-col cols="12" md="12">
+    <v-col>
       <div v-if="isLoading" class="history-preview">Loading histories...</div>
       <div v-else>
         <div v-if="histories.length === 0" class="history-preview">
