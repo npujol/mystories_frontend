@@ -39,7 +39,7 @@
           <v-card-text>
             <p class="text-xs-center">
               <router-link :to="{ name: 'register' }">
-                Have an account?
+                Need an account?
               </router-link>
             </p></v-card-text
           >

@@ -19,7 +19,7 @@
                 label="Email"
                 name="Email"
                 prepend-icon="mdi-mail"
-                :rules="[rules.email, rules.length(20)]"
+                :rules="[rules.email, rules.length(6)]"
                 type="text"
                 required
                 filled
@@ -46,7 +46,7 @@
           <v-card-text>
             <p class="text-xs-center">
               <router-link :to="{ name: 'register' }">
-                Need an account?
+                Have an account?
               </router-link>
             </p></v-card-text
           >
