@@ -1,22 +1,21 @@
 <template>
-  <div>
-    <RwvListErrors :errors="errors" />
-    <form class="card comment-form" @submit.prevent="onSubmit(slug, comment)">
-      <div class="card-block">
-        <textarea
-          class="form-control"
+  <v-card class="mx-auto" outlined>
+    <v-card-title class="headline" dark>Add comment</v-card-title>
+    <v-card-text>
+      <RwvListErrors :errors="errors" />
+      <v-form>
+        <v-textarea
           v-model="comment"
           placeholder="Write a comment..."
           rows="3"
-        >
-        </textarea>
-      </div>
-      <div class="card-footer">
-        <img :src="userImage" class="comment-author-img" />
-        <button class="btn btn-sm btn-primary">Post Comment</button>
-      </div>
-    </form>
-  </div>
+        ></v-textarea>
+      </v-form>
+    </v-card-text>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn class="mr-4" @click="onSubmit(slug, comment)">Post</v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>

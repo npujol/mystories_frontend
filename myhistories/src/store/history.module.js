@@ -66,7 +66,7 @@ export const actions = {
   },
   async [COMMENT_DESTROY](context, payload) {
     JwtService.setHeader();
-    await historiesApi.historiesDelete(payload.slug, payload.commentId);
+    await historiesApi.historiesCommentsDelete(payload.slug, payload.commentId);
     context.dispatch(FETCH_COMMENTS, payload.slug);
   },
   async [FAVORITE_ADD](context, slug) {

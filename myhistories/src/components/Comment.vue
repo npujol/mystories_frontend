@@ -1,24 +1,27 @@
 <template>
-  <div class="card">
-    <div class="card-block">
-      <p class="card-text">{{ comment.body }}</p>
-    </div>
-    <div class="card-footer">
-      <a href="" class="comment-author">
-        <img :src="comment.author.image" class="comment-author-img" />
-      </a>
-      <router-link
-        class="comment-author"
-        :to="{ name: 'profile', params: { username: comment.author.username } }"
-      >
-        {{ comment.author.username }}
-      </router-link>
-      <span class="date-posted">{{ comment.createdAt | date }}</span>
-      <span v-if="isCurrentUser" class="mod-options">
-        <i class="ion-trash-a" @click="destroy(slug, comment.id)"></i>
-      </span>
-    </div>
-  </div>
+  <v-card class="mx-auto" outlined>
+    <v-list-item three-line>
+      <v-list-item-content>
+        <div class="overline mb-4">Comment</div>
+        <v-list-item-subtitle>
+          {{ comment.createdAt | date }}
+        </v-list-item-subtitle>
+        <v-list-item-title class="headline mb-1">
+          {{ comment.body }}
+        </v-list-item-title>
+      </v-list-item-content>
+
+      <v-list-item-avatar tile size="80" color="grey"
+        ><img :src="comment.author.image" class="comment-author-img"
+      /></v-list-item-avatar>
+    </v-list-item>
+
+    <v-card-actions>
+      <v-btn v-if="isCurrentUser" icon @click="destroy(slug, comment.id)">
+        <v-icon>mdi-delete</v-icon>
+      </v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
