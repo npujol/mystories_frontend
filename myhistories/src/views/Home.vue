@@ -1,30 +1,34 @@
 <template>
-  <v-card color="basil" class="mx-auto">
-    <v-card-title class="text-center justify-center">
-      <h1 class="font-weight-bold display-3 basil--text">
-        A place to shared yours histories
-      </h1>
-    </v-card-title>
+  <v-row align="center" justify="center">
+    <v-col cols="12" md="12">
+      <v-card color="basil" class="mx-auto">
+        <v-card-title class="text-center justify-center">
+          <h1 class="font-weight-bold display-3 basil--text text-center">
+            A place to shared yours histories
+          </h1>
+        </v-card-title>
 
-    <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
-      <v-tab @click="linkTo('home', {})">
-        <v-icon>mdi-home</v-icon>
-        Global Feed
-      </v-tab>
-      <v-tab v-if="isAuthenticated" @click="linkTo('home-my-feed', {})">
-        <v-icon>mdi-account-circle</v-icon>
-        Your Feed
-      </v-tab>
-      <v-tab v-if="tag" @click="linkTo('home-tag', { tag })">
-        <v-icon>mdi-tag</v-icon>
-        {{ tag }}
-      </v-tab>
-    </v-tabs>
-    <v-chip-group column active-class="primary--text">
-      <RwvTag v-for="tag in tags" :tag="tag.tag" :key="tag.pk"> </RwvTag>
-    </v-chip-group>
-    <router-view></router-view>
-  </v-card>
+        <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
+          <v-tab @click="linkTo('home', {})">
+            <v-icon>mdi-home</v-icon>
+            Global Feed
+          </v-tab>
+          <v-tab v-if="isAuthenticated" @click="linkTo('home-my-feed', {})">
+            <v-icon>mdi-account-circle</v-icon>
+            Your Feed
+          </v-tab>
+          <v-tab v-if="tag" @click="linkTo('home-tag', { tag })">
+            <v-icon>mdi-tag</v-icon>
+            {{ tag }}
+          </v-tab>
+        </v-tabs>
+        <v-chip-group column active-class="primary--text">
+          <RwvTag v-for="tag in tags" :tag="tag.tag" :key="tag.pk"> </RwvTag>
+        </v-chip-group>
+        <router-view></router-view>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

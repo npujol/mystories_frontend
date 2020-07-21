@@ -1,57 +1,61 @@
 <template>
-  <v-card class="elevation-12 d-flex pa-2">
-    <v-card-title class="headline" dark>New History</v-card-title>
-    <v-card-text>
-      <v-form>
-        <v-text-field
-          label="Title"
-          name="title"
-          prepend-icon="mdi-pencil"
-          type="text"
-          v-model="history.title"
-          placeholder="Title"
-        ></v-text-field>
-        <v-textarea
-          prepend-icon="mdi-pencil"
-          label="Description"
-          rows="5"
-          v-model="history.description"
-        ></v-textarea>
-        <v-textarea
-          label="Body"
-          prepend-icon="mdi-pencil"
-          rows="5"
-          v-model="history.body"
-        ></v-textarea>
-        <v-layout wrap>
-          <v-flex xs12>
-            <v-combobox
-              multiple
-              v-model="history.tags"
-              label="Tags"
-              append-icon
-              chips
-              deletable-chips
-              class="tag-input"
-              :search-input.sync="search"
-              @keyup.tab="updateTags"
-              @paste="updateTags"
-            >
-            </v-combobox>
-          </v-flex>
-        </v-layout>
-      </v-form>
-    </v-card-text>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn
-        class="mr-4"
-        :disabled="inProgress"
-        @click="onPublish(history.slug)"
-        >Aceptar</v-btn
-      >
-    </v-card-actions>
-  </v-card>
+  <v-row align="center" justify="center">
+    <v-col cols="12" md="12">
+      <v-card>
+        <v-card-title class="headline" dark>New History</v-card-title>
+        <v-card-text>
+          <v-form>
+            <v-text-field
+              label="Title"
+              name="title"
+              prepend-icon="mdi-pencil"
+              type="text"
+              v-model="history.title"
+              placeholder="Title"
+            ></v-text-field>
+            <v-textarea
+              prepend-icon="mdi-pencil"
+              label="Description"
+              rows="5"
+              v-model="history.description"
+            ></v-textarea>
+            <v-textarea
+              label="Body"
+              prepend-icon="mdi-pencil"
+              rows="5"
+              v-model="history.body"
+            ></v-textarea>
+            <v-layout wrap>
+              <v-flex xs12>
+                <v-combobox
+                  multiple
+                  v-model="history.tags"
+                  label="Tags"
+                  append-icon
+                  chips
+                  deletable-chips
+                  class="tag-input"
+                  :search-input.sync="search"
+                  @keyup.tab="updateTags"
+                  @paste="updateTags"
+                >
+                </v-combobox>
+              </v-flex>
+            </v-layout>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            class="mr-4"
+            :disabled="inProgress"
+            @click="onPublish(history.slug)"
+            >Aceptar</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

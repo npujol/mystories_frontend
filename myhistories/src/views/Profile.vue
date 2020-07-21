@@ -1,78 +1,54 @@
 <template>
-  <div class="profile-page">
-    <div class="user-info">
-      <div class="container">
-        <div class="row">
-          <div class="col-xs-12 col-md-10 offset-md-1">
-            <img :src="profile.image" class="user-img" />
-            <h4>{{ profile.username }}</h4>
-            <p>{{ profile.bio }}</p>
-            <div v-if="isCurrentUser()">
-              <router-link
-                class="btn btn-sm btn-outline-secondary action-btn"
-                :to="{ name: 'settings' }"
-              >
-                <i class="ion-gear-a"></i> Edit Profile Settings
-              </router-link>
-            </div>
-            <div v-else>
-              <button
-                class="btn btn-sm btn-secondary action-btn"
-                v-if="profile.following"
-                @click.prevent="unfollow()"
-              >
-                <i class="ion-plus-round"></i> &nbsp;Unfollow
-                {{ profile.username }}
-              </button>
-              <button
-                class="btn btn-sm btn-outline-secondary action-btn"
-                v-if="!profile.following"
-                @click.prevent="follow()"
-              >
-                <i class="ion-plus-round"></i> &nbsp;Follow
-                {{ profile.username }}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <v-row align="center" justify="center">
+    <v-col cols="12" md="12">
+      <v-card color="basil" class="mx-auto">
+        <v-list-item>
+          <v-list-item-avatar color="grey">
+            <img class="is-rounded" :src="profile.image" />
+          </v-list-item-avatar>
+          <v-spacer></v-spacer>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ profile.username }}
+            </v-list-item-title>
 
-    <div class="container">
-      <div class="row">
-        <div class="col-xs-12 col-md-10 offset-md-1">
-          <div class="histories-toggle">
-            <ul class="nav nav-pills outline-active">
-              <li class="nav-item">
-                <router-link
-                  class="nav-link"
-                  active-class="active"
-                  exact
-                  :to="{ name: 'profile' }"
-                >
-                  My Histories
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link
-                  class="nav-link"
-                  active-class="active"
-                  exact
-                  :to="{
-                    name: 'profile-favorites',
-                    params: { username: currentUser.username }
-                  }"
-                >
-                  Favorited Histories
-                </router-link>
-              </li>
-            </ul>
-          </div>
-          <router-view></router-view>
-        </div>
-      </div>
-    </div>
-  </div>
+            <v-list-item-subtitle>
+              {{ profile.email }}
+              <p>{{ profile.bio }}</p>
+              <template v-if="isCurrentUser()">
+                <v-btn icon :to="{ name: 'settings' }" v-if="isCurrentUser()">
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+              </template>
+              <template v-else
+                ><v-btn text @click="toggleFollow">
+                  <v-icon>mdi-account</v-icon>
+                  <span> {{ followUserLabel }}</span>
+                </v-btn>
+              </template>
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
+          <v-tab @click="linkTo('profile', {})">
+            <v-icon>mdi-account</v-icon>
+            My histories
+          </v-tab>
+          <v-tab
+            v-if="isAuthenticated"
+            @click="
+              linkTo('profile-favorites', { username: currentUser.username })
+            "
+          >
+            <v-icon>mdi-heart</v-icon>
+            Favorites
+          </v-tab>
+        </v-tabs>
+        <router-view></router-view>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -85,11 +61,18 @@ import {
 
 export default {
   name: "RwvProfile",
-  mounted() {
-    this.$store.dispatch(FETCH_PROFILE, this.$route.params);
+  data() {
+    return {
+      tab: null
+    };
   },
   computed: {
-    ...mapGetters(["currentUser", "profile", "isAuthenticated"])
+    ...mapGetters(["currentUser", "profile", "isAuthenticated"]),
+    followUserLabel() {
+      return `${this.profile.following === "true" ? "Following" : "Follow"} ${
+        this.profile.username
+      }`;
+    }
   },
   methods: {
     isCurrentUser() {
@@ -98,12 +81,24 @@ export default {
       }
       return false;
     },
-    follow() {
-      if (!this.isAuthenticated) return;
-      this.$store.dispatch(FETCH_PROFILE_FOLLOW, this.$route.params);
+    toggleFollow() {
+      if (!this.isAuthenticated) {
+        this.$router.push({ name: "login" });
+        return;
+      }
+      const action =
+        this.profile.following === "true"
+          ? FETCH_PROFILE_UNFOLLOW
+          : FETCH_PROFILE_FOLLOW;
+      this.$store.dispatch(action, {
+        username: this.profile.username
+      });
     },
-    unfollow() {
-      this.$store.dispatch(FETCH_PROFILE_UNFOLLOW, this.$route.params);
+    linkTo(route, params) {
+      if (params.length === 0) {
+        this.$router.push({ name: route });
+      }
+      this.$router.push({ name: route, params: params });
     }
   },
   watch: {

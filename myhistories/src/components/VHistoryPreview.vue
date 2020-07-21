@@ -15,7 +15,7 @@
             >
               {{ history.title }}
             </v-list-item-title>
-
+              
             <v-list-item-subtitle>
               by
 

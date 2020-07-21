@@ -1,18 +1,19 @@
 <template>
-  <div>
-    <div v-if="isLoading" class="history-preview">Loading histories...</div>
-    <div v-else>
-      <div v-if="histories.length === 0" class="history-preview">
-        No histories are here... yet.
-      </div>
-      <RwvHistoryPreview
-        v-for="(history, index) in histories"
-        :history="history"
-        :key="history.title + index"
-      />
-      <VPagination :pages="pages" :currentPage.sync="currentPage" />
-    </div>
-  </div>
+  <v-row align="center" justify="center">
+    <v-col cols="12" md="12">
+      <div v-if="isLoading" class="history-preview">Loading histories...</div>
+      <div v-else>
+        <div v-if="histories.length === 0" class="history-preview">
+          No histories are here... yet.
+        </div>
+        <RwvHistoryPreview
+          v-for="(history, index) in histories"
+          :history="history"
+          :key="history.title + index"
+        />
+        <VPagination :pages="pages" :currentPage.sync="currentPage" />
+      </div> </v-col
+  ></v-row>
 </template>
 
 <script>
