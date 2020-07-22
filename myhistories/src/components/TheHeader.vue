@@ -10,7 +10,9 @@
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title @click="linkTo('home', {})">
-              Dashboard
+              <h3 class="basil--text">
+                Dashboard
+              </h3>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -20,8 +22,10 @@
               <v-icon>mdi-account-circle</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title @click="linkTo('settings', {})"
-                >Profile
+              <v-list-item-title @click="linkTo('settings', {})">
+                <h3 class="basil--text">
+                  Profile
+                </h3>
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -35,7 +39,9 @@
                   linkTo('history-edit', { username: currentUser.username })
                 "
               >
-                New History
+                <h3 class="basil--text">
+                  New History
+                </h3>
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -45,7 +51,9 @@
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title @click="linkTo('profile', {})">
-                Favorited Histories
+                <h3 class="basil--text">
+                  Favorited histories
+                </h3>
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -55,7 +63,9 @@
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title @click="linkTo('profile-favorites')">
-                My Histories
+                <h3 class="basil--text">
+                  My Histories
+                </h3>
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -65,17 +75,16 @@
     <v-app-bar app dark clipped-left>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>
-        <v-btn color="primary" fab small dark @click="linkTo('home', {})">
+        <v-btn color="white" icon @click="linkTo('home', {})">
           <v-icon>mdi-home</v-icon>
         </v-btn>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <template v-if="!isAuthenticated">
-        <v-btn rounded color="primary" dark @click="linkTo('register', {})">
+        <v-btn rounded color="error" @click="linkTo('register', {})">
           Sign up
         </v-btn>
-        <hr />
-        <v-btn rounded color="normal" dark @click="linkTo('login', {})">
+        <v-btn rounded color="primary" @click="linkTo('login', {})">
           Log in
         </v-btn>
       </template>

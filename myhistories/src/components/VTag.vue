@@ -1,5 +1,7 @@
 <template>
-  <v-chip draggable @click="linkTo('home', { tag: tag })"> {{ tag }} </v-chip>
+  <v-chip label small draggable @click="linkTo('home', { tag: tag })">
+    {{ tag }}
+  </v-chip>
 </template>
 
 <script>

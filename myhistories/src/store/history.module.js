@@ -46,52 +46,43 @@ export const actions = {
     if (prevHistory !== undefined) {
       return context.commit(SET_HISTORY, prevHistory);
     }
-    JwtService.setHeader();
     const data = await historiesApi.historiesRead(historySlug);
     context.commit(SET_HISTORY, data);
     return data;
   },
   async [FETCH_COMMENTS](context, historySlug) {
-    JwtService.setHeader();
     const data = await historiesApi.historiesCommentsList(historySlug);
     context.commit(SET_COMMENTS, data.results);
     return data;
   },
   async [COMMENT_CREATE](context, payload) {
-    JwtService.setHeader();
     await historiesApi.historiesCommentsCreate(payload.slug, {
       body: payload.comment
     });
     context.dispatch(FETCH_COMMENTS, payload.slug);
   },
   async [COMMENT_DESTROY](context, payload) {
-    JwtService.setHeader();
     await historiesApi.historiesCommentsDelete(payload.slug, payload.commentId);
     context.dispatch(FETCH_COMMENTS, payload.slug);
   },
   async [FAVORITE_ADD](context, slug) {
-    JwtService.setHeader();
     const data = await historiesApi.historiesFavoriteCreate(slug, "");
     context.commit(UPDATE_HISTORY_IN_LIST, data, { root: true });
     context.commit(SET_HISTORY, data);
   },
   async [FAVORITE_REMOVE](context, slug) {
-    JwtService.setHeader();
     const data = await historiesApi.historiesFavoriteDelete(slug, "");
     // Update list as well. This allows us to favorite an history in the Home view.
     context.commit(UPDATE_HISTORY_IN_LIST, data, { root: true });
     context.commit(SET_HISTORY, data);
   },
   [HISTORY_PUBLISH]({ state }) {
-    JwtService.setHeader();
     return historiesApi.historiesCreate(state.history);
   },
   [HISTORY_DELETE](context, slug) {
-    JwtService.setHeader();
     return historiesApi.historiesDelete(slug);
   },
   [HISTORY_EDIT]({ state }) {
-    JwtService.setHeader();
     return historiesApi.historiesPartialUpdate(
       state.history.slug,
       state.history

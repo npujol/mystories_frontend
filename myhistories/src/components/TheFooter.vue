@@ -1,13 +1,9 @@
 <template>
-  <v-footer dark padless>
+  <v-footer padless>
     <v-card class="flex" flat tile>
       <v-card-title class="teal">
-        <strong class="subheading"
-          >Get connected with us on social networks!</strong
-        >
-
+        <strong class="subheading">Get connected with us!</strong>
         <v-spacer></v-spacer>
-
         <v-btn v-for="icon in icons" :key="icon" class="mx-4" icon>
           <v-icon size="24px">{{ icon }}</v-icon>
         </v-btn>
@@ -30,7 +26,7 @@
 export default {
   name: "RwvFooter",
   data: () => ({
-    icons: ["mdi-facebook", "mdi-twitter", "mdi-linkedin", "mdi-instagram"]
+    icons: ["mdi-twitter", "mdi-linkedin", "mdi-github"]
   })
 };
 </script>

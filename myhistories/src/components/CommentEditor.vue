@@ -45,7 +45,7 @@ export default {
           this.errors = {};
         })
         .catch(response => {
-          this.errors = response.errors;
+          this.errors = JSON.parse(response.response.text).errors;
         });
     }
   }

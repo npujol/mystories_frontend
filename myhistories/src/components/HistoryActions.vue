@@ -40,8 +40,7 @@ import {
 export default {
   name: "RwvHistoryActions",
   props: {
-    history: { type: Object, required: true },
-    canModify: { type: Boolean, required: true }
+    history: { type: Object, required: true }
   },
   computed: {
     ...mapGetters(["profile", "isAuthenticated"]),
@@ -55,6 +54,9 @@ export default {
     },
     color() {
       return this.history.favorited === "true" ? "success" : "blue-grey";
+    },
+    canModify() {
+      return this.history.author.username === this.profile.username;
     }
   },
   mounted() {

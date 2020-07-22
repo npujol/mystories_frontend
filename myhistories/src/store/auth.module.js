@@ -46,7 +46,7 @@ const actions = {
           resolve(data);
         })
         .catch(response => {
-          context.commit(SET_ERROR, response.errors);
+          context.commit(SET_ERROR, JSON.parse(response.response.text).errors);
         });
     });
   },
@@ -63,7 +63,7 @@ const actions = {
           resolve(data);
         })
         .catch(response => {
-          context.commit(SET_ERROR, response.errors);
+          context.commit(SET_ERROR, JSON.parse(response.response.text).errors);
           reject(response);
         });
     });

@@ -1,67 +1,63 @@
 <template>
-  <v-row class="d-flex justify-center">
-    <v-col>
-      <v-card>
-        <v-card-title class="headline" dark>New History</v-card-title>
-        <v-card-text>
-          <v-form>
-            <v-text-field
-              label="Title"
-              name="title"
-              prepend-icon="mdi-pencil"
-              type="text"
-              v-model="history.title"
-              placeholder="Title"
-            ></v-text-field>
-            <v-textarea
-              prepend-icon="mdi-pencil"
-              label="Description"
-              rows="5"
-              v-model="history.description"
-            ></v-textarea>
-            <v-textarea
-              label="Body"
-              prepend-icon="mdi-pencil"
-              rows="5"
-              v-model="history.body"
-            ></v-textarea>
-            <v-layout wrap>
-              <v-flex xs12>
-                <v-combobox
-                  multiple
-                  v-model="history.tags"
-                  label="Tags"
-                  append-icon
-                  chips
-                  deletable-chips
-                  class="tag-input"
-                  :search-input.sync="search"
-                  @keyup.tab="updateTags"
-                  @paste="updateTags"
-                >
-                </v-combobox>
-              </v-flex>
-            </v-layout>
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            class="mr-4"
-            :disabled="inProgress"
-            @click="onPublish(history.slug)"
-            >Aceptar</v-btn
-          >
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
+  <v-card class="elevation mx-auto" aling="center">
+    <v-card-title class="headline">
+      <h3 class="d-flex font-weight-bold basil--text">
+        New history
+      </h3>
+    </v-card-title>
+    <v-spacer></v-spacer>
+    <v-card-text>
+      <RwvListErrors :errors="errors" />
+
+      <v-form>
+        <v-text-field
+          label="Title"
+          name="title"
+          type="text"
+          v-model="history.title"
+          placeholder="Title"
+        ></v-text-field>
+        <v-textarea
+          label="Description"
+          rows="5"
+          v-model="history.description"
+        ></v-textarea>
+        <v-textarea label="Body" rows="5" v-model="history.body"></v-textarea>
+        <v-layout wrap>
+          <v-flex xs12>
+            <v-combobox
+              multiple
+              v-model="history.tags"
+              label="Tags"
+              append-icon
+              chips
+              deletable-chips
+              class="tag-input"
+              :search-input.sync="search"
+              @keyup.tab="updateTags"
+              @paste="updateTags"
+            >
+            </v-combobox>
+          </v-flex>
+        </v-layout>
+      </v-form>
+    </v-card-text>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn
+        color="primary"
+        :disabled="inProgress"
+        @click="onPublish(history.slug)"
+        >Aceptar
+      </v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import store from "@/store";
-// import RwvListErrors from "@/components/ListErrors.vue";
+import RwvListErrors from "@/components/ListErrors.vue";
 import {
   HISTORY_PUBLISH,
   HISTORY_EDIT,
@@ -73,7 +69,7 @@ import {
 
 export default {
   name: "RwvHistoryEdit",
-  // components: { RwvListErrors },
+  components: { RwvListErrors },
   props: {
     previousHistory: {
       type: Object,
@@ -108,7 +104,6 @@ export default {
       inProgress: false,
       errors: {},
       valid: false,
-      select: ["add-tags-with", "enter", "tab", "paste"],
       items: [],
       search: "" //sync search
     };
@@ -131,7 +126,7 @@ export default {
         })
         .catch(response => {
           this.inProgress = false;
-          this.errors = response.errors;
+          this.errors = JSON.parse(response.response.text).errors;
         });
     },
     updateTags() {

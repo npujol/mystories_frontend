@@ -1,10 +1,18 @@
-<template v-show="errors">
-  <ul class="error-messages">
-    <li v-for="(value, key) in errors" :key="key">
-      <span v-text="key" />
-      <span v-for="err in value" :key="err" v-text="err" />
-    </li>
-  </ul>
+<template>
+  <v-card class="mx-auto">
+    <div v-for="(value, key) in errors" :key="key">
+      <v-alert
+        dismissible
+        close-icon="mdi-delete"
+        color="error"
+        border="left"
+        colored-border
+        type="error"
+      >
+        <span v-for="err in value" :key="err" v-text="err" />
+      </v-alert>
+    </div>
+  </v-card>
 </template>
 
 <script>
