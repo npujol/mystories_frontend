@@ -1,65 +1,65 @@
 <template>
-  <v-row class="d-flex justify-center">
-    <v-col cols="12" md="10">
-      <v-card>
-        <v-list-item>
-          <v-list-item-avatar color="grey"></v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title
-              class="headline"
-              @click="
-                linkTo('history', {
-                  slug: history.slug
-                })
-              "
-            >
-              {{ history.title }}
-            </v-list-item-title>
+  <v-card
+    style="min-width: 80%; max-width: 100%;"
+    class="flex-grow-1 flex-shrink-0"
+    tile
+    outlined
+  >
+    <v-list-item>
+      <v-list-item-content>
+        <v-list-item-title
+          class="d-flex text-center justify-center headline"
+          @click="
+            linkTo('history', {
+              slug: history.slug
+            })
+          "
+        >
+          <h1 class="d-flex font-weight-bold basil--text text-center">
+            {{ history.title }}
+          </h1>
+        </v-list-item-title>
 
-            <v-list-item-subtitle>
-              by
-
-              <v-avatar
-                @click="
-                  linkTo('profile', { username: history.author.username })
-                "
-              >
-                <img class="is-rounded" :src="history.author.image" />
-              </v-avatar>
-            </v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-img
-          src="https://cdn.vuetifyjs.com/images/cards/mountain.jpg"
-          height="194"
-        ></v-img>
-
-        <v-card-text>
-          <p>{{ history.createdAt | date }}</p>
-          <p>{{ history.description }}</p>
-          <TagList :tags="history.tags" />
-          <router-view></router-view>
-        </v-card-text>
-
-        <v-card-actions>
-          <v-btn
-            text
-            color="deep-purple accent-4"
-            @click="
-              linkTo('history', {
-                slug: history.slug
-              })
-            "
+        <v-list-item-subtitle>
+          by
+          <v-list-item-avatar
+            @click="linkTo('profile', { username: history.author.username })"
+            color="grey"
           >
-            <span> Read more </span>
-          </v-btn>
-          <v-spacer></v-spacer>
-          <RwvHistoryActions :history="history" :canModify="isCurrentUser()" />
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
+            <img class="is-rounded" :src="history.author.image" />
+          </v-list-item-avatar>
+        </v-list-item-subtitle>
+      </v-list-item-content>
+    </v-list-item>
+
+    <v-img
+      src="https://cdn.vuetifyjs.com/images/cards/mountain.jpg"
+      height="194"
+    ></v-img>
+
+    <v-card-text>
+      <p>{{ history.createdAt | date }}</p>
+      <p>{{ history.description }}</p>
+      <TagList :tags="history.tags" />
+      <router-view></router-view>
+    </v-card-text>
+
+    <v-card-actions>
+      <v-btn
+        text
+        color="deep-purple accent-4"
+        @click="
+          linkTo('history', {
+            slug: history.slug
+          })
+        "
+      >
+        <span> Read more </span>
+      </v-btn>
+      <v-spacer></v-spacer>
+      <RwvHistoryActions :history="history" :canModify="isCurrentUser()" />
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>

@@ -39,6 +39,9 @@ export default {
   components: {
     RwvHeader,
     RwvFooter
+  },
+  created() {
+    this.$vuetify.theme.dark = true;
   }
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" outlined>
+  <v-card class="mx-wigth" outlined>
     <v-list-item three-line>
       <v-list-item-content>
         <div class="overline mb-4">Comment</div>
@@ -11,8 +11,12 @@
         </v-list-item-title>
       </v-list-item-content>
 
-      <v-list-item-avatar tile size="80" color="grey"
-        ><img :src="comment.author.image" class="comment-author-img"
+      <v-list-item-avatar
+        tile
+        size="80"
+        color="grey"
+        :src="comment.author.image"
+        ><img :src="comment.author.image" class="is-rounded"
       /></v-list-item-avatar>
     </v-list-item>
 
