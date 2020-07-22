@@ -1,5 +1,5 @@
 <template>
-  <v-card class="elevation mx-auto" aling="center">
+  <v-card min-width="80%" class="elevation mx-auto" aling="center">
     <v-card-title class="headline">
       <h3 class="d-flex font-weight-bold basil--text">
         New history

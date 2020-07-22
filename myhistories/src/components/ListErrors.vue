@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto">
+  <v-card class="mx-auto" aling="center">
     <div v-for="(value, key) in errors" :key="key">
       <v-alert
         dismissible

@@ -1,27 +1,28 @@
 <template>
-  <v-card
-    style="min-width: 80%; max-width: 100%;"
-    class="flex-grow-1 flex-shrink-0"
-    tile
-    outlined
-  >
+  <v-card min-width="80%" class="mx-auto" aling="center" tile outlined>
     <v-list-item>
       <v-list-item-content>
         <v-list-item-title
           class="d-flex text-center justify-center headline"
+          aling="center"
           @click="
             linkTo('history', {
               slug: history.slug
             })
           "
         >
-          <h1 class="d-flex font-weight-bold basil--text text-center">
+          <h2 class="d-flex font-weight-bold basil--text text-center">
             {{ history.title }}
-          </h1>
+          </h2>
         </v-list-item-title>
-
-        <v-list-item-subtitle>
-          by
+        <v-spacer></v-spacer>
+        <v-list-item-subtitle
+          class="d-flex text-center justify-center headline"
+          aling="center"
+        >
+          <h3 class="d-flex font-weight-bold basil--text text-center">
+            by {{ history.author.username }}
+          </h3>
           <v-list-item-avatar
             @click="linkTo('profile', { username: history.author.username })"
             color="grey"
@@ -37,9 +38,17 @@
       height="194"
     ></v-img>
 
-    <v-card-text>
-      <p>{{ history.createdAt | date }}</p>
-      <p>{{ history.description }}</p>
+    <v-card-text class="mx-auto">
+      <div class="aling-center mx-auto" aling="center">
+        <h4 class="d-flex font-weight-bold basil--text text-center">
+          {{ history.createdAt | date }}
+        </h4>
+      </div>
+      <div class="d-flex  mx-auto" aling="center">
+        <p class="d-flex font-weight-bold basil--text text-center">
+          {{ history.description }}
+        </p>
+      </div>
       <TagList :tags="history.tags" />
       <router-view></router-view>
     </v-card-text>

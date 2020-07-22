@@ -1,7 +1,7 @@
 <template>
-  <div v-if="isLoading" class="history-preview">Loading histories...</div>
+  <div v-if="isLoading">Loading histories...</div>
   <div class="d-flex flex-column justify-center align-center" v-else>
-    <div v-if="histories.length === 0" class="history-preview">
+    <div v-if="histories.length === 0">
       No histories are here... yet.
     </div>
     <RwvHistoryPreview

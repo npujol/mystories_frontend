@@ -1,7 +1,14 @@
 <template>
-  <v-chip-group column active-class="primary--text">
-    <RwvTag v-for="tag in tags" :tag="tag.tag" :key="tag.pk"> </RwvTag>
-  </v-chip-group>
+  <div class="d-flex  mx-auto" aling="center">
+    <v-chip-group
+      column
+      class="d-flex  mx-auto"
+      aling="center"
+      active-class="primary--text"
+    >
+      <RwvTag v-for="tag in tags" :tag="tag.tag" :key="tag.pk"> </RwvTag>
+    </v-chip-group>
+  </div>
 </template>
 
 <script>

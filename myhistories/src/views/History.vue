@@ -1,24 +1,37 @@
 <template>
-  <v-card class="elevation mx-auto" aling="center">
+  <v-card min-width="80%" class="mx-auto" aling="center" tile outlined>
     <v-list-item>
-      <v-list-item-avatar color="grey"></v-list-item-avatar>
       <v-list-item-content>
-        <v-list-item-title class="headline">
-          {{ history.title }}
+        <v-list-item-title
+          class="d-flex text-center justify-center headline"
+          aling="center"
+          @click="
+            linkTo('history', {
+              slug: history.slug
+            })
+          "
+        >
+          <h2 class="d-flex font-weight-bold basil--text text-center">
+            {{ history.title }}
+          </h2>
         </v-list-item-title>
-
-        <v-list-item-subtitle>
-          by
-
-          <v-avatar
+        <v-spacer></v-spacer>
+        <v-list-item-subtitle
+          class="d-flex text-center justify-center headline"
+          aling="center"
+        >
+          <h3 class="d-flex font-weight-bold basil--text text-center">
+            by {{ history.author.username }}
+          </h3>
+          <v-list-item-avatar
             @click="linkTo('profile', { username: history.author.username })"
+            color="grey"
           >
             <img class="is-rounded" :src="history.author.image" />
-          </v-avatar>
+          </v-list-item-avatar>
         </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
-
     <v-img
       src="https://cdn.vuetifyjs.com/images/cards/mountain.jpg"
       height="194"
@@ -31,14 +44,13 @@
       ></rwv-history-actions>
     </v-card-actions>
 
-    <v-card-text>
-      <p>{{ history.createdAt | date }}</p>
-      <p>{{ history.description }}</p>
+    <v-card-text class="mx-auto" aling="center">
+      <p class="text-center align-center">{{ history.createdAt | date }}</p>
+      <p class="text-center align-center">{{ history.description }}</p>
       <TagList :tags="history.tags" />
-
-      <div v-html="parseMarkdown(history.body)"></div>
-      <div class="row">
-        <div>
+      <div aling="center" v-html="parseMarkdown(history.body)"></div>
+      <div min-width="80%" class="row mx-auto" aling="center">
+        <div min-width="80%" class="mx-auto" aling="center">
           <RwvCommentEditor
             v-if="isAuthenticated"
             :slug="slug"
@@ -51,6 +63,7 @@
             <router-link :to="{ name: 'register' }">Sign up</router-link>
             to add comments on this history.
           </p>
+          <v-spacer></v-spacer>
           <RwvComment
             v-for="(comment, index) in comments"
             :slug="slug"
