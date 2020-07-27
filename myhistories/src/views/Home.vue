@@ -1,48 +1,66 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <v-row class="d-flex justify-center align-center">
+    <v-col>
+      <v-card color="basil" class="mx-auto">
+        <v-card-title class="d-flex text-center justify-center">
+          <h1 class="d-flex font-weight-bold basil--text text-center">
+            A place to shared yours histories
+          </h1>
+        </v-card-title>
 
-    <label>
-      Usename
-      <input v-model="username" />
-    </label>
-
-    <label>
-      Email
-      <input v-model="email" />
-    </label>
-
-    <label>
-      Password
-      <input v-model="password" type="password" />
-      <button @click="register">Ok!</button>
-    </label>
-  </div>
+        <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
+          <v-tab @click="linkTo('home', {})">
+            <v-icon>mdi-home</v-icon>
+            Global Feed
+          </v-tab>
+          <v-tab v-if="isAuthenticated" @click="linkTo('home-my-feed', {})">
+            <v-icon>mdi-account-circle</v-icon>
+            Your Feed
+          </v-tab>
+          <v-tab v-if="tag" @click="linkTo('home-tag', { tag })">
+            <v-icon>mdi-tag</v-icon>
+            {{ tag }}
+          </v-tab>
+        </v-tabs>
+        <v-chip-group column active-class="primary--text">
+          <RwvTag v-for="tag in tags" :tag="tag.tag" :key="tag.pk"> </RwvTag>
+        </v-chip-group>
+        <router-view></router-view>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-import { AuthApi } from "@/client";
-const authClient = new AuthApi();
+import { mapGetters } from "vuex";
+import RwvTag from "../components/VTag.vue";
+import { FETCH_TAGS } from "../store/actions.type.js";
 
 export default {
-  name: "Home",
-  components: {
-    HelloWorld
-  },
-  data: () => {
+  name: "home",
+  data() {
     return {
-      password: "",
-      email: "",
-      username: ""
+      tab: null
     };
   },
+  components: {
+    RwvTag
+  },
+  mounted() {
+    this.$store.dispatch(FETCH_TAGS);
+  },
+  computed: {
+    ...mapGetters(["isAuthenticated", "tags"]),
+    tag() {
+      return this.$route.params.tag;
+    }
+  },
   methods: {
-    async register() {
-      const resp = await authClient.authRegistrationCreate(this.$data);
-      alert(resp);
+    linkTo(route, params) {
+      if (params.length === 0) {
+        this.$router.push({ name: route });
+      }
+      this.$router.push({ name: route, params: params });
     }
   }
 };

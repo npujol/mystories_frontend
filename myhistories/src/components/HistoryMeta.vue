@@ -1,0 +1,96 @@
+<template>
+  <div
+    class="column is-4 is-offset-1 has-margin-top-auto has-margin-bottom-auto"
+  >
+    <div class="info is-size-5">
+      <div class="title">
+        <h2 class="has-text-black is-family-secondary has-text-weight-bold">
+          <router-link
+            :to="{
+              name: 'history',
+              params: {
+                slug: history.slug
+              }
+            }"
+            class="preview-link"
+          >
+            {{ history.title }}
+          </router-link>
+        </h2>
+      </div>
+
+      <router-link
+        :to="{
+          name: 'profile',
+          params: { username: history.author.username }
+        }"
+        class="author"
+      >
+        <p>Author: {{ history.author.username }}</p>
+        <p></p
+      ></router-link>
+
+      <p>{{ history.createdAt | date }}</p>
+    </div>
+    <p v-text="history.description" />
+
+    <rwv-history-actions
+      v-if="actions"
+      :history="history"
+      :canModify="isCurrentUser()"
+    ></rwv-history-actions>
+    <button
+      v-else
+      @click="toggleFavorite"
+      :class="{
+        'button is-primary': history.favorited,
+        'button is-light': !history.favorited
+      }"
+    >
+      <span class="counter"> {{ history.favoritesCount }} </span>
+    </button>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from "vuex";
+import RwvHistoryActions from "@/components/HistoryActions.vue";
+import { FAVORITE_ADD, FAVORITE_REMOVE } from "@/store/actions.type.js";
+
+export default {
+  name: "RwvHistoryMeta",
+  components: {
+    RwvHistoryActions
+  },
+  props: {
+    history: {
+      type: Object,
+      required: true
+    },
+    actions: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+  computed: {
+    ...mapGetters(["currentUser", "isAuthenticated"])
+  },
+  methods: {
+    isCurrentUser() {
+      if (this.currentUser.username && this.history.author.username) {
+        return this.currentUser.username === this.history.author.username;
+      }
+      return false;
+    },
+    toggleFavorite() {
+      if (!this.isAuthenticated) {
+        this.$router.push({ name: "login" });
+        return;
+      }
+      const action = this.history.favorited ? FAVORITE_REMOVE : FAVORITE_ADD;
+      this.$store.dispatch(action, this.history.slug);
+    }
+  }
+};
+</script>

@@ -1,32 +1,47 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+    <v-app>
+      <RwvHeader />
+      <v-main>
+        <v-container class="fill-height" fluid>
+          <v-row class="d-flex justify-center">
+            <v-col>
+              <v-tooltip right>
+                <template v-slot:activator="{ on }">
+                  <v-btn :href="source" icon large target="_blank" v-on="on">
+                    <!-- <v-icon>mdi-code-tags</v-icon> -->
+                  </v-btn>
+                </template>
+                <span>Source</span>
+              </v-tooltip>
+            </v-col>
+          </v-row>
+          <router-view></router-view>
+        </v-container>
+      </v-main>
+      <RwvFooter />
+    </v-app>
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import RwvHeader from "./components/TheHeader.vue";
+import RwvFooter from "./components/TheFooter.vue";
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+export default {
+  name: "App",
+  props: {
+    source: String
+  },
+  data: () => ({
+    drawer: null
+  }),
+  components: {
+    RwvHeader,
+    RwvFooter
+  },
+  created() {
+    this.$vuetify.theme.dark = true;
   }
-}
-</style>
+};
+</script>
