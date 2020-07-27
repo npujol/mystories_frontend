@@ -14,43 +14,44 @@
  */
 
 import {ApiClient} from '../ApiClient';
-import {Profile} from './Profile';
 import {Story} from './Story';
 
 /**
- * The Comment model module.
- * @module model/Comment
+ * The Speech model module.
+ * @module model/Speech
  * @version v1
  */
-export class Comment {
+export class Speech {
   /**
-   * Constructs a new <code>Comment</code>.
-   * @alias module:model/Comment
+   * Constructs a new <code>Speech</code>.
+   * @alias module:model/Speech
    * @class
-   * @param body {String} 
+   * @param language {String} 
    */
-  constructor(body) {
-    this.body = body;
+  constructor(language) {
+    this.language = language;
   }
 
   /**
-   * Constructs a <code>Comment</code> from a plain JavaScript object, optionally creating a new instance.
+   * Constructs a <code>Speech</code> from a plain JavaScript object, optionally creating a new instance.
    * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
    * @param {Object} data The plain JavaScript object bearing properties of interest.
-   * @param {module:model/Comment} obj Optional instance to populate.
-   * @return {module:model/Comment} The populated <code>Comment</code> instance.
+   * @param {module:model/Speech} obj Optional instance to populate.
+   * @return {module:model/Speech} The populated <code>Speech</code> instance.
    */
   static constructFromObject(data, obj) {
     if (data) {
-      obj = obj || new Comment();
+      obj = obj || new Speech();
       if (data.hasOwnProperty('id'))
         obj.id = ApiClient.convertToType(data['id'], 'Number');
-      if (data.hasOwnProperty('author'))
-        obj.author = Profile.constructFromObject(data['author']);
       if (data.hasOwnProperty('story'))
         obj.story = Story.constructFromObject(data['story']);
-      if (data.hasOwnProperty('body'))
-        obj.body = ApiClient.convertToType(data['body'], 'String');
+      if (data.hasOwnProperty('language'))
+        obj.language = ApiClient.convertToType(data['language'], 'String');
+      if (data.hasOwnProperty('speech_file'))
+        obj.speechFile = ApiClient.convertToType(data['speech_file'], 'String');
+      if (data.hasOwnProperty('is_ready'))
+        obj.isReady = ApiClient.convertToType(data['is_ready'], 'Boolean');
       if (data.hasOwnProperty('createdAt'))
         obj.createdAt = ApiClient.convertToType(data['createdAt'], 'String');
       if (data.hasOwnProperty('updatedAt'))
@@ -63,31 +64,36 @@ export class Comment {
 /**
  * @member {Number} id
  */
-Comment.prototype.id = undefined;
-
-/**
- * @member {module:model/Profile} author
- */
-Comment.prototype.author = undefined;
+Speech.prototype.id = undefined;
 
 /**
  * @member {module:model/Story} story
  */
-Comment.prototype.story = undefined;
+Speech.prototype.story = undefined;
 
 /**
- * @member {String} body
+ * @member {String} language
  */
-Comment.prototype.body = undefined;
+Speech.prototype.language = undefined;
+
+/**
+ * @member {String} speechFile
+ */
+Speech.prototype.speechFile = undefined;
+
+/**
+ * @member {Boolean} isReady
+ */
+Speech.prototype.isReady = undefined;
 
 /**
  * @member {String} createdAt
  */
-Comment.prototype.createdAt = undefined;
+Speech.prototype.createdAt = undefined;
 
 /**
  * @member {String} updatedAt
  */
-Comment.prototype.updatedAt = undefined;
+Speech.prototype.updatedAt = undefined;
 
 
