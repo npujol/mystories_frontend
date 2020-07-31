@@ -1,15 +1,20 @@
 <template>
   <div v-if="isLoading">Loading stories...</div>
-  <div class="d-flex flex-column justify-center align-center" v-else>
+  <div
+    class="d-flex flex-sm-column justify-center align-self-center mb-6"
+    v-else
+  >
     <div v-if="stories.length === 0">
       No stories are here... yet.
     </div>
-    <RwvStoryPreview
-      v-for="(story, index) in stories"
-      :story="story"
-      :key="story.title + index"
-    />
-    <VPagination :pages="pages" :currentPage.sync="currentPage" />
+    <v-card class="flex-grow-0 flex-shrink-0 pa-10 align-center" flat tile>
+      <RwvStoryPreview
+        v-for="(story, index) in stories"
+        :story="story"
+        :key="story.title + index"
+      />
+      <VPagination :pages="pages" :currentPage.sync="currentPage" />
+    </v-card>
   </div>
 </template>
 

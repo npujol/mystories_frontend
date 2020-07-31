@@ -22,16 +22,12 @@
             {{ tag }}
           </v-tab>
         </v-tabs>
-        <v-row justify="space-around">
-          <v-col cols="12" sm="6" md="4">
-            <v-sheet class="py-4 px-1">
-              <v-chip-group active-class="primary--text">
-                <RwvTag v-for="tag in tags" :tag="tag.tag" :key="tag.pk">
-                </RwvTag>
-              </v-chip-group>
-            </v-sheet>
-          </v-col>
-        </v-row>
+        <v-chip-group
+          class="d-flex pa-10 align-self-center"
+          active-class="primary--text"
+        >
+          <RwvTag v-for="tag in tags" :tag="tag.tag" :key="tag.pk"> </RwvTag>
+        </v-chip-group>
         <router-view></router-view>
       </v-card>
     </v-col>

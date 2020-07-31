@@ -67,7 +67,6 @@ const actions = {
 
 const mutations = {
   [SET_ERROR](state, error) {
-    console.log(error)
     state.errors = error;
   },
   [SET_PROFILE](state, profile) {

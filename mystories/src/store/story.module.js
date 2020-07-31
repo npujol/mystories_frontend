@@ -32,7 +32,13 @@ const initialState = {
     author: {},
     title: "",
     description: "",
+    image: "",
     body: "",
+    language: "",
+    favoritesCount: "",
+    createdAt: "",
+    updatedAt: "",
+    bodyMarkdown: "",
     tags: []
   },
   comments: []
@@ -83,10 +89,7 @@ export const actions = {
     return storiesApi.storiesDelete(slug);
   },
   [HISTORY_EDIT]({ state }) {
-    return storiesApi.storiesPartialUpdate(
-      state.story.slug,
-      state.story
-    );
+    return storiesApi.storiesPartialUpdate(state.story.slug, state.story);
   },
   [HISTORY_EDIT_ADD_TAG](context, tag) {
     context.commit(TAG_ADD, tag);
