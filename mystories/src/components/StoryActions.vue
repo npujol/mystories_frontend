@@ -2,24 +2,34 @@
   <!-- Used when user is also author -->
 
   <span v-if="canModify">
-    <v-btn icon>
-      <v-icon @color="color">mdi-heart</v-icon>
+    <v-btn icon elevation="12">
+      <v-icon>mdi-heart</v-icon>
       <span> {{ story.favoritesCount }} </span>
     </v-btn>
-    <v-btn icon @click="linkTo('story-edit', { slug: story.slug })">
+    <v-btn
+      icon
+      elevation="12"
+      @click="linkTo('story-edit', { slug: story.slug })"
+    >
       <v-icon>mdi-pencil</v-icon>
     </v-btn>
-    <v-btn icon @click="deleteStory()">
+    <v-btn
+      :loading="loading"
+      :disabled="loading"
+      icon
+      elevation="12"
+      @click="deleteStory()"
+    >
       <v-icon>mdi-delete</v-icon>
     </v-btn>
   </span>
   <!-- Used in StoryView when not author -->
   <span v-else>
-    <v-btn text @click="toggleFavorite" @color="color">
+    <v-btn text elevation="12" @click="toggleFavorite" @color="color">
       <v-icon>mdi-heart</v-icon>
       <span> {{ favoriteStoryLabel }} </span>
     </v-btn>
-    <v-btn text @click="toggleFollow" @color="color">
+    <v-btn text elevation="12" @click="toggleFollow" @color="color">
       <v-icon>mdi-account</v-icon>
       <span> {{ followUserLabel }}</span>
     </v-btn>
@@ -39,6 +49,22 @@ import {
 
 export default {
   name: "RwvStoryActions",
+  data() {
+    return {
+      loader: null,
+      loading: false
+    };
+  },
+  watch: {
+    loader() {
+      const l = this.loader;
+      this[l] = !this[l];
+
+      setTimeout(() => (this[l] = false), 3000);
+
+      this.loader = null;
+    }
+  },
   props: {
     story: { type: Object, required: true }
   },
@@ -47,7 +73,7 @@ export default {
     followUserLabel() {
       return `${this.profile.following === "true" ? "Following" : "Follow"} ${
         this.story.author.username
-        }`;
+      }`;
     },
     favoriteStoryLabel() {
       return this.story.favorited === "true" ? "Favorite" : "";
@@ -89,8 +115,10 @@ export default {
     },
     async deleteStory() {
       try {
+        this.loading = true;
         await this.$store.dispatch(HISTORY_DELETE, this.story.slug);
-        this.$router.push("/");
+        this.loading = false;
+        this.$router.go();
       } catch (err) {
         console.error(err);
       }
