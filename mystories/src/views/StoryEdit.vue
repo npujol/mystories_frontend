@@ -1,6 +1,6 @@
 <template>
   <v-card min-width="80%" class="elevation mx-auto" aling="center">
-    <v-card-title class="headline">
+    <v-card-title class="d-flex text-center justify-center">
       <h3 class="d-flex font-weight-bold basil--text">
         New story
       </h3>

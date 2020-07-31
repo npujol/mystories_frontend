@@ -1,6 +1,6 @@
 <template>
   <v-card class="elevation mx-auto ">
-    <v-card-title class="headline">
+    <v-card-title class="d-flex text-center justify-center">
       <h3 class="d-flex font-weight-bold basil--text">
         Register
       </h3>
