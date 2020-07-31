@@ -37,134 +37,135 @@ export class ProfilesApi {
 
 
     /**
-     * Follow a profile. It need a username for the profile to follow
-     * @param {String} userUsername 
-     * @param {module:model/Profile} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Profile} and HTTP response
-     */
-    profilesFollowCreateWithHttpInfo(userUsername, data) {
-      let postBody = data;
-
-      // verify the required parameter 'userUsername' is set
-      if (userUsername === undefined || userUsername === null) {
-        throw new Error("Missing the required parameter 'userUsername' when calling profilesFollowCreate");
-      }
-
-      // verify the required parameter 'data' is set
-      if (data === undefined || data === null) {
-        throw new Error("Missing the required parameter 'data' when calling profilesFollowCreate");
-      }
-
-
-      let pathParams = {
-        'user__username': userUsername
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = ['api_key'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = Profile;
-
-      return this.apiClient.callApi(
-        '/profiles/{user__username}/follow', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType
-      );
-    }
-
-    /**
-     * Follow a profile. It need a username for the profile to follow
-     * @param {String} userUsername 
-     * @param {module:model/Profile} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Profile}
-     */
-    profilesFollowCreate(userUsername, data) {
-      return this.profilesFollowCreateWithHttpInfo(userUsername, data)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
-    }
-
-
-    /**
-     * Unfollow a profile. It need a username for the profile to follow
-     * @param {String} userUsername 
-     * @param {module:model/Profile} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Profile} and HTTP response
-     */
-    profilesFollowDeleteWithHttpInfo(userUsername, data) {
-      let postBody = data;
-
-      // verify the required parameter 'userUsername' is set
-      if (userUsername === undefined || userUsername === null) {
-        throw new Error("Missing the required parameter 'userUsername' when calling profilesFollowDelete");
-      }
-
-      // verify the required parameter 'data' is set
-      if (data === undefined || data === null) {
-        throw new Error("Missing the required parameter 'data' when calling profilesFollowDelete");
-      }
-
-
-      let pathParams = {
-        'user__username': userUsername
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = ['api_key'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = Profile;
-
-      return this.apiClient.callApi(
-        '/profiles/{user__username}/follow', 'DELETE',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType
-      );
-    }
-
-    /**
-     * Unfollow a profile. It need a username for the profile to follow
-     * @param {String} userUsername 
-     * @param {module:model/Profile} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Profile}
-     */
-    profilesFollowDelete(userUsername, data) {
-      return this.profilesFollowDeleteWithHttpInfo(userUsername, data)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
-    }
-
-
-    /**
-     * ProfileRetrieveUpdateAPIView description. It need a username.
+     * General description. It need a username.
      * @param {String} userUsername 
      * @param {Object} opts Optional parameters
      * @param {String} opts.bio 
-     * @param {File} opts.image 
      * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Profile} and HTTP response
      */
-    profilesPartialUpdateWithHttpInfo(userUsername, opts) {
+    profilesChangeImageWithHttpInfo(userUsername, opts) {
       opts = opts || {};
       let postBody = null;
+
+      // verify the required parameter 'userUsername' is set
+      if (userUsername === undefined || userUsername === null) {
+        throw new Error("Missing the required parameter 'userUsername' when calling profilesChangeImage");
+      }
+
+
+      let pathParams = {
+        'user__username': userUsername
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+        'bio': opts['bio']
+      };
+
+      let authNames = ['api_key'];
+      let contentTypes = ['multipart/form-data', 'application/x-www-form-urlencoded'];
+      let accepts = ['application/json'];
+      let returnType = Profile;
+
+      return this.apiClient.callApi(
+        '/profiles/{user__username}/change_image', 'PUT',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType
+      );
+    }
+
+    /**
+     * General description. It need a username.
+     * @param {String} userUsername 
+     * @param {Object} opts Optional parameters
+     * @param {String} opts.bio 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Profile}
+     */
+    profilesChangeImage(userUsername, opts) {
+      return this.profilesChangeImageWithHttpInfo(userUsername, opts)
+        .then(function(response_and_data) {
+          return response_and_data.data;
+        });
+    }
+
+
+    /**
+     * General description. It need a username.
+     * @param {String} userUsername 
+     * @param {module:model/Profile} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Profile} and HTTP response
+     */
+    profilesFollowProfileWithHttpInfo(userUsername, data) {
+      let postBody = data;
+
+      // verify the required parameter 'userUsername' is set
+      if (userUsername === undefined || userUsername === null) {
+        throw new Error("Missing the required parameter 'userUsername' when calling profilesFollowProfile");
+      }
+
+      // verify the required parameter 'data' is set
+      if (data === undefined || data === null) {
+        throw new Error("Missing the required parameter 'data' when calling profilesFollowProfile");
+      }
+
+
+      let pathParams = {
+        'user__username': userUsername
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['api_key'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = Profile;
+
+      return this.apiClient.callApi(
+        '/profiles/{user__username}/follow_profile', 'POST',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType
+      );
+    }
+
+    /**
+     * General description. It need a username.
+     * @param {String} userUsername 
+     * @param {module:model/Profile} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Profile}
+     */
+    profilesFollowProfile(userUsername, data) {
+      return this.profilesFollowProfileWithHttpInfo(userUsername, data)
+        .then(function(response_and_data) {
+          return response_and_data.data;
+        });
+    }
+
+
+    /**
+     * Partial update for a profile
+     * @param {String} userUsername 
+     * @param {module:model/Profile} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Profile} and HTTP response
+     */
+    profilesPartialUpdateWithHttpInfo(userUsername, data) {
+      let postBody = data;
 
       // verify the required parameter 'userUsername' is set
       if (userUsername === undefined || userUsername === null) {
         throw new Error("Missing the required parameter 'userUsername' when calling profilesPartialUpdate");
       }
 
+      // verify the required parameter 'data' is set
+      if (data === undefined || data === null) {
+        throw new Error("Missing the required parameter 'data' when calling profilesPartialUpdate");
+      }
+
 
       let pathParams = {
         'user__username': userUsername
@@ -174,12 +175,10 @@ export class ProfilesApi {
       let headerParams = {
       };
       let formParams = {
-        'bio': opts['bio'],
-        'image': opts['image']
       };
 
       let authNames = ['api_key'];
-      let contentTypes = ['multipart/form-data', 'application/x-www-form-urlencoded'];
+      let contentTypes = ['application/json'];
       let accepts = ['application/json'];
       let returnType = Profile;
 
@@ -191,15 +190,13 @@ export class ProfilesApi {
     }
 
     /**
-     * ProfileRetrieveUpdateAPIView description. It need a username.
+     * Partial update for a profile
      * @param {String} userUsername 
-     * @param {Object} opts Optional parameters
-     * @param {String} opts.bio 
-     * @param {File} opts.image 
+     * @param {module:model/Profile} data 
      * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Profile}
      */
-    profilesPartialUpdate(userUsername, opts) {
-      return this.profilesPartialUpdateWithHttpInfo(userUsername, opts)
+    profilesPartialUpdate(userUsername, data) {
+      return this.profilesPartialUpdateWithHttpInfo(userUsername, data)
         .then(function(response_and_data) {
           return response_and_data.data;
         });
@@ -207,7 +204,7 @@ export class ProfilesApi {
 
 
     /**
-     * ProfileRetrieveUpdateAPIView description. It need a username.
+     * Retrieve a profile
      * @param {String} userUsername 
      * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Profile} and HTTP response
      */
@@ -231,7 +228,7 @@ export class ProfilesApi {
       };
 
       let authNames = ['api_key'];
-      let contentTypes = ['multipart/form-data', 'application/x-www-form-urlencoded'];
+      let contentTypes = ['application/json'];
       let accepts = ['application/json'];
       let returnType = Profile;
 
@@ -243,7 +240,7 @@ export class ProfilesApi {
     }
 
     /**
-     * ProfileRetrieveUpdateAPIView description. It need a username.
+     * Retrieve a profile
      * @param {String} userUsername 
      * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Profile}
      */
@@ -256,20 +253,16 @@ export class ProfilesApi {
 
 
     /**
-     * ProfileRetrieveUpdateAPIView description. It need a username.
+     * General description. It need a username.
      * @param {String} userUsername 
-     * @param {Object} opts Optional parameters
-     * @param {String} opts.bio 
-     * @param {File} opts.image 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Profile} and HTTP response
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing HTTP response
      */
-    profilesUpdateWithHttpInfo(userUsername, opts) {
-      opts = opts || {};
+    profilesUnfollowProfileWithHttpInfo(userUsername) {
       let postBody = null;
 
       // verify the required parameter 'userUsername' is set
       if (userUsername === undefined || userUsername === null) {
-        throw new Error("Missing the required parameter 'userUsername' when calling profilesUpdate");
+        throw new Error("Missing the required parameter 'userUsername' when calling profilesUnfollowProfile");
       }
 
 
@@ -281,12 +274,65 @@ export class ProfilesApi {
       let headerParams = {
       };
       let formParams = {
-        'bio': opts['bio'],
-        'image': opts['image']
       };
 
       let authNames = ['api_key'];
-      let contentTypes = ['multipart/form-data', 'application/x-www-form-urlencoded'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = null;
+
+      return this.apiClient.callApi(
+        '/profiles/{user__username}/unfollow_profile', 'DELETE',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType
+      );
+    }
+
+    /**
+     * General description. It need a username.
+     * @param {String} userUsername 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}
+     */
+    profilesUnfollowProfile(userUsername) {
+      return this.profilesUnfollowProfileWithHttpInfo(userUsername)
+        .then(function(response_and_data) {
+          return response_and_data.data;
+        });
+    }
+
+
+    /**
+     * Update a profile
+     * @param {String} userUsername 
+     * @param {module:model/Profile} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Profile} and HTTP response
+     */
+    profilesUpdateWithHttpInfo(userUsername, data) {
+      let postBody = data;
+
+      // verify the required parameter 'userUsername' is set
+      if (userUsername === undefined || userUsername === null) {
+        throw new Error("Missing the required parameter 'userUsername' when calling profilesUpdate");
+      }
+
+      // verify the required parameter 'data' is set
+      if (data === undefined || data === null) {
+        throw new Error("Missing the required parameter 'data' when calling profilesUpdate");
+      }
+
+
+      let pathParams = {
+        'user__username': userUsername
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['api_key'];
+      let contentTypes = ['application/json'];
       let accepts = ['application/json'];
       let returnType = Profile;
 
@@ -298,15 +344,13 @@ export class ProfilesApi {
     }
 
     /**
-     * ProfileRetrieveUpdateAPIView description. It need a username.
+     * Update a profile
      * @param {String} userUsername 
-     * @param {Object} opts Optional parameters
-     * @param {String} opts.bio 
-     * @param {File} opts.image 
+     * @param {module:model/Profile} data 
      * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Profile}
      */
-    profilesUpdate(userUsername, opts) {
-      return this.profilesUpdateWithHttpInfo(userUsername, opts)
+    profilesUpdate(userUsername, data) {
+      return this.profilesUpdateWithHttpInfo(userUsername, data)
         .then(function(response_and_data) {
           return response_and_data.data;
         });

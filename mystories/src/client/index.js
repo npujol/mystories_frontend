@@ -23,11 +23,8 @@ import {Login} from './model/Login';
 import {Notification} from './model/Notification';
 import {Profile} from './model/Profile';
 import {Registration} from './model/Registration';
-import {Speech} from './model/Speech';
 import {Story} from './model/Story';
 import {Tag} from './model/Tag';
-import {TokenObtainPair} from './model/TokenObtainPair';
-import {TokenRefresh} from './model/TokenRefresh';
 import {User} from './model/User';
 import {AuthApi} from './api/AuthApi';
 import {NotificationsApi} from './api/NotificationsApi';
@@ -130,12 +127,6 @@ export {
     Registration,
 
     /**
-     * The Speech model constructor.
-     * @property {module:model/Speech}
-     */
-    Speech,
-
-    /**
      * The Story model constructor.
      * @property {module:model/Story}
      */
@@ -146,18 +137,6 @@ export {
      * @property {module:model/Tag}
      */
     Tag,
-
-    /**
-     * The TokenObtainPair model constructor.
-     * @property {module:model/TokenObtainPair}
-     */
-    TokenObtainPair,
-
-    /**
-     * The TokenRefresh model constructor.
-     * @property {module:model/TokenRefresh}
-     */
-    TokenRefresh,
 
     /**
      * The User model constructor.
