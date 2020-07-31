@@ -1,7 +1,7 @@
 <template>
   <v-row class="d-flex justify-center align-center">
     <v-col>
-      <v-card color="basil" class="mx-auto">
+      <v-card color="basil" class="mx-auto" aling="center">
         <v-card-title class="d-flex text-center justify-center">
           <h1 class="d-flex font-weight-bold basil--text text-center">
             A place to shared yours stories
@@ -22,9 +22,16 @@
             {{ tag }}
           </v-tab>
         </v-tabs>
-        <v-chip-group column active-class="primary--text">
-          <RwvTag v-for="tag in tags" :tag="tag.tag" :key="tag.pk"> </RwvTag>
-        </v-chip-group>
+        <v-row justify="space-around">
+          <v-col cols="12" sm="6" md="4">
+            <v-sheet class="py-4 px-1">
+              <v-chip-group active-class="primary--text">
+                <RwvTag v-for="tag in tags" :tag="tag.tag" :key="tag.pk">
+                </RwvTag>
+              </v-chip-group>
+            </v-sheet>
+          </v-col>
+        </v-row>
         <router-view></router-view>
       </v-card>
     </v-col>
