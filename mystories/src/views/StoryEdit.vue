@@ -1,14 +1,13 @@
 <template>
-  <v-card min-width="80%" class="elevation mx-auto" aling="center">
-    <v-card-title class="d-flex text-center justify-center">
-      <h3 class="d-flex font-weight-bold basil--text">
+  <v-card class="pa-2 mx-auto" outlined tile>
+    <v-card-title>
+      <h3 class="font-weight-bold basil--text">
         New story
       </h3>
     </v-card-title>
     <v-spacer></v-spacer>
     <v-card-text>
       <RwvListErrors :errors="errors" />
-
       <v-form>
         <v-text-field
           label="Title"
@@ -19,10 +18,16 @@
         ></v-text-field>
         <v-textarea
           label="Description"
-          rows="5"
           v-model="story.description"
         ></v-textarea>
-        <v-textarea label="Body" rows="5" v-model="story.body"></v-textarea>
+        <v-textarea
+          label="Body"
+          @input="update"
+          outlined
+          full-width
+          v-model="story.body"
+        ></v-textarea>
+        <div elevation="12" v-html="compiledMarkdown"></div>
         <v-layout wrap>
           <v-flex xs12>
             <v-combobox
@@ -104,12 +109,16 @@ export default {
       inProgress: false,
       errors: {},
       valid: false,
+      input: "# hello",
       items: [],
       search: "" //sync search
     };
   },
   computed: {
-    ...mapGetters(["story"])
+    ...mapGetters(["story"]),
+    compiledMarkdown: function() {
+      return marked(this.story.body, { sanitize: true });
+    }
   },
   methods: {
     onPublish(slug) {
@@ -136,6 +145,11 @@ export default {
           this.search = "";
         });
       });
+    },
+    update() {
+      _.debounce(function(e) {
+        this.story.body = e.target.value;
+      }, 300);
     }
   }
 };

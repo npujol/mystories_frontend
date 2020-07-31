@@ -1,38 +1,35 @@
 <template>
-  <v-card
-    class="flex-grow-0 flex-shrink-0 pa-2 mx-auto"
-    elevation="12"
-    outlined
-    tile
-  >
-    <v-img :src="story.image" class="white--text align-end" height="200px">
-      <v-card-title>
-        {{ story.title }} by {{ story.author.username }}
-      </v-card-title>
-    </v-img>
-
-    <v-card-text class="aling-self-center justify-self-center">
-      <div>
-        Created: {{ story.createdAt | date }} - Updated
-        {{ story.updatedAt | date }}
-      </div>
-      <h1 class="display-1 text--primary">
-        {{ story.title }}
-      </h1>
-      by {{ story.author.username }}
-      <v-avatar
-        @click="linkTo('profile', { username: story.author.username })"
+  <v-card class="pa-2" outlined>
+    <v-list-item>
+      <v-list-item-avatar
         color="grey"
+        @click="linkTo('profile', { username: story.author.username })"
       >
-        <img class="is-rounded" :src="story.author.image" />
-      </v-avatar>
-      <div class="text--primary">
-        {{ story.description }}
-      </div>
-      <TagList :tags="story.tags" />
+        <img class="is-rounded" :src="story.author.image"
+      /></v-list-item-avatar>
+      <v-list-item-content>
+        <v-list-item-title class="headline">{{
+          story.title
+        }}</v-list-item-title>
+        <v-list-item-subtitle>
+          by
+          <router-link
+            class="logo-font"
+            :to="{
+              name: 'profile',
+              params: { username: story.author.username }
+            }"
+            >{{ story.author.username }}</router-link
+          >
+        </v-list-item-subtitle>
+      </v-list-item-content>
+    </v-list-item>
+    <v-img :src="story.image" class="white--text align-end" height="200px">
+    </v-img>
+    <v-card-text>
+      {{ story.description }}
     </v-card-text>
-    <router-view></router-view>
-
+    <TagList :tags="story.tags" />
     <v-card-actions>
       <v-btn
         elevation="12"
