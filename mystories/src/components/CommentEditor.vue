@@ -1,6 +1,8 @@
 <template>
   <v-card class="mx-auto" outlined>
-    <v-card-title class="headline" dark>Add comment</v-card-title>
+    <v-card-title class="d-flex text-center justify-center"
+      >Add comment</v-card-title
+    >
     <v-card-text>
       <RwvListErrors :errors="errors" />
       <v-form>

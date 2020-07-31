@@ -6,7 +6,7 @@ import {
   FETCH_PROFILE_FOLLOW,
   FETCH_PROFILE_UNFOLLOW
 } from "./actions.type.js";
-import { SET_PROFILE } from "./mutations.type.js";
+import { SET_PROFILE, SET_ERROR } from "./mutations.type.js";
 
 const profilesApi = new ProfilesApi();
 const state = {
@@ -32,7 +32,7 @@ const actions = {
       })
       .catch(() => {
         // #todo SET_ERROR cannot work in multiple states
-        // context.commit(SET_ERROR, response.errors);
+        context.commit(SET_ERROR, JSON.parse(response.response.text).errors);
       });
   },
   [FETCH_PROFILE_FOLLOW](context, payload) {
@@ -46,7 +46,7 @@ const actions = {
       })
       .catch(() => {
         // #todo SET_ERROR cannot work in multiple states
-        // context.commit(SET_ERROR, response.errors);
+        context.commit(SET_ERROR, JSON.parse(response.response.text).errors);
       });
   },
   [FETCH_PROFILE_UNFOLLOW](context, payload) {
@@ -60,15 +60,16 @@ const actions = {
       })
       .catch(() => {
         // #todo SET_ERROR cannot work in multiple states
-        // context.commit(SET_ERROR, response.errors);
+        context.commit(SET_ERROR, JSON.parse(response.response.text).errors);
       });
   }
 };
 
 const mutations = {
-  // [SET_ERROR](state, error) {
-  //   state.errors = error;
-  // },
+  [SET_ERROR](state, error) {
+    console.log(error)
+    state.errors = error;
+  },
   [SET_PROFILE](state, profile) {
     state.profile = profile;
     state.errors = {};

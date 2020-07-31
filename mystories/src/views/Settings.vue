@@ -1,15 +1,16 @@
 <template>
   <v-card min-width="80%" class="elevation mx-auto" aling="center">
-    <v-card-title class="headline">
+    <v-card-title class="d-flex text-center justify-center">
       <h3 class="d-flex font-weight-bold basil--text">
         Yours settings
       </h3>
     </v-card-title>
     <v-spacer></v-spacer>
-    <v-card-text>
+    <v-card-text aling="center">
       <RwvListErrors :errors="errors" />
       <v-form>
         <v-img
+          aling="center"
           max-width="20%"
           class="is-rounded"
           :src="currentUser.profile.image"
@@ -67,6 +68,7 @@ export default {
   components: { RwvListErrors },
   data() {
     return {
+      errors: {},
       valid: false,
       rules: {
         photo: v =>
@@ -79,8 +81,12 @@ export default {
   },
   methods: {
     updateSettings() {
+      console.log(this.currentUser)
       this.$store.dispatch(UPDATE_USER, this.currentUser).then(() => {
         this.$router.push({ name: "home" });
+      }).catch(response => {
+        this.inProgress = false;
+        this.errors = JSON.parse(response.response.text).errors;
       });
     },
     previewImage(file) {

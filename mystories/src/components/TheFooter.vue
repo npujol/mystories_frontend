@@ -1,7 +1,7 @@
 <template>
   <v-footer padless>
     <v-card class="flex" flat tile>
-      <v-card-title class="teal">
+      <v-card-title class="d-flex text-center justify-center">
         <strong class="subheading">Get connected with us!</strong>
         <v-spacer></v-spacer>
         <v-btn v-for="icon in icons" :key="icon" class="mx-4" icon>
