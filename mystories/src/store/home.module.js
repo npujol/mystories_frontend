@@ -14,7 +14,8 @@ const state = {
   tags: [],
   stories: [],
   isLoading: true,
-  storiesCount: 0
+  storiesCount: 0,
+  limit: 10
 };
 
 const getters = {
@@ -29,30 +30,23 @@ const getters = {
   },
   tags(state) {
     return state.tags;
+  },
+  limit(state) {
+    return state.limit;
   }
 };
 
 const actions = {
-  [FETCH_HISTORIES]({ commit }) {
+  async [FETCH_HISTORIES]({ commit }) {
     commit(FETCH_START);
-    return storiesApi
-      .storiesFeedList()
-      .then(data => {
-        commit(FETCH_END, data);
-      })
-      .catch(error => {
-        throw new Error(error);
-      });
+    const data = await storiesApi.storiesFeedList({ limit: state.limit });
+    commit(FETCH_END, data);
+    return data;
   },
-  [FETCH_TAGS]({ commit }) {
-    return tagsApi
-      .tagsList()
-      .then(data => {
-        commit(SET_TAGS, data);
-      })
-      .catch(error => {
-        throw new Error(error);
-      });
+  async [FETCH_TAGS]({ commit }) {
+    const data = await tagsApi.tagsList();
+    commit(SET_TAGS, data);
+    return data;
   }
 };
 

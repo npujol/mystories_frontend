@@ -6,7 +6,7 @@
         <v-container class="fill-height" fluid>
           <v-row justify="center" align="center">
             <v-col cols="10">
-              <router-view></router-view>
+              <router-view class="pa-2"></router-view>
             </v-col>
           </v-row>
         </v-container>

@@ -81,13 +81,15 @@ export default {
   },
   methods: {
     updateSettings() {
-      console.log(this.currentUser)
-      this.$store.dispatch(UPDATE_USER, this.currentUser).then(() => {
-        this.$router.push({ name: "home" });
-      }).catch(response => {
-        this.inProgress = false;
-        this.errors = JSON.parse(response.response.text).errors;
-      });
+      this.$store
+        .dispatch(UPDATE_USER, this.currentUser)
+        .then(() => {
+          this.$router.push({ name: "home" });
+        })
+        .catch(response => {
+          this.inProgress = false;
+          this.errors = JSON.parse(response.response.text).errors;
+        });
     },
     previewImage(file) {
       var reader = new FileReader();
