@@ -112,7 +112,7 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch(LOGOUT).then(() => {
-        this.$router.push({ name: "home" });
+        this.$router.go({ name: "home" });
       });
     },
     linkTo(route, params) {

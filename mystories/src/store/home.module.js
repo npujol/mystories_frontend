@@ -1,5 +1,5 @@
 import { TagsApi, StoriesApi } from "../client";
-import { FETCH_HISTORIES, FETCH_TAGS } from "./actions.type.js";
+import { FETCH_HISTORIES, FETCH_TAGS, FETCH_TAG } from "./actions.type.js";
 import {
   FETCH_START,
   FETCH_END,
@@ -15,7 +15,8 @@ const state = {
   stories: [],
   isLoading: true,
   storiesCount: 0,
-  limit: 10
+  limit: 10,
+  tag: null
 };
 
 const getters = {
@@ -33,17 +34,26 @@ const getters = {
   },
   limit(state) {
     return state.limit;
+  },
+  tag(state) {
+    return state.tag;
   }
 };
 
 const actions = {
-  async [FETCH_HISTORIES]({ commit }) {
+  async [FETCH_HISTORIES]({ commit }, params) {
+    console.log(params);
     commit(FETCH_START);
-    const data = await storiesApi.storiesFeedList({ limit: state.limit });
+    const data = await storiesApi.storiesList(params.filters);
     commit(FETCH_END, data);
     return data;
   },
   async [FETCH_TAGS]({ commit }) {
+    const data = await tagsApi.tagsList();
+    commit(SET_TAGS, data);
+    return data;
+  },
+  async [FETCH_TAGS]({ commit }, params) {
     const data = await tagsApi.tagsList();
     commit(SET_TAGS, data);
     return data;

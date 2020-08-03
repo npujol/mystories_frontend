@@ -1,6 +1,5 @@
 import Vue from "vue";
 import { StoriesApi } from "../client";
-import JwtService from "@/common/jwt.service";
 
 import {
   FETCH_HISTORY,

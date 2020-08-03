@@ -71,11 +71,6 @@ export default {
     favorited: {
       type: String,
       required: false
-    },
-    itemsPerPage: {
-      type: Number,
-      required: false,
-      default: 10
     }
   },
   data() {
@@ -86,17 +81,23 @@ export default {
   computed: {
     listConfig() {
       const { type } = this;
+      console.log("type", type);
       const filters = {
-        offset: (this.currentPage - 1) * this.itemsPerPage,
-        limit: this.itemsPerPage
+        offset: (this.currentPage - 1) * this.limit,
+        limit: this.limit
       };
+      console.log("filters", filters);
       if (this.author) {
+        console.log("have a author", this.author);
         filters.author = this.author;
       }
       if (this.tag) {
+        console.log("have a tag", this.tag);
         filters.tag = this.tag;
       }
       if (this.favorited) {
+        console.log("have favorited", this.favorited);
+
         filters.favorited = this.favorited;
       }
       return {
@@ -105,7 +106,7 @@ export default {
       };
     },
     pages() {
-      if (this.isLoading || this.storiesCount <= this.itemsPerPage) {
+      if (this.isLoading || this.storiesCount <= this.limit) {
         return 0;
       }
       return Math.ceil(this.storiesCount / this.limit);
@@ -114,7 +115,7 @@ export default {
   },
   watch: {
     currentPage(newValue) {
-      this.listConfig.filters.offset = (newValue - 1) * this.itemsPerPage;
+      this.listConfig.filters.offset = (newValue - 1) * this.limit;
       this.fetchStories();
     },
     type() {
@@ -139,7 +140,7 @@ export default {
   },
   methods: {
     fetchStories() {
-      this.$store.dispatch(FETCH_HISTORIES);
+      this.$store.dispatch(FETCH_HISTORIES, this.listConfig);
     },
     resetPagination() {
       this.listConfig.offset = 0;

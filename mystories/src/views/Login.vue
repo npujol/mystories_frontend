@@ -76,7 +76,6 @@ export default {
   },
   methods: {
     onSubmit(email, password) {
-      console.log(email, password);
       this.$store
         .dispatch(LOGIN, { email, password })
         .then(() => this.$router.push({ name: "home" }));

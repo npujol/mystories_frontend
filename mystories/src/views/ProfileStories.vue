@@ -8,7 +8,7 @@
           </h1>
         </v-card-title>
 
-        <RwvStoryList :author="author" :items-per-page="5"></RwvStoryList>
+        <RwvStoryList :author="author"></RwvStoryList>
       </v-card>
     </v-col>
   </v-row>

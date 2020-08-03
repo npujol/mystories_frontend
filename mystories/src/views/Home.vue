@@ -6,25 +6,43 @@
       </h1>
     </v-card-title>
 
-    <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
-      <v-tab @click="linkTo('home', {})">
+    <v-tabs
+      v-model="tab"
+      background-color="transparent"
+      color="basil"
+      grow
+      mandatory
+      @change="onChangeTab"
+    >
+      <v-tab :disabled="tab === 0" @change="linkTo('home', {})">
         <v-icon>mdi-home</v-icon>
         Global Feed
       </v-tab>
-      <v-tab v-if="isAuthenticated" @click="linkTo('home-my-feed', {})">
+      <v-tab
+        :disabled="tab === 1"
+        v-if="isAuthenticated"
+        @change="linkTo('home-my-feed', { author: currentUser.username })"
+      >
         <v-icon>mdi-account-circle</v-icon>
         Your Feed
       </v-tab>
-      <v-tab v-if="tag" @click="linkTo('home-tag', { tag })">
+      <v-tab
+        :disabled="tab === 2"
+        v-if="tag"
+        @change="linkTo('home-tag', { tag })"
+      >
         <v-icon>mdi-tag</v-icon>
         {{ tag }}
       </v-tab>
     </v-tabs>
-    <v-chip-group
-      class="d-flex pa-10 align-self-center"
-      active-class="primary--text"
-    >
-      <RwvTag v-for="tag in tags" :tag="tag.tag" :key="tag.pk"> </RwvTag>
+    <v-chip-group active-class="primary--text" v-model="selected">
+      <RwvTag
+        :disabled="value.tag == selected"
+        v-for="value in tags"
+        :tag="value.tag"
+        :key="value.pk"
+      >
+      </RwvTag>
     </v-chip-group>
     <router-view></router-view>
   </v-card>
@@ -45,13 +63,26 @@ export default {
   components: {
     RwvTag
   },
+  async beforeMount() {
+    this.initialState(this.$route);
+  },
+  async beforeRouteUpdate(to, from, next) {
+    await this.initialState(to);
+    return next();
+  },
   mounted() {
     this.$store.dispatch(FETCH_TAGS);
   },
   computed: {
-    ...mapGetters(["isAuthenticated", "tags"]),
+    ...mapGetters(["isAuthenticated", "tags", "currentUser"]),
     tag() {
       return this.$route.params.tag;
+    },
+    author() {
+      return this.$route.params.author;
+    },
+    selected() {
+      return this.tag;
     }
   },
   methods: {
@@ -60,6 +91,22 @@ export default {
         this.$router.push({ name: route });
       }
       this.$router.push({ name: route, params: params });
+    },
+    onChangeTab(clickedTab) {
+      this.tab = clickedTab;
+    },
+    initialState(route) {
+      if (route.name == "home") {
+        this.tab = 0;
+      }
+      if (route.name == "home-my-feed") {
+        this.tab = 1;
+      }
+      if (route.name == "home-tag") {
+        this.tab = 2;
+        console.log(this.tag);
+        this.selected = route.params.tag;
+      }
     }
   }
 };

@@ -1,5 +1,4 @@
 import { ProfilesApi } from "../client";
-import JwtService from "@/common/jwt.service";
 
 import {
   FETCH_PROFILE,
@@ -22,7 +21,6 @@ const getters = {
 
 const actions = {
   [FETCH_PROFILE](context, payload) {
-    JwtService.setHeader();
     const { username } = payload;
     return profilesApi
       .profilesRead(username)
@@ -36,7 +34,6 @@ const actions = {
       });
   },
   [FETCH_PROFILE_FOLLOW](context, payload) {
-    JwtService.setHeader();
     const { username } = payload;
     return profilesApi
       .profilesFollowCreate(username, "")
@@ -50,7 +47,6 @@ const actions = {
       });
   },
   [FETCH_PROFILE_UNFOLLOW](context, payload) {
-    JwtService.setHeader();
     const { username } = payload;
     return profilesApi
       .profilesFollowDelete(username, "")

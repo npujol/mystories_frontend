@@ -1,5 +1,4 @@
 import { StoriesApi } from "../client";
-import JwtService from "@/common/jwt.service";
 
 import { FETCH_HISTORY, FETCH_COMMENTS } from "./actions.type.js";
 import { SET_HISTORY, SET_COMMENTS } from "./mutations.type.js";
@@ -13,7 +12,6 @@ export const state = {
 
 export const actions = {
   [FETCH_HISTORY](context, storySlug) {
-    JwtService.setHeader();
     return storiesApi
       .storiesRead(storySlug)
       .then(data => {
@@ -24,7 +22,6 @@ export const actions = {
       });
   },
   [FETCH_COMMENTS](context, storySlug) {
-    JwtService.setHeader();
     return storiesApi
       .storiesCommentsRead(storySlug)
       .then(data => {

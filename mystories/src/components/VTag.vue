@@ -15,11 +15,6 @@ export default {
     }
   },
   methods: {
-    logout() {
-      this.$store.dispatch(LOGOUT).then(() => {
-        this.$router.push({ name: "home" });
-      });
-    },
     linkTo(route, params) {
       if (params.length === 0) {
         this.$router.push({ name: route });
