@@ -71,12 +71,12 @@ export const actions = {
     context.dispatch(FETCH_COMMENTS, payload.slug);
   },
   async [FAVORITE_ADD](context, slug) {
-    const data = await storiesApi.storiesFavoriteCreate(slug, "");
+    const data = await storiesApi.storiesFavorite(slug, "");
     context.commit(UPDATE_HISTORY_IN_LIST, data, { root: true });
     context.commit(SET_HISTORY, data);
   },
   async [FAVORITE_REMOVE](context, slug) {
-    const data = await storiesApi.storiesFavoriteDelete(slug, "");
+    const data = await storiesApi.storiesUnfavorite(slug, "");
     // Update list as well. This allows us to favorite an story in the Home view.
     context.commit(UPDATE_HISTORY_IN_LIST, data, { root: true });
     context.commit(SET_HISTORY, data);

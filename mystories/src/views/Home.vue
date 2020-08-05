@@ -9,8 +9,8 @@
     <v-tabs
       v-model="tab"
       background-color="transparent"
-      color="basil"
       grow
+      dark
       mandatory
       @change="onChangeTab"
     >
@@ -72,12 +72,12 @@ export default {
   components: {
     RwvTag
   },
-  async beforeMount() {
-    this.initialState(this.$route);
-  },
   async beforeRouteUpdate(to, from, next) {
     await this.initialState(to);
     return next();
+  },
+  async beforeUpdate() {
+    await this.initialState(this.$route);
   },
   mounted() {
     this.$store.dispatch(FETCH_TAGS);
@@ -92,12 +92,10 @@ export default {
     },
     selected: {
       get() {
-        return this.tab ? this.tab.pk : null;
+        return this.tag ? this.tag.pk : null;
       },
-      // setter
       set(newValue) {
-        console.log(newValue);
-        return this.tab ? this.tab.pk : null;
+        return this.tag ? this.tag.pk : null;
       }
     }
   },
@@ -113,15 +111,12 @@ export default {
     },
     initialState(route) {
       if (route.name == "home") {
-        console.log("home");
         this.tab = 0;
       }
       if (route.name == "home-my-feed") {
-        console.log("home-my-feed");
         this.tab = 1;
       }
       if (route.name == "home-tag") {
-        console.log("home-tag");
         this.tab = 2;
       }
     }

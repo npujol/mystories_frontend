@@ -2,7 +2,7 @@
   <!-- Used when user is also author -->
 
   <span v-if="canModify">
-    <v-btn icon elevation="12">
+    <v-btn text elevation="12">
       <v-icon>mdi-heart</v-icon>
       <span> {{ story.favoritesCount }} </span>
     </v-btn>
@@ -25,11 +25,10 @@
   </span>
   <!-- Used in StoryView when not author -->
   <span v-else>
-    <v-btn text elevation="12" @click="toggleFavorite" @color="color">
+    <v-btn icon elevation="12" @click="toggleFavorite()" :color="color">
       <v-icon>mdi-heart</v-icon>
-      <span> {{ favoriteStoryLabel }} </span>
     </v-btn>
-    <v-btn text elevation="12" @click="toggleFollow" @color="color">
+    <v-btn text elevation="12" @click="toggleFollow()">
       <v-icon>mdi-account</v-icon>
       <span> {{ followUserLabel }}</span>
     </v-btn>
@@ -69,23 +68,26 @@ export default {
     story: { type: Object, required: true }
   },
   computed: {
-    ...mapGetters(["profile", "isAuthenticated"]),
+    ...mapGetters(["profile", "currentUser", "isAuthenticated"]),
     followUserLabel() {
-      return `${this.profile.following === "true" ? "Following" : "Follow"} ${
-        this.story.author.username
-      }`;
+      return `${this.profile.following === "true" ? "Following" : "Follow"}`;
     },
     favoriteStoryLabel() {
       return this.story.favorited === "true" ? "Favorite" : "";
     },
     color() {
-      return this.story.favorited === "true" ? "success" : "blue-grey";
+      return this.story.favorited === "true" ? "error" : "white";
     },
     canModify() {
-      return this.story.author.username === this.profile.username;
+      return this.currentUser.username === this.profile.username;
     }
   },
   mounted() {
+    this.$store.dispatch(FETCH_PROFILE, {
+      username: this.story.author.username
+    });
+  },
+  beforeUpdate() {
     this.$store.dispatch(FETCH_PROFILE, {
       username: this.story.author.username
     });
@@ -106,7 +108,7 @@ export default {
         return;
       }
       const action =
-        this.profile.following === "true"
+        this.story.author.following === "true"
           ? FETCH_PROFILE_UNFOLLOW
           : FETCH_PROFILE_FOLLOW;
       this.$store.dispatch(action, {

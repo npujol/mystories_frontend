@@ -27,7 +27,6 @@ export default {
   },
   methods: {
     linkTo(route, params) {
-      console.log(this.disabled);
       if (params.length === 0) {
         this.$router.push({ name: route });
       }

@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pa-2" outlined>
+  <v-card outlined>
     <v-list-item>
       <v-list-item-avatar
         color="grey"
@@ -43,7 +43,7 @@
         <span> Read more </span>
       </v-btn>
       <v-spacer></v-spacer>
-      <RwvStoryActions :story="story" :canModify="isCurrentUser()" />
+      <RwvStoryActions :story="story" />
     </v-card-actions>
   </v-card>
 </template>
@@ -74,11 +74,6 @@ export default {
         this.$router.push({ name: route });
       }
       this.$router.push({ name: route, params: params });
-    },
-    isCurrentUser() {
-      if (this.currentUser.username && this.story.author.username) {
-        return this.currentUser.username === this.story.author.username;
-      }
     }
   }
 };

@@ -36,7 +36,7 @@ const actions = {
   [FETCH_PROFILE_FOLLOW](context, payload) {
     const { username } = payload;
     return profilesApi
-      .profilesFollowCreate(username, "")
+      .profilesFollowProfile(username, "")
       .then(data => {
         context.commit(SET_PROFILE, data);
         return data;
@@ -49,7 +49,7 @@ const actions = {
   [FETCH_PROFILE_UNFOLLOW](context, payload) {
     const { username } = payload;
     return profilesApi
-      .profilesFollowDelete(username, "")
+      .profilesUnfollowProfile(username, "")
       .then(data => {
         context.commit(SET_PROFILE, data);
         return data;
