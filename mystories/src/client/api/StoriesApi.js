@@ -814,14 +814,20 @@ export class StoriesApi {
     /**
      * General ViewSet description
      * @param {String} slug 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing HTTP response
+     * @param {module:model/Story} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Story} and HTTP response
      */
-    storiesUnfavoriteWithHttpInfo(slug) {
-      let postBody = null;
+    storiesUnfavoriteWithHttpInfo(slug, data) {
+      let postBody = data;
 
       // verify the required parameter 'slug' is set
       if (slug === undefined || slug === null) {
         throw new Error("Missing the required parameter 'slug' when calling storiesUnfavorite");
+      }
+
+      // verify the required parameter 'data' is set
+      if (data === undefined || data === null) {
+        throw new Error("Missing the required parameter 'data' when calling storiesUnfavorite");
       }
 
 
@@ -838,10 +844,10 @@ export class StoriesApi {
       let authNames = ['api_key'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
-      let returnType = null;
+      let returnType = Story;
 
       return this.apiClient.callApi(
-        '/stories/{slug}/unfavorite', 'DELETE',
+        '/stories/{slug}/unfavorite', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType
       );
@@ -850,10 +856,11 @@ export class StoriesApi {
     /**
      * General ViewSet description
      * @param {String} slug 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}
+     * @param {module:model/Story} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Story}
      */
-    storiesUnfavorite(slug) {
-      return this.storiesUnfavoriteWithHttpInfo(slug)
+    storiesUnfavorite(slug, data) {
+      return this.storiesUnfavoriteWithHttpInfo(slug, data)
         .then(function(response_and_data) {
           return response_and_data.data;
         });
