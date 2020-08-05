@@ -81,25 +81,20 @@ export default {
   computed: {
     listConfig() {
       const { type } = this;
-      console.log("type", type);
       const filters = {
         offset: (this.currentPage - 1) * this.limit,
         limit: this.limit
       };
-      console.log("filters", filters);
       if (this.author) {
-        console.log("have a author", this.author);
-        filters.author = this.author;
+        filters.authorUserUsername = this.author;
       }
       if (this.tag) {
-        console.log("have a tag", this.tag);
-        filters.tag = this.tag;
+        filters.tagsTag = this.tag;
       }
       if (this.favorited) {
-        console.log("have favorited", this.favorited);
-
-        filters.favorited = this.favorited;
+        filters.authorFavorites = this.favorited;
       }
+      // console.log(type, filters);
       return {
         type,
         filters

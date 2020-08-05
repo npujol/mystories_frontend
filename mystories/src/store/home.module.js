@@ -42,7 +42,6 @@ const getters = {
 
 const actions = {
   async [FETCH_HISTORIES]({ commit }, params) {
-    console.log(params);
     commit(FETCH_START);
     const data = await storiesApi.storiesList(params.filters);
     commit(FETCH_END, data);
@@ -53,7 +52,7 @@ const actions = {
     commit(SET_TAGS, data);
     return data;
   },
-  async [FETCH_TAGS]({ commit }, params) {
+  async [FETCH_TAGS]({ commit }) {
     const data = await tagsApi.tagsList();
     commit(SET_TAGS, data);
     return data;

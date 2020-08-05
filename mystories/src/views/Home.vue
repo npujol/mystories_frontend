@@ -96,6 +96,7 @@ export default {
       },
       // setter
       set(newValue) {
+        console.log(newValue);
         return this.tab ? this.tab.pk : null;
       }
     }
