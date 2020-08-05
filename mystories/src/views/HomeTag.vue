@@ -1,5 +1,5 @@
 <template>
-  <div><RwvStoryList :tag="tag.tag" type="tag"></RwvStoryList></div>
+  <div><RwvStoryList :tag="tag" type="tag"></RwvStoryList></div>
 </template>
 
 <script>

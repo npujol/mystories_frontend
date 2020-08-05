@@ -32,12 +32,21 @@
         @change="linkTo('home-tag', { tag })"
       >
         <v-icon>mdi-tag</v-icon>
-        {{ tag }}
+        {{ tag.tag }}
       </v-tab>
     </v-tabs>
-    <v-chip-group active-class="primary--text" v-model="selected">
+    <v-chip-group v-if="tag" active-class="primary--text" v-model="selected">
       <RwvTag
-        :disabled="value.tag == selected"
+        :disabled="value.pk === selected"
+        v-for="value in tags"
+        :tag="value.tag"
+        :key="value.pk"
+      >
+      </RwvTag>
+    </v-chip-group>
+    <v-chip-group v-if="!tag" active-class="primary--text" v-model="selected">
+      <RwvTag
+        :disabled="false"
         v-for="value in tags"
         :tag="value.tag"
         :key="value.pk"
@@ -76,13 +85,19 @@ export default {
   computed: {
     ...mapGetters(["isAuthenticated", "tags", "currentUser"]),
     tag() {
-      return this.$route.params.tag;
+      return this.tags.find(tag => tag.tag === this.$route.params.tag);
     },
     author() {
       return this.$route.params.author;
     },
-    selected() {
-      return this.tag;
+    selected: {
+      get() {
+        return this.tab ? this.tab.pk : null;
+      },
+      // setter
+      set(newValue) {
+        return this.tab ? this.tab.pk : null;
+      }
     }
   },
   methods: {
@@ -97,15 +112,16 @@ export default {
     },
     initialState(route) {
       if (route.name == "home") {
+        console.log("home");
         this.tab = 0;
       }
       if (route.name == "home-my-feed") {
+        console.log("home-my-feed");
         this.tab = 1;
       }
       if (route.name == "home-tag") {
+        console.log("home-tag");
         this.tab = 2;
-        console.log(this.tag);
-        this.selected = route.params.tag;
       }
     }
   }

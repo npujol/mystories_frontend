@@ -1,5 +1,11 @@
 <template>
-  <v-chip label small draggable @click="linkTo('home-tag', { tag: tag })">
+  <v-chip
+    label
+    small
+    draggable
+    :disabled="disabled"
+    @click="linkTo('home-tag', { tag: tag })"
+  >
     {{ tag }}
   </v-chip>
 </template>
@@ -12,10 +18,16 @@ export default {
       type: String,
       required: true,
       default: () => ""
+    },
+    disabled: {
+      type: Boolean,
+      required: true,
+      default: () => false
     }
   },
   methods: {
     linkTo(route, params) {
+      console.log(this.disabled);
       if (params.length === 0) {
         this.$router.push({ name: route });
       }
