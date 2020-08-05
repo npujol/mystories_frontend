@@ -1,10 +1,10 @@
 import { TagsApi, StoriesApi } from "../client";
-import { FETCH_HISTORIES, FETCH_TAGS, FETCH_TAG } from "./actions.type.js";
+import { FETCH_STORIES, FETCH_TAGS, FETCH_TAG } from "./actions.type.js";
 import {
   FETCH_START,
   FETCH_END,
   SET_TAGS,
-  UPDATE_HISTORY_IN_LIST
+  UPDATE_STORY_IN_LIST
 } from "./mutations.type.js";
 
 const storiesApi = new StoriesApi();
@@ -41,7 +41,7 @@ const getters = {
 };
 
 const actions = {
-  async [FETCH_HISTORIES]({ commit }, params) {
+  async [FETCH_STORIES]({ commit }, params) {
     commit(FETCH_START);
     const data = await storiesApi.storiesList(params.filters);
     commit(FETCH_END, data);
@@ -72,7 +72,7 @@ const mutations = {
   [SET_TAGS](state, data) {
     state.tags = data.results;
   },
-  [UPDATE_HISTORY_IN_LIST](state, data) {
+  [UPDATE_STORY_IN_LIST](state, data) {
     state.stories = state.stories.map(story => {
       if (story.slug !== data.slug) {
         return story;

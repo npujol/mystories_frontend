@@ -64,12 +64,12 @@ import { mapGetters } from "vuex";
 import store from "@/store";
 import RwvListErrors from "@/components/ListErrors.vue";
 import {
-  HISTORY_PUBLISH,
-  HISTORY_EDIT,
-  FETCH_HISTORY,
-  HISTORY_EDIT_ADD_TAG,
-  HISTORY_EDIT_REMOVE_TAG,
-  HISTORY_RESET_STATE
+  STORY_PUBLISH,
+  STORY_EDIT,
+  FETCH_STORY,
+  STORY_EDIT_ADD_TAG,
+  STORY_EDIT_REMOVE_TAG,
+  STORY_RESET_STATE
 } from "@/store/actions.type.js";
 
 export default {
@@ -84,16 +84,16 @@ export default {
   async beforeRouteUpdate(to, from, next) {
     // Reset state if user goes from /editor/:id to /editor
     // The component is not recreated so we use to hook to reset the state.
-    await store.dispatch(HISTORY_RESET_STATE);
+    await store.dispatch(STORY_RESET_STATE);
     return next();
   },
   async beforeRouteEnter(to, from, next) {
     // SO: https://github.com/vuejs/vue-router/issues/1034
     // If we arrive directly to this url, we need to fetch the story
-    await store.dispatch(HISTORY_RESET_STATE);
+    await store.dispatch(STORY_RESET_STATE);
     if (to.params.slug !== undefined) {
       await store.dispatch(
-        FETCH_HISTORY,
+        FETCH_STORY,
         to.params.slug,
         to.params.previousStory
       );
@@ -101,7 +101,7 @@ export default {
     return next();
   },
   async beforeRouteLeave(to, from, next) {
-    await store.dispatch(HISTORY_RESET_STATE);
+    await store.dispatch(STORY_RESET_STATE);
     next();
   },
   data() {
@@ -116,13 +116,13 @@ export default {
   },
   computed: {
     ...mapGetters(["story"]),
-    compiledMarkdown: function() {
+    compiledMarkdown: function () {
       return marked(this.story.body, { sanitize: true });
     }
   },
   methods: {
     onPublish(slug) {
-      const action = slug ? HISTORY_EDIT : HISTORY_PUBLISH;
+      const action = slug ? STORY_EDIT : STORY_PUBLISH;
       this.inProgress = true;
       this.$store
         .dispatch(action)
@@ -147,7 +147,7 @@ export default {
       });
     },
     update() {
-      _.debounce(function(e) {
+      _.debounce(function (e) {
         this.story.body = e.target.value;
       }, 300);
     }

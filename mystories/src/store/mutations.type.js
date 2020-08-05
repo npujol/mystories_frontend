@@ -1,7 +1,7 @@
 export const FETCH_END = "setStories";
 export const FETCH_START = "setLoading";
 export const PURGE_AUTH = "logOut";
-export const SET_HISTORY = "setStory";
+export const SET_STORY = "setStory";
 export const SET_AUTH = "setAuth";
 export const SET_USER = "setUser";
 export const SET_COMMENTS = "setComments";
@@ -10,5 +10,5 @@ export const SET_PROFILE = "setProfile";
 export const SET_TAGS = "setTags";
 export const TAG_ADD = "addTag";
 export const TAG_REMOVE = "removeTag";
-export const UPDATE_HISTORY_IN_LIST = "updateStoryInList";
+export const UPDATE_STORY_IN_LIST = "updateStoryInList";
 export const RESET_STATE = "resetModuleState";

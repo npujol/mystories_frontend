@@ -28,7 +28,7 @@
 <script>
 import { mapGetters } from "vuex";
 import RwvStoryPreview from "./VStoryPreview.vue";
-import { FETCH_HISTORIES } from "../store/actions.type.js";
+import { FETCH_STORIES } from "../store/actions.type.js";
 
 export default {
   name: "RwvStoryList",
@@ -135,7 +135,7 @@ export default {
   },
   methods: {
     fetchStories() {
-      this.$store.dispatch(FETCH_HISTORIES, this.listConfig);
+      this.$store.dispatch(FETCH_STORIES, this.listConfig);
     },
     resetPagination() {
       this.listConfig.offset = 0;

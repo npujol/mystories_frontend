@@ -86,7 +86,7 @@ import RwvCommentEditor from "@/components/CommentEditor.vue";
 import TagList from "../components/TagList.vue";
 import RwvStoryActions from "../components/StoryActions.vue";
 
-import { FETCH_HISTORY, FETCH_COMMENTS } from "@/store/actions.type.js";
+import { FETCH_STORY, FETCH_COMMENTS } from "@/store/actions.type.js";
 
 export default {
   name: "rwv-story",
@@ -104,7 +104,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     Promise.all([
-      store.dispatch(FETCH_HISTORY, to.params.slug),
+      store.dispatch(FETCH_STORY, to.params.slug),
       store.dispatch(FETCH_COMMENTS, to.params.slug)
     ]).then(() => {
       next();

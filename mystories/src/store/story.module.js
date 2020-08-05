@@ -2,26 +2,26 @@ import Vue from "vue";
 import { StoriesApi } from "../client";
 
 import {
-  FETCH_HISTORY,
+  FETCH_STORY,
   FETCH_COMMENTS,
   COMMENT_CREATE,
   COMMENT_DESTROY,
   FAVORITE_ADD,
   FAVORITE_REMOVE,
-  HISTORY_PUBLISH,
-  HISTORY_EDIT,
-  HISTORY_EDIT_ADD_TAG,
-  HISTORY_EDIT_REMOVE_TAG,
-  HISTORY_DELETE,
-  HISTORY_RESET_STATE
+  STORY_PUBLISH,
+  STORY_EDIT,
+  STORY_EDIT_ADD_TAG,
+  STORY_EDIT_REMOVE_TAG,
+  STORY_DELETE,
+  STORY_RESET_STATE
 } from "./actions.type.js";
 import {
   RESET_STATE,
-  SET_HISTORY,
+  SET_STORY,
   SET_COMMENTS,
   TAG_ADD,
   TAG_REMOVE,
-  UPDATE_HISTORY_IN_LIST
+  UPDATE_STORY_IN_LIST
 } from "./mutations.type.js";
 
 const storiesApi = new StoriesApi();
@@ -46,13 +46,13 @@ const initialState = {
 export const state = { ...initialState };
 
 export const actions = {
-  async [FETCH_HISTORY](context, storySlug, prevStory) {
+  async [FETCH_STORY](context, storySlug, prevStory) {
     // avoid extraneous network call if story exists
     if (prevStory !== undefined) {
-      return context.commit(SET_HISTORY, prevStory);
+      return context.commit(SET_STORY, prevStory);
     }
     const data = await storiesApi.storiesRead(storySlug);
-    context.commit(SET_HISTORY, data);
+    context.commit(SET_STORY, data);
     return data;
   },
   async [FETCH_COMMENTS](context, storySlug) {
@@ -71,39 +71,41 @@ export const actions = {
     context.dispatch(FETCH_COMMENTS, payload.slug);
   },
   async [FAVORITE_ADD](context, slug) {
-    const data = await storiesApi.storiesFavorite(slug, "");
-    context.commit(UPDATE_HISTORY_IN_LIST, data, { root: true });
-    context.commit(SET_HISTORY, data);
+    const data = await storiesApi.storiesFavorite(slug, {});
+    console.log(data);
+
+    context.commit(UPDATE_STORY_IN_LIST, data, { root: true });
+    context.commit(SET_STORY, data);
   },
   async [FAVORITE_REMOVE](context, slug) {
-    const data = await storiesApi.storiesUnfavorite(slug, "");
+    const data = await storiesApi.storiesUnfavorite(slug, {});
     // Update list as well. This allows us to favorite an story in the Home view.
-    context.commit(UPDATE_HISTORY_IN_LIST, data, { root: true });
-    context.commit(SET_HISTORY, data);
+    context.commit(UPDATE_STORY_IN_LIST, data, { root: true });
+    context.commit(SET_STORY, data);
   },
-  [HISTORY_PUBLISH]({ state }) {
+  [STORY_PUBLISH]({ state }) {
     return storiesApi.storiesCreate(state.story);
   },
-  [HISTORY_DELETE](context, slug) {
+  [STORY_DELETE](context, slug) {
     return storiesApi.storiesDelete(slug);
   },
-  [HISTORY_EDIT]({ state }) {
+  [STORY_EDIT]({ state }) {
     return storiesApi.storiesPartialUpdate(state.story.slug, state.story);
   },
-  [HISTORY_EDIT_ADD_TAG](context, tag) {
+  [STORY_EDIT_ADD_TAG](context, tag) {
     context.commit(TAG_ADD, tag);
   },
-  [HISTORY_EDIT_REMOVE_TAG](context, tag) {
+  [STORY_EDIT_REMOVE_TAG](context, tag) {
     context.commit(TAG_REMOVE, tag);
   },
-  [HISTORY_RESET_STATE]({ commit }) {
+  [STORY_RESET_STATE]({ commit }) {
     commit(RESET_STATE);
   }
 };
 
 /* eslint no-param-reassign: ["error", { "props": false }] */
 export const mutations = {
-  [SET_HISTORY](state, story) {
+  [SET_STORY](state, story) {
     state.story = story;
   },
   [SET_COMMENTS](state, comments) {

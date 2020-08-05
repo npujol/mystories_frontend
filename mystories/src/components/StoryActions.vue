@@ -40,7 +40,7 @@ import { mapGetters } from "vuex";
 import {
   FAVORITE_ADD,
   FAVORITE_REMOVE,
-  HISTORY_DELETE,
+  STORY_DELETE,
   FETCH_PROFILE_FOLLOW,
   FETCH_PROFILE_UNFOLLOW,
   FETCH_PROFILE
@@ -87,11 +87,6 @@ export default {
       username: this.story.author.username
     });
   },
-  beforeUpdate() {
-    this.$store.dispatch(FETCH_PROFILE, {
-      username: this.story.author.username
-    });
-  },
   methods: {
     toggleFavorite() {
       if (!this.isAuthenticated) {
@@ -118,7 +113,7 @@ export default {
     async deleteStory() {
       try {
         this.loading = true;
-        await this.$store.dispatch(HISTORY_DELETE, this.story.slug);
+        await this.$store.dispatch(STORY_DELETE, this.story.slug);
         this.loading = false;
         this.$router.go();
       } catch (err) {
