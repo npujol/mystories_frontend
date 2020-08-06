@@ -28,7 +28,7 @@
     <v-btn icon elevation="12" @click="toggleFavorite()" :color="color">
       <v-icon>mdi-heart</v-icon>
     </v-btn>
-    <v-btn text elevation="12" @click="toggleFollow()">
+    <v-btn v-if="!isPreview" text elevation="12" @click="toggleFollow()">
       <v-icon>mdi-account</v-icon>
       <span> {{ followUserLabel }}</span>
     </v-btn>
@@ -54,6 +54,10 @@ export default {
       loading: false
     };
   },
+  props: {
+    story: { type: Object, required: true },
+    isPreview: { type: Boolean, required: true }
+  },
   watch: {
     loader() {
       const l = this.loader;
@@ -63,9 +67,6 @@ export default {
 
       this.loader = null;
     }
-  },
-  props: {
-    story: { type: Object, required: true }
   },
   computed: {
     ...mapGetters(["profile", "currentUser", "isAuthenticated"]),

@@ -20,44 +20,38 @@ const getters = {
 };
 
 const actions = {
-  [FETCH_PROFILE](context, payload) {
+  async [FETCH_PROFILE](context, payload) {
     const { username } = payload;
-    return profilesApi
-      .profilesRead(username)
-      .then(data => {
-        context.commit(SET_PROFILE, data);
-        return data;
-      })
-      .catch(() => {
-        // #todo SET_ERROR cannot work in multiple states
-        context.commit(SET_ERROR, JSON.parse(response.response.text).errors);
-      });
+    try {
+      const data = await profilesApi.profilesRead(username);
+      context.commit(SET_PROFILE, data);
+      return data;
+    } catch (e) {
+      // #todo SET_ERROR cannot work in multiple states
+      context.commit(SET_ERROR, JSON.parse(response.response.text).errors);
+    }
   },
-  [FETCH_PROFILE_FOLLOW](context, payload) {
+  async [FETCH_PROFILE_FOLLOW](context, payload) {
     const { username } = payload;
-    return profilesApi
-      .profilesFollowProfile(username, "")
-      .then(data => {
-        context.commit(SET_PROFILE, data);
-        return data;
-      })
-      .catch(() => {
-        // #todo SET_ERROR cannot work in multiple states
-        context.commit(SET_ERROR, JSON.parse(response.response.text).errors);
-      });
+    try {
+      const data = await profilesApi.profilesFollowProfile(username, "");
+      context.commit(SET_PROFILE, data);
+      return data;
+    } catch (e) {
+      // #todo SET_ERROR cannot work in multiple states
+      context.commit(SET_ERROR, JSON.parse(response.response.text).errors);
+    }
   },
-  [FETCH_PROFILE_UNFOLLOW](context, payload) {
+  async [FETCH_PROFILE_UNFOLLOW](context, payload) {
     const { username } = payload;
-    return profilesApi
-      .profilesUnfollowProfile(username, "")
-      .then(data => {
-        context.commit(SET_PROFILE, data);
-        return data;
-      })
-      .catch(() => {
-        // #todo SET_ERROR cannot work in multiple states
-        context.commit(SET_ERROR, JSON.parse(response.response.text).errors);
-      });
+    try {
+      const data = profilesApi.profilesUnfollowProfile(username, "");
+      context.commit(SET_PROFILE, data);
+      return data;
+    } catch (e) {
+      // #todo SET_ERROR cannot work in multiple states
+      context.commit(SET_ERROR, JSON.parse(response.response.text).errors);
+    }
   }
 };
 

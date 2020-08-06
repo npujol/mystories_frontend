@@ -43,7 +43,7 @@
         <span> Read more </span>
       </v-btn>
       <v-spacer></v-spacer>
-      <RwvStoryActions :story="story" />
+      <RwvStoryActions :isPreview="true" :story="story" />
     </v-card-actions>
   </v-card>
 </template>

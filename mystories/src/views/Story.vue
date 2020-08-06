@@ -38,10 +38,7 @@
     ></v-img>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <rwv-story-actions
-        :story="story"
-        :canModify="isCurrentUser()"
-      ></rwv-story-actions>
+      <rwv-story-actions :story="story" :isPreview="false"></rwv-story-actions>
     </v-card-actions>
 
     <v-card-text class="mx-auto" aling="center">

@@ -72,8 +72,6 @@ export const actions = {
   },
   async [FAVORITE_ADD](context, slug) {
     const data = await storiesApi.storiesFavorite(slug, {});
-    console.log(data);
-
     context.commit(UPDATE_STORY_IN_LIST, data, { root: true });
     context.commit(SET_STORY, data);
   },
