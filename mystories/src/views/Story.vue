@@ -79,7 +79,8 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
-    <div class="mx-auto" aling="center">
+    <RwvCommentslist :story="story"></RwvCommentslist>
+    <!-- <div class="mx-auto" aling="center">
       <RwvCommentEditor
         v-if="isAuthenticated"
         :slug="slug"
@@ -100,7 +101,7 @@
         :key="index"
       >
       </RwvComment>
-    </div>
+    </div> -->
   </v-card>
 </template>
 
@@ -109,8 +110,10 @@ import { mapGetters } from "vuex";
 import marked from "marked";
 import store from "@/store";
 import RwvProfileFollow from "@/components/ProfileFollow.vue";
-import RwvComment from "@/components/Comment.vue";
-import RwvCommentEditor from "@/components/CommentEditor.vue";
+// import RwvComment from "@/components/Comment.vue";
+// import RwvCommentEditor from "@/components/CommentEditor.vue";
+import RwvCommentslist from "@/components/CommentsList.vue";
+
 import TagList from "../components/TagList.vue";
 import RwvStoryActions from "../components/StoryActions.vue";
 
@@ -125,11 +128,12 @@ export default {
     }
   },
   components: {
-    RwvComment,
-    RwvCommentEditor,
+    // RwvComment,
+    // RwvCommentEditor,
     TagList,
     RwvStoryActions,
-    RwvProfileFollow
+    RwvProfileFollow,
+    RwvCommentslist
   },
   beforeRouteEnter(to, from, next) {
     Promise.all([

@@ -21,7 +21,8 @@ import {
   SET_COMMENTS,
   TAG_ADD,
   TAG_REMOVE,
-  UPDATE_STORY_IN_LIST
+  UPDATE_STORY_IN_LIST,
+  SET_COMMENTS_START
 } from "./mutations.type.js";
 
 const storiesApi = new StoriesApi();
@@ -40,7 +41,23 @@ const initialState = {
     bodyMarkdown: "",
     tags: []
   },
-  comments: []
+  comments: [],
+  commentsCount: 0,
+  isCommentsLoading: true
+};
+const getters = {
+  story(state) {
+    return state.story;
+  },
+  commentsCount(state) {
+    return state.commentsCount;
+  },
+  comments(state) {
+    return state.comments;
+  },
+  isCommentsLoading(state) {
+    return state.isCommentsLoading;
+  }
 };
 
 export const state = { ...initialState };
@@ -56,8 +73,9 @@ export const actions = {
     return data;
   },
   async [FETCH_COMMENTS](context, storySlug) {
+    context.commit(SET_COMMENTS_START);
     const data = await storiesApi.storiesCommentsList(storySlug);
-    context.commit(SET_COMMENTS, data.results);
+    context.commit(SET_COMMENTS, data);
     return data;
   },
   async [COMMENT_CREATE](context, payload) {
@@ -103,11 +121,16 @@ export const actions = {
 
 /* eslint no-param-reassign: ["error", { "props": false }] */
 export const mutations = {
+  [SET_COMMENTS_START](state) {
+    state.isCommentsLoading = true;
+  },
   [SET_STORY](state, story) {
     state.story = story;
   },
-  [SET_COMMENTS](state, comments) {
-    state.comments = comments;
+  [SET_COMMENTS](state, data) {
+    state.comments = data.results;
+    state.commentsCount = data.count;
+    state.isCommentsLoading = false;
   },
   [TAG_ADD](state, tag) {
     if (state.story.tags.indexOf(tag) === -1) {
@@ -121,15 +144,6 @@ export const mutations = {
     for (const f in state) {
       Vue.set(state, f, initialState[f]);
     }
-  }
-};
-
-const getters = {
-  story(state) {
-    return state.story;
-  },
-  comments(state) {
-    return state.comments;
   }
 };
 

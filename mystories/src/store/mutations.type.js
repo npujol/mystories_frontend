@@ -12,3 +12,4 @@ export const TAG_ADD = "addTag";
 export const TAG_REMOVE = "removeTag";
 export const UPDATE_STORY_IN_LIST = "updateStoryInList";
 export const RESET_STATE = "resetModuleState";
+export const SET_COMMENTS_START = "setCommentsStart";
