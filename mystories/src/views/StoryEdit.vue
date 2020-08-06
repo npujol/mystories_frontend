@@ -116,7 +116,7 @@ export default {
   },
   computed: {
     ...mapGetters(["story"]),
-    compiledMarkdown: function () {
+    compiledMarkdown: function() {
       return marked(this.story.body, { sanitize: true });
     }
   },
@@ -147,7 +147,7 @@ export default {
       });
     },
     update() {
-      _.debounce(function (e) {
+      _.debounce(function(e) {
         this.story.body = e.target.value;
       }, 300);
     }

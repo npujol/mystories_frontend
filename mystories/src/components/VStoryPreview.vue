@@ -27,7 +27,9 @@
     <v-img :src="story.image" class="white--text align-end" height="200px">
     </v-img>
     <v-card-text>
-      {{ story.description }}
+      <p class="d-flex text-center justify-center">
+        {{ story.description }}
+      </p>
     </v-card-text>
     <TagList :tags="story.tags" />
     <v-card-actions>

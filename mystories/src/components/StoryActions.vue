@@ -6,6 +6,7 @@
       <v-icon>mdi-heart</v-icon>
       <span> {{ story.favoritesCount }} </span>
     </v-btn>
+
     <v-btn
       icon
       elevation="12"
@@ -13,6 +14,7 @@
     >
       <v-icon>mdi-pencil</v-icon>
     </v-btn>
+
     <v-btn
       :loading="loading"
       :disabled="loading"
@@ -25,26 +27,14 @@
   </span>
   <!-- Used in StoryView when not author -->
   <span v-else>
-    <v-btn icon elevation="12" @click="toggleFavorite()" :color="color">
-      <v-icon>mdi-heart</v-icon>
-    </v-btn>
-    <v-btn v-if="!isPreview" text elevation="12" @click="toggleFollow()">
-      <v-icon>mdi-account</v-icon>
-      <span> {{ followUserLabel }}</span>
-    </v-btn>
+    <RwvStoryFavorite :story="story"></RwvStoryFavorite>
   </span>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import {
-  FAVORITE_ADD,
-  FAVORITE_REMOVE,
-  STORY_DELETE,
-  FETCH_PROFILE_FOLLOW,
-  FETCH_PROFILE_UNFOLLOW,
-  FETCH_PROFILE
-} from "@/store/actions.type.js";
+import { STORY_DELETE, FETCH_PROFILE } from "@/store/actions.type.js";
+import RwvStoryFavorite from "@/components/StoryFavorite.vue";
 
 export default {
   name: "RwvStoryActions",
@@ -58,6 +48,9 @@ export default {
     story: { type: Object, required: true },
     isPreview: { type: Boolean, required: true }
   },
+  components: {
+    RwvStoryFavorite
+  },
   watch: {
     loader() {
       const l = this.loader;
@@ -70,15 +63,6 @@ export default {
   },
   computed: {
     ...mapGetters(["profile", "currentUser", "isAuthenticated"]),
-    followUserLabel() {
-      return `${this.profile.following === "true" ? "Following" : "Follow"}`;
-    },
-    favoriteStoryLabel() {
-      return this.story.favorited === "true" ? "Favorite" : "";
-    },
-    color() {
-      return this.story.favorited === "true" ? "error" : "white";
-    },
     canModify() {
       return this.currentUser.username === this.profile.username;
     }
@@ -89,28 +73,6 @@ export default {
     });
   },
   methods: {
-    toggleFavorite() {
-      if (!this.isAuthenticated) {
-        this.$router.push({ name: "login" });
-        return;
-      }
-      const action =
-        this.story.favorited === "true" ? FAVORITE_REMOVE : FAVORITE_ADD;
-      this.$store.dispatch(action, this.story.slug);
-    },
-    toggleFollow() {
-      if (!this.isAuthenticated) {
-        this.$router.push({ name: "login" });
-        return;
-      }
-      const action =
-        this.story.author.following === "true"
-          ? FETCH_PROFILE_UNFOLLOW
-          : FETCH_PROFILE_FOLLOW;
-      this.$store.dispatch(action, {
-        username: this.story.author.username
-      });
-    },
     async deleteStory() {
       try {
         this.loading = true;

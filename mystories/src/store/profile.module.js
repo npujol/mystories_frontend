@@ -39,18 +39,18 @@ const actions = {
       return data;
     } catch (e) {
       // #todo SET_ERROR cannot work in multiple states
-      context.commit(SET_ERROR, JSON.parse(response.response.text).errors);
+      context.commit(SET_ERROR, "e");
     }
   },
   async [FETCH_PROFILE_UNFOLLOW](context, payload) {
     const { username } = payload;
     try {
-      const data = profilesApi.profilesUnfollowProfile(username, "");
+      const data = await profilesApi.profilesUnfollowProfile(username, "");
       context.commit(SET_PROFILE, data);
       return data;
     } catch (e) {
       // #todo SET_ERROR cannot work in multiple states
-      context.commit(SET_ERROR, JSON.parse(response.response.text).errors);
+      context.commit(SET_ERROR, JSON.parse(e.response.text).errors);
     }
   }
 };
