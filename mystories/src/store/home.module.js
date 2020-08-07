@@ -1,5 +1,5 @@
 import { TagsApi, StoriesApi } from "../client";
-import { FETCH_STORIES, FETCH_TAGS, FETCH_TAG } from "./actions.type.js";
+import { FETCH_STORIES, FETCH_TAGS } from "./actions.type.js";
 import {
   FETCH_START,
   FETCH_END,

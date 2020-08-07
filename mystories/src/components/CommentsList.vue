@@ -16,6 +16,7 @@ Add<template>
       </div>
       <div class="mx-auto" aling="center">
         <RwvCommentEditor
+          class="mb-2"
           v-if="isAuthenticated"
           :slug="story.slug"
           :userImage="currentUser.image"
@@ -29,6 +30,7 @@ Add<template>
         </p>
         <v-spacer></v-spacer>
         <RwvComment
+          class="mb-2"
           v-for="(comment, index) in comments"
           :slug="story.slug"
           :comment="comment"
@@ -86,19 +88,19 @@ export default {
     };
   },
   beforeRouteEnter(to, from, next) {
-    console.log(to.params);
     Promise.all([store.dispatch(FETCH_COMMENTS, to.params.slug)]).then(() => {
       next();
     });
   },
   computed: {
     listConfig() {
+      const slugStory = this.story.slug;
       const filters = {
         offset: (this.currentPage - 1) * this.limit,
-        limit: this.limit,
-        slug: this.story.slug
+        limit: this.limit
       };
       return {
+        slugStory,
         filters
       };
     },

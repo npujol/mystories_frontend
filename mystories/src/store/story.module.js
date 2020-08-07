@@ -72,9 +72,9 @@ export const actions = {
     context.commit(SET_STORY, data);
     return data;
   },
-  async [FETCH_COMMENTS](context, storySlug) {
+  async [FETCH_COMMENTS](context, payload) {
     context.commit(SET_COMMENTS_START);
-    const data = await storiesApi.storiesCommentsList(storySlug);
+    const data = await storiesApi.storiesCommentsList(payload);
     context.commit(SET_COMMENTS, data);
     return data;
   },
@@ -85,7 +85,7 @@ export const actions = {
     context.dispatch(FETCH_COMMENTS, payload.slug);
   },
   async [COMMENT_DESTROY](context, payload) {
-    await storiesApi.storiesCommentsDelete(payload.slug, payload.commentId);
+    await storiesApi.storiesCommentsDelete(payload.commentId, payload.slug);
     context.dispatch(FETCH_COMMENTS, payload.slug);
   },
   async [FAVORITE_ADD](context, slug) {
