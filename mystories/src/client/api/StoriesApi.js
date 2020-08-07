@@ -13,11 +13,11 @@
  *
  */
 
-import {ApiClient} from "../ApiClient";
-import {Comment} from '../model/Comment';
-import {InlineResponse2001} from '../model/InlineResponse2001';
-import {InlineResponse2002} from '../model/InlineResponse2002';
-import {Story} from '../model/Story';
+import { ApiClient } from "../ApiClient";
+import { Comment } from '../model/Comment';
+import { InlineResponse2001 } from '../model/InlineResponse2001';
+import { InlineResponse2002 } from '../model/InlineResponse2002';
+import { Story } from '../model/Story';
 
 /**
 * Stories service.
@@ -26,901 +26,901 @@ import {Story} from '../model/Story';
 */
 export class StoriesApi {
 
-    /**
-    * Constructs a new StoriesApi. 
-    * @alias module:api/StoriesApi
-    * @class
-    * @param {module:ApiClient} [apiClient] Optional API client implementation to use,
-    * default to {@link module:ApiClient#instance} if unspecified.
-    */
-    constructor(apiClient) {
-        this.apiClient = apiClient || ApiClient.instance;
+  /**
+  * Constructs a new StoriesApi. 
+  * @alias module:api/StoriesApi
+  * @class
+  * @param {module:ApiClient} [apiClient] Optional API client implementation to use,
+  * default to {@link module:ApiClient#instance} if unspecified.
+  */
+  constructor(apiClient) {
+    this.apiClient = apiClient || ApiClient.instance;
+  }
+
+
+
+  /**
+   * General ViewSet description
+   * @param {String} slug 
+   * @param {String} title 
+   * @param {Object} opts Optional parameters
+   * @param {String} opts.body 
+   * @param {String} opts.bodyMarkdown 
+   * @param {module:model/String} opts.language 
+   * @param {String} opts.description 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Story} and HTTP response
+   */
+  storiesChangeImageWithHttpInfo(slug, title, opts) {
+    opts = opts || {};
+    let postBody = null;
+
+    // verify the required parameter 'slug' is set
+    if (slug === undefined || slug === null) {
+      throw new Error("Missing the required parameter 'slug' when calling storiesChangeImage");
+    }
+
+    // verify the required parameter 'title' is set
+    if (title === undefined || title === null) {
+      throw new Error("Missing the required parameter 'title' when calling storiesChangeImage");
     }
 
 
+    let pathParams = {
+      'slug': slug
+    };
+    let queryParams = {
+    };
+    let headerParams = {
+    };
+    let formParams = {
+      'body': opts['body'],
+      'body_markdown': opts['bodyMarkdown'],
+      'language': opts['language'],
+      'description': opts['description'],
+      'title': title
+    };
 
-    /**
-     * General ViewSet description
-     * @param {String} slug 
-     * @param {String} title 
-     * @param {Object} opts Optional parameters
-     * @param {String} opts.body 
-     * @param {String} opts.bodyMarkdown 
-     * @param {module:model/String} opts.language 
-     * @param {String} opts.description 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Story} and HTTP response
-     */
-    storiesChangeImageWithHttpInfo(slug, title, opts) {
-      opts = opts || {};
-      let postBody = null;
+    let authNames = ['api_key'];
+    let contentTypes = ['multipart/form-data', 'application/x-www-form-urlencoded'];
+    let accepts = ['application/json'];
+    let returnType = Story;
 
-      // verify the required parameter 'slug' is set
-      if (slug === undefined || slug === null) {
-        throw new Error("Missing the required parameter 'slug' when calling storiesChangeImage");
-      }
+    return this.apiClient.callApi(
+      '/stories/{slug}/change_image', 'PUT',
+      pathParams, queryParams, headerParams, formParams, postBody,
+      authNames, contentTypes, accepts, returnType
+    );
+  }
 
-      // verify the required parameter 'title' is set
-      if (title === undefined || title === null) {
-        throw new Error("Missing the required parameter 'title' when calling storiesChangeImage");
-      }
+  /**
+   * General ViewSet description
+   * @param {String} slug 
+   * @param {String} title 
+   * @param {Object} opts Optional parameters
+   * @param {String} opts.body 
+   * @param {String} opts.bodyMarkdown 
+   * @param {module:model/String} opts.language 
+   * @param {String} opts.description 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Story}
+   */
+  storiesChangeImage(slug, title, opts) {
+    return this.storiesChangeImageWithHttpInfo(slug, title, opts)
+      .then(function (response_and_data) {
+        return response_and_data.data;
+      });
+  }
 
 
-      let pathParams = {
-        'slug': slug
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-        'body': opts['body'],
-        'body_markdown': opts['bodyMarkdown'],
-        'language': opts['language'],
-        'description': opts['description'],
-        'title': title
-      };
+  /**
+   * Create a comment
+   * @param {String} storySlug 
+   * @param {module:model/Comment} data 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Comment} and HTTP response
+   */
+  storiesCommentsCreateWithHttpInfo(storySlug, data) {
+    let postBody = data;
 
-      let authNames = ['api_key'];
-      let contentTypes = ['multipart/form-data', 'application/x-www-form-urlencoded'];
-      let accepts = ['application/json'];
-      let returnType = Story;
-
-      return this.apiClient.callApi(
-        '/stories/{slug}/change_image', 'PUT',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType
-      );
+    // verify the required parameter 'storySlug' is set
+    if (storySlug === undefined || storySlug === null) {
+      throw new Error("Missing the required parameter 'storySlug' when calling storiesCommentsCreate");
     }
 
-    /**
-     * General ViewSet description
-     * @param {String} slug 
-     * @param {String} title 
-     * @param {Object} opts Optional parameters
-     * @param {String} opts.body 
-     * @param {String} opts.bodyMarkdown 
-     * @param {module:model/String} opts.language 
-     * @param {String} opts.description 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Story}
-     */
-    storiesChangeImage(slug, title, opts) {
-      return this.storiesChangeImageWithHttpInfo(slug, title, opts)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
+    // verify the required parameter 'data' is set
+    if (data === undefined || data === null) {
+      throw new Error("Missing the required parameter 'data' when calling storiesCommentsCreate");
     }
 
 
-    /**
-     * Create a comment
-     * @param {String} storySlug 
-     * @param {module:model/Comment} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Comment} and HTTP response
-     */
-    storiesCommentsCreateWithHttpInfo(storySlug, data) {
-      let postBody = data;
+    let pathParams = {
+      'story_slug': storySlug
+    };
+    let queryParams = {
+    };
+    let headerParams = {
+    };
+    let formParams = {
+    };
 
-      // verify the required parameter 'storySlug' is set
-      if (storySlug === undefined || storySlug === null) {
-        throw new Error("Missing the required parameter 'storySlug' when calling storiesCommentsCreate");
-      }
+    let authNames = ['api_key'];
+    let contentTypes = ['application/json'];
+    let accepts = ['application/json'];
+    let returnType = Comment;
 
-      // verify the required parameter 'data' is set
-      if (data === undefined || data === null) {
-        throw new Error("Missing the required parameter 'data' when calling storiesCommentsCreate");
-      }
+    return this.apiClient.callApi(
+      '/stories/{story_slug}/comments', 'POST',
+      pathParams, queryParams, headerParams, formParams, postBody,
+      authNames, contentTypes, accepts, returnType
+    );
+  }
+
+  /**
+   * Create a comment
+   * @param {String} storySlug 
+   * @param {module:model/Comment} data 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Comment}
+   */
+  storiesCommentsCreate(storySlug, data) {
+    return this.storiesCommentsCreateWithHttpInfo(storySlug, data)
+      .then(function (response_and_data) {
+        return response_and_data.data;
+      });
+  }
 
 
-      let pathParams = {
-        'story_slug': storySlug
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
+  /**
+   * Delete a comment
+   * @param {Number} id A unique integer value identifying this comment.
+   * @param {String} storySlug 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing HTTP response
+   */
+  storiesCommentsDeleteWithHttpInfo(id, storySlug) {
+    let postBody = null;
 
-      let authNames = ['api_key'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = Comment;
-
-      return this.apiClient.callApi(
-        '/stories/{story_slug}/comments', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType
-      );
+    // verify the required parameter 'id' is set
+    if (id === undefined || id === null) {
+      throw new Error("Missing the required parameter 'id' when calling storiesCommentsDelete");
     }
 
-    /**
-     * Create a comment
-     * @param {String} storySlug 
-     * @param {module:model/Comment} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Comment}
-     */
-    storiesCommentsCreate(storySlug, data) {
-      return this.storiesCommentsCreateWithHttpInfo(storySlug, data)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
-    }
-
-
-    /**
-     * Delete a comment
-     * @param {Number} id A unique integer value identifying this comment.
-     * @param {String} storySlug 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing HTTP response
-     */
-    storiesCommentsDeleteWithHttpInfo(id, storySlug) {
-      let postBody = null;
-
-      // verify the required parameter 'id' is set
-      if (id === undefined || id === null) {
-        throw new Error("Missing the required parameter 'id' when calling storiesCommentsDelete");
-      }
-
-      // verify the required parameter 'storySlug' is set
-      if (storySlug === undefined || storySlug === null) {
-        throw new Error("Missing the required parameter 'storySlug' when calling storiesCommentsDelete");
-      }
-
-
-      let pathParams = {
-        'id': id,
-        'story_slug': storySlug
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = ['api_key'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = null;
-
-      return this.apiClient.callApi(
-        '/stories/{story_slug}/comments/{id}', 'DELETE',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType
-      );
-    }
-
-    /**
-     * Delete a comment
-     * @param {Number} id A unique integer value identifying this comment.
-     * @param {String} storySlug 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}
-     */
-    storiesCommentsDelete(id, storySlug) {
-      return this.storiesCommentsDeleteWithHttpInfo(id, storySlug)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
+    // verify the required parameter 'storySlug' is set
+    if (storySlug === undefined || storySlug === null) {
+      throw new Error("Missing the required parameter 'storySlug' when calling storiesCommentsDelete");
     }
 
 
-    /**
-     * List the comments
-     * @param {String} storySlug 
-     * @param {Object} opts Optional parameters
-     * @param {Number} opts.limit Number of results to return per page.
-     * @param {Number} opts.offset The initial index from which to return the results.
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/InlineResponse2002} and HTTP response
-     */
-    storiesCommentsListWithHttpInfo(storySlug, opts) {
-      opts = opts || {};
-      let postBody = null;
+    let pathParams = {
+      'id': id,
+      'story_slug': storySlug
+    };
+    let queryParams = {
+    };
+    let headerParams = {
+    };
+    let formParams = {
+    };
 
-      // verify the required parameter 'storySlug' is set
-      if (storySlug === undefined || storySlug === null) {
-        throw new Error("Missing the required parameter 'storySlug' when calling storiesCommentsList");
-      }
+    let authNames = ['api_key'];
+    let contentTypes = ['application/json'];
+    let accepts = ['application/json'];
+    let returnType = null;
+
+    return this.apiClient.callApi(
+      '/stories/{story_slug}/comments/{id}', 'DELETE',
+      pathParams, queryParams, headerParams, formParams, postBody,
+      authNames, contentTypes, accepts, returnType
+    );
+  }
+
+  /**
+   * Delete a comment
+   * @param {Number} id A unique integer value identifying this comment.
+   * @param {String} storySlug 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}
+   */
+  storiesCommentsDelete(id, storySlug) {
+    return this.storiesCommentsDeleteWithHttpInfo(id, storySlug)
+      .then(function (response_and_data) {
+        return response_and_data.data;
+      });
+  }
 
 
-      let pathParams = {
-        'story_slug': storySlug
-      };
-      let queryParams = {
-        'limit': opts['limit'],
-        'offset': opts['offset']
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
+  /**
+   * List the comments
+   * @param {String} storySlug 
+   * @param {Object} opts Optional parameters
+   * @param {Number} opts.limit Number of results to return per page.
+   * @param {Number} opts.offset The initial index from which to return the results.
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/InlineResponse2002} and HTTP response
+   */
+  storiesCommentsListWithHttpInfo(storySlug, opts) {
+    opts = opts || {};
+    let postBody = null;
 
-      let authNames = ['api_key'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = InlineResponse2002;
-
-      return this.apiClient.callApi(
-        '/stories/{story_slug}/comments', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType
-      );
-    }
-
-    /**
-     * List the comments
-     * @param {String} storySlug 
-     * @param {Object} opts Optional parameters
-     * @param {Number} opts.limit Number of results to return per page.
-     * @param {Number} opts.offset The initial index from which to return the results.
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/InlineResponse2002}
-     */
-    storiesCommentsList(storySlug, opts) {
-      return this.storiesCommentsListWithHttpInfo(storySlug, opts)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
+    // verify the required parameter 'storySlug' is set
+    if (storySlug === undefined || storySlug === null) {
+      throw new Error("Missing the required parameter 'storySlug' when calling storiesCommentsList");
     }
 
 
-    /**
-     * Retrieve a comment
-     * @param {Number} id A unique integer value identifying this comment.
-     * @param {String} storySlug 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Comment} and HTTP response
-     */
-    storiesCommentsReadWithHttpInfo(id, storySlug) {
-      let postBody = null;
+    let pathParams = {
+      'story_slug': storySlug
+    };
+    let queryParams = {
+      'limit': opts['limit'],
+      'offset': opts['offset']
+    };
+    let headerParams = {
+    };
+    let formParams = {
+    };
 
-      // verify the required parameter 'id' is set
-      if (id === undefined || id === null) {
-        throw new Error("Missing the required parameter 'id' when calling storiesCommentsRead");
-      }
+    let authNames = ['api_key'];
+    let contentTypes = ['application/json'];
+    let accepts = ['application/json'];
+    let returnType = InlineResponse2002;
 
-      // verify the required parameter 'storySlug' is set
-      if (storySlug === undefined || storySlug === null) {
-        throw new Error("Missing the required parameter 'storySlug' when calling storiesCommentsRead");
-      }
+    return this.apiClient.callApi(
+      '/stories/{story_slug}/comments', 'GET',
+      pathParams, queryParams, headerParams, formParams, postBody,
+      authNames, contentTypes, accepts, returnType
+    );
+  }
+
+  /**
+   * List the comments
+   * @param {String} storySlug 
+   * @param {Object} opts Optional parameters
+   * @param {Number} opts.limit Number of results to return per page.
+   * @param {Number} opts.offset The initial index from which to return the results.
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/InlineResponse2002}
+   */
+  storiesCommentsList(storySlug, opts) {
+    return this.storiesCommentsListWithHttpInfo(storySlug, opts)
+      .then(function (response_and_data) {
+        return response_and_data.data;
+      });
+  }
 
 
-      let pathParams = {
-        'id': id,
-        'story_slug': storySlug
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
+  /**
+   * Retrieve a comment
+   * @param {Number} id A unique integer value identifying this comment.
+   * @param {String} storySlug 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Comment} and HTTP response
+   */
+  storiesCommentsReadWithHttpInfo(id, storySlug) {
+    let postBody = null;
 
-      let authNames = ['api_key'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = Comment;
-
-      return this.apiClient.callApi(
-        '/stories/{story_slug}/comments/{id}', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType
-      );
+    // verify the required parameter 'id' is set
+    if (id === undefined || id === null) {
+      throw new Error("Missing the required parameter 'id' when calling storiesCommentsRead");
     }
 
-    /**
-     * Retrieve a comment
-     * @param {Number} id A unique integer value identifying this comment.
-     * @param {String} storySlug 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Comment}
-     */
-    storiesCommentsRead(id, storySlug) {
-      return this.storiesCommentsReadWithHttpInfo(id, storySlug)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
-    }
-
-
-    /**
-     * Create a story
-     * @param {module:model/Story} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Story} and HTTP response
-     */
-    storiesCreateWithHttpInfo(data) {
-      let postBody = data;
-
-      // verify the required parameter 'data' is set
-      if (data === undefined || data === null) {
-        throw new Error("Missing the required parameter 'data' when calling storiesCreate");
-      }
-
-
-      let pathParams = {
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = ['api_key'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = Story;
-
-      return this.apiClient.callApi(
-        '/stories', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType
-      );
-    }
-
-    /**
-     * Create a story
-     * @param {module:model/Story} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Story}
-     */
-    storiesCreate(data) {
-      return this.storiesCreateWithHttpInfo(data)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
+    // verify the required parameter 'storySlug' is set
+    if (storySlug === undefined || storySlug === null) {
+      throw new Error("Missing the required parameter 'storySlug' when calling storiesCommentsRead");
     }
 
 
-    /**
-     * Delete a story
-     * @param {String} slug 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing HTTP response
-     */
-    storiesDeleteWithHttpInfo(slug) {
-      let postBody = null;
+    let pathParams = {
+      'id': id,
+      'story_slug': storySlug
+    };
+    let queryParams = {
+    };
+    let headerParams = {
+    };
+    let formParams = {
+    };
 
-      // verify the required parameter 'slug' is set
-      if (slug === undefined || slug === null) {
-        throw new Error("Missing the required parameter 'slug' when calling storiesDelete");
-      }
+    let authNames = ['api_key'];
+    let contentTypes = ['application/json'];
+    let accepts = ['application/json'];
+    let returnType = Comment;
 
+    return this.apiClient.callApi(
+      '/stories/{story_slug}/comments/{id}', 'GET',
+      pathParams, queryParams, headerParams, formParams, postBody,
+      authNames, contentTypes, accepts, returnType
+    );
+  }
 
-      let pathParams = {
-        'slug': slug
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = ['api_key'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = null;
-
-      return this.apiClient.callApi(
-        '/stories/{slug}', 'DELETE',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType
-      );
-    }
-
-    /**
-     * Delete a story
-     * @param {String} slug 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}
-     */
-    storiesDelete(slug) {
-      return this.storiesDeleteWithHttpInfo(slug)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
-    }
+  /**
+   * Retrieve a comment
+   * @param {Number} id A unique integer value identifying this comment.
+   * @param {String} storySlug 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Comment}
+   */
+  storiesCommentsRead(id, storySlug) {
+    return this.storiesCommentsReadWithHttpInfo(id, storySlug)
+      .then(function (response_and_data) {
+        return response_and_data.data;
+      });
+  }
 
 
-    /**
-     * General ViewSet description
-     * @param {String} slug 
-     * @param {module:model/Story} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Story} and HTTP response
-     */
-    storiesFavoriteWithHttpInfo(slug, data) {
-      let postBody = data;
+  /**
+   * Create a story
+   * @param {module:model/Story} data 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Story} and HTTP response
+   */
+  storiesCreateWithHttpInfo(data) {
+    let postBody = data;
 
-      // verify the required parameter 'slug' is set
-      if (slug === undefined || slug === null) {
-        throw new Error("Missing the required parameter 'slug' when calling storiesFavorite");
-      }
-
-      // verify the required parameter 'data' is set
-      if (data === undefined || data === null) {
-        throw new Error("Missing the required parameter 'data' when calling storiesFavorite");
-      }
-
-
-      let pathParams = {
-        'slug': slug
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = ['api_key'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = Story;
-
-      return this.apiClient.callApi(
-        '/stories/{slug}/favorite', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType
-      );
-    }
-
-    /**
-     * General ViewSet description
-     * @param {String} slug 
-     * @param {module:model/Story} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Story}
-     */
-    storiesFavorite(slug, data) {
-      return this.storiesFavoriteWithHttpInfo(slug, data)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
+    // verify the required parameter 'data' is set
+    if (data === undefined || data === null) {
+      throw new Error("Missing the required parameter 'data' when calling storiesCreate");
     }
 
 
-    /**
-     * General ViewSet description
-     * @param {Object} opts Optional parameters
-     * @param {Number} opts.limit Number of results to return per page.
-     * @param {Number} opts.offset The initial index from which to return the results.
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/InlineResponse2001} and HTTP response
-     */
-    storiesFeedListWithHttpInfo(opts) {
-      opts = opts || {};
-      let postBody = null;
+    let pathParams = {
+    };
+    let queryParams = {
+    };
+    let headerParams = {
+    };
+    let formParams = {
+    };
+
+    let authNames = ['api_key'];
+    let contentTypes = ['application/json'];
+    let accepts = ['application/json'];
+    let returnType = Story;
+
+    return this.apiClient.callApi(
+      '/stories', 'POST',
+      pathParams, queryParams, headerParams, formParams, postBody,
+      authNames, contentTypes, accepts, returnType
+    );
+  }
+
+  /**
+   * Create a story
+   * @param {module:model/Story} data 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Story}
+   */
+  storiesCreate(data) {
+    return this.storiesCreateWithHttpInfo(data)
+      .then(function (response_and_data) {
+        return response_and_data.data;
+      });
+  }
 
 
-      let pathParams = {
-      };
-      let queryParams = {
-        'limit': opts['limit'],
-        'offset': opts['offset']
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
+  /**
+   * Delete a story
+   * @param {String} slug 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing HTTP response
+   */
+  storiesDeleteWithHttpInfo(slug) {
+    let postBody = null;
 
-      let authNames = ['api_key'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = InlineResponse2001;
-
-      return this.apiClient.callApi(
-        '/stories/feed/', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType
-      );
-    }
-
-    /**
-     * General ViewSet description
-     * @param {Object} opts Optional parameters
-     * @param {Number} opts.limit Number of results to return per page.
-     * @param {Number} opts.offset The initial index from which to return the results.
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/InlineResponse2001}
-     */
-    storiesFeedList(opts) {
-      return this.storiesFeedListWithHttpInfo(opts)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
-    }
-
-
-    /**
-     * General ViewSet description
-     * @param {String} slug 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Story} and HTTP response
-     */
-    storiesGetAudioWithHttpInfo(slug) {
-      let postBody = null;
-
-      // verify the required parameter 'slug' is set
-      if (slug === undefined || slug === null) {
-        throw new Error("Missing the required parameter 'slug' when calling storiesGetAudio");
-      }
-
-
-      let pathParams = {
-        'slug': slug
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = ['api_key'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = Story;
-
-      return this.apiClient.callApi(
-        '/stories/{slug}/get_audio', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType
-      );
-    }
-
-    /**
-     * General ViewSet description
-     * @param {String} slug 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Story}
-     */
-    storiesGetAudio(slug) {
-      return this.storiesGetAudioWithHttpInfo(slug)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
+    // verify the required parameter 'slug' is set
+    if (slug === undefined || slug === null) {
+      throw new Error("Missing the required parameter 'slug' when calling storiesDelete");
     }
 
 
-    /**
-     * List the stories
-     * @param {Object} opts Optional parameters
-     * @param {String} opts.authorUserUsername 
-     * @param {String} opts.tagsTag 
-     * @param {String} opts.authorFavorites 
-     * @param {Number} opts.limit Number of results to return per page.
-     * @param {Number} opts.offset The initial index from which to return the results.
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/InlineResponse2001} and HTTP response
-     */
-    storiesListWithHttpInfo(opts) {
-      opts = opts || {};
-      let postBody = null;
+    let pathParams = {
+      'slug': slug
+    };
+    let queryParams = {
+    };
+    let headerParams = {
+    };
+    let formParams = {
+    };
+
+    let authNames = ['api_key'];
+    let contentTypes = ['application/json'];
+    let accepts = ['application/json'];
+    let returnType = null;
+
+    return this.apiClient.callApi(
+      '/stories/{slug}', 'DELETE',
+      pathParams, queryParams, headerParams, formParams, postBody,
+      authNames, contentTypes, accepts, returnType
+    );
+  }
+
+  /**
+   * Delete a story
+   * @param {String} slug 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}
+   */
+  storiesDelete(slug) {
+    return this.storiesDeleteWithHttpInfo(slug)
+      .then(function (response_and_data) {
+        return response_and_data.data;
+      });
+  }
 
 
-      let pathParams = {
-      };
-      let queryParams = {
-        'author__user__username': opts['authorUserUsername'],
-        'tags__tag': opts['tagsTag'],
-        'author__favorites': opts['authorFavorites'],
-        'limit': opts['limit'],
-        'offset': opts['offset']
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
+  /**
+   * General ViewSet description
+   * @param {String} slug 
+   * @param {module:model/Story} data 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Story} and HTTP response
+   */
+  storiesFavoriteWithHttpInfo(slug, data) {
+    let postBody = data;
 
-      let authNames = ['api_key'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = InlineResponse2001;
-
-      return this.apiClient.callApi(
-        '/stories', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType
-      );
+    // verify the required parameter 'slug' is set
+    if (slug === undefined || slug === null) {
+      throw new Error("Missing the required parameter 'slug' when calling storiesFavorite");
     }
 
-    /**
-     * List the stories
-     * @param {Object} opts Optional parameters
-     * @param {String} opts.authorUserUsername 
-     * @param {String} opts.tagsTag 
-     * @param {String} opts.authorFavorites 
-     * @param {Number} opts.limit Number of results to return per page.
-     * @param {Number} opts.offset The initial index from which to return the results.
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/InlineResponse2001}
-     */
-    storiesList(opts) {
-      return this.storiesListWithHttpInfo(opts)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
+    // verify the required parameter 'data' is set
+    if (data === undefined || data === null) {
+      throw new Error("Missing the required parameter 'data' when calling storiesFavorite");
     }
 
 
-    /**
-     * General ViewSet description
-     * @param {String} slug 
-     * @param {module:model/Story} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Story} and HTTP response
-     */
-    storiesMakeAudioWithHttpInfo(slug, data) {
-      let postBody = data;
+    let pathParams = {
+      'slug': slug
+    };
+    let queryParams = {
+    };
+    let headerParams = {
+    };
+    let formParams = {
+    };
 
-      // verify the required parameter 'slug' is set
-      if (slug === undefined || slug === null) {
-        throw new Error("Missing the required parameter 'slug' when calling storiesMakeAudio");
-      }
+    let authNames = ['api_key'];
+    let contentTypes = ['application/json'];
+    let accepts = ['application/json'];
+    let returnType = Story;
 
-      // verify the required parameter 'data' is set
-      if (data === undefined || data === null) {
-        throw new Error("Missing the required parameter 'data' when calling storiesMakeAudio");
-      }
+    return this.apiClient.callApi(
+      '/stories/{slug}/favorite', 'POST',
+      pathParams, queryParams, headerParams, formParams, postBody,
+      authNames, contentTypes, accepts, returnType
+    );
+  }
 
-
-      let pathParams = {
-        'slug': slug
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = ['api_key'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = Story;
-
-      return this.apiClient.callApi(
-        '/stories/{slug}/make_audio', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType
-      );
-    }
-
-    /**
-     * General ViewSet description
-     * @param {String} slug 
-     * @param {module:model/Story} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Story}
-     */
-    storiesMakeAudio(slug, data) {
-      return this.storiesMakeAudioWithHttpInfo(slug, data)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
-    }
+  /**
+   * General ViewSet description
+   * @param {String} slug 
+   * @param {module:model/Story} data 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Story}
+   */
+  storiesFavorite(slug, data) {
+    return this.storiesFavoriteWithHttpInfo(slug, data)
+      .then(function (response_and_data) {
+        return response_and_data.data;
+      });
+  }
 
 
-    /**
-     * Patch a story
-     * @param {String} slug 
-     * @param {module:model/Story} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Story} and HTTP response
-     */
-    storiesPartialUpdateWithHttpInfo(slug, data) {
-      let postBody = data;
-
-      // verify the required parameter 'slug' is set
-      if (slug === undefined || slug === null) {
-        throw new Error("Missing the required parameter 'slug' when calling storiesPartialUpdate");
-      }
-
-      // verify the required parameter 'data' is set
-      if (data === undefined || data === null) {
-        throw new Error("Missing the required parameter 'data' when calling storiesPartialUpdate");
-      }
+  /**
+   * General ViewSet description
+   * @param {Object} opts Optional parameters
+   * @param {Number} opts.limit Number of results to return per page.
+   * @param {Number} opts.offset The initial index from which to return the results.
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/InlineResponse2001} and HTTP response
+   */
+  storiesFeedListWithHttpInfo(opts) {
+    opts = opts || {};
+    let postBody = null;
 
 
-      let pathParams = {
-        'slug': slug
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
+    let pathParams = {
+    };
+    let queryParams = {
+      'limit': opts['limit'],
+      'offset': opts['offset']
+    };
+    let headerParams = {
+    };
+    let formParams = {
+    };
 
-      let authNames = ['api_key'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = Story;
+    let authNames = ['api_key'];
+    let contentTypes = ['application/json'];
+    let accepts = ['application/json'];
+    let returnType = InlineResponse2001;
 
-      return this.apiClient.callApi(
-        '/stories/{slug}', 'PATCH',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType
-      );
-    }
+    return this.apiClient.callApi(
+      '/stories/feed/', 'GET',
+      pathParams, queryParams, headerParams, formParams, postBody,
+      authNames, contentTypes, accepts, returnType
+    );
+  }
 
-    /**
-     * Patch a story
-     * @param {String} slug 
-     * @param {module:model/Story} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Story}
-     */
-    storiesPartialUpdate(slug, data) {
-      return this.storiesPartialUpdateWithHttpInfo(slug, data)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
+  /**
+   * General ViewSet description
+   * @param {Object} opts Optional parameters
+   * @param {Number} opts.limit Number of results to return per page.
+   * @param {Number} opts.offset The initial index from which to return the results.
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/InlineResponse2001}
+   */
+  storiesFeedList(opts) {
+    return this.storiesFeedListWithHttpInfo(opts)
+      .then(function (response_and_data) {
+        return response_and_data.data;
+      });
+  }
+
+
+  /**
+   * General ViewSet description
+   * @param {String} slug 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Story} and HTTP response
+   */
+  storiesGetAudioWithHttpInfo(slug) {
+    let postBody = null;
+
+    // verify the required parameter 'slug' is set
+    if (slug === undefined || slug === null) {
+      throw new Error("Missing the required parameter 'slug' when calling storiesGetAudio");
     }
 
 
-    /**
-     * Retrieve a story
-     * @param {String} slug 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Story} and HTTP response
-     */
-    storiesReadWithHttpInfo(slug) {
-      let postBody = null;
+    let pathParams = {
+      'slug': slug
+    };
+    let queryParams = {
+    };
+    let headerParams = {
+    };
+    let formParams = {
+    };
 
-      // verify the required parameter 'slug' is set
-      if (slug === undefined || slug === null) {
-        throw new Error("Missing the required parameter 'slug' when calling storiesRead");
-      }
+    let authNames = ['api_key'];
+    let contentTypes = ['application/json'];
+    let accepts = ['application/json'];
+    let returnType = Story;
+
+    return this.apiClient.callApi(
+      '/stories/{slug}/get_audio', 'GET',
+      pathParams, queryParams, headerParams, formParams, postBody,
+      authNames, contentTypes, accepts, returnType
+    );
+  }
+
+  /**
+   * General ViewSet description
+   * @param {String} slug 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Story}
+   */
+  storiesGetAudio(slug) {
+    return this.storiesGetAudioWithHttpInfo(slug)
+      .then(function (response_and_data) {
+        return response_and_data.data;
+      });
+  }
 
 
-      let pathParams = {
-        'slug': slug
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
+  /**
+   * List the stories
+   * @param {Object} opts Optional parameters
+   * @param {String} opts.authorUserUsername 
+   * @param {String} opts.tagsTag 
+   * @param {String} opts.authorFavorites 
+   * @param {Number} opts.limit Number of results to return per page.
+   * @param {Number} opts.offset The initial index from which to return the results.
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/InlineResponse2001} and HTTP response
+   */
+  storiesListWithHttpInfo(opts) {
+    opts = opts || {};
+    let postBody = null;
 
-      let authNames = ['api_key'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = Story;
 
-      return this.apiClient.callApi(
-        '/stories/{slug}', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType
-      );
+    let pathParams = {
+    };
+    let queryParams = {
+      'author__user__username': opts['authorUserUsername'],
+      'tags__tag': opts['tagsTag'],
+      'author__favorites': opts['authorFavorites'],
+      'limit': opts['limit'],
+      'offset': opts['offset']
+    };
+    let headerParams = {
+    };
+    let formParams = {
+    };
+
+    let authNames = ['api_key'];
+    let contentTypes = ['application/json'];
+    let accepts = ['application/json'];
+    let returnType = InlineResponse2001;
+
+    return this.apiClient.callApi(
+      '/stories', 'GET',
+      pathParams, queryParams, headerParams, formParams, postBody,
+      authNames, contentTypes, accepts, returnType
+    );
+  }
+
+  /**
+   * List the stories
+   * @param {Object} opts Optional parameters
+   * @param {String} opts.authorUserUsername 
+   * @param {String} opts.tagsTag 
+   * @param {String} opts.authorFavorites 
+   * @param {Number} opts.limit Number of results to return per page.
+   * @param {Number} opts.offset The initial index from which to return the results.
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/InlineResponse2001}
+   */
+  storiesList(opts) {
+    return this.storiesListWithHttpInfo(opts)
+      .then(function (response_and_data) {
+        return response_and_data.data;
+      });
+  }
+
+
+  /**
+   * General ViewSet description
+   * @param {String} slug 
+   * @param {module:model/Story} data 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Story} and HTTP response
+   */
+  storiesMakeAudioWithHttpInfo(slug, data) {
+    let postBody = data;
+
+    // verify the required parameter 'slug' is set
+    if (slug === undefined || slug === null) {
+      throw new Error("Missing the required parameter 'slug' when calling storiesMakeAudio");
     }
 
-    /**
-     * Retrieve a story
-     * @param {String} slug 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Story}
-     */
-    storiesRead(slug) {
-      return this.storiesReadWithHttpInfo(slug)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
+    // verify the required parameter 'data' is set
+    if (data === undefined || data === null) {
+      throw new Error("Missing the required parameter 'data' when calling storiesMakeAudio");
     }
 
 
-    /**
-     * General ViewSet description
-     * @param {String} slug 
-     * @param {module:model/Story} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Story} and HTTP response
-     */
-    storiesUnfavoriteWithHttpInfo(slug, data) {
-      let postBody = data;
+    let pathParams = {
+      'slug': slug
+    };
+    let queryParams = {
+    };
+    let headerParams = {
+    };
+    let formParams = {
+    };
 
-      // verify the required parameter 'slug' is set
-      if (slug === undefined || slug === null) {
-        throw new Error("Missing the required parameter 'slug' when calling storiesUnfavorite");
-      }
+    let authNames = ['api_key'];
+    let contentTypes = ['application/json'];
+    let accepts = ['application/json'];
+    let returnType = Story;
 
-      // verify the required parameter 'data' is set
-      if (data === undefined || data === null) {
-        throw new Error("Missing the required parameter 'data' when calling storiesUnfavorite");
-      }
+    return this.apiClient.callApi(
+      '/stories/{slug}/make_audio', 'POST',
+      pathParams, queryParams, headerParams, formParams, postBody,
+      authNames, contentTypes, accepts, returnType
+    );
+  }
+
+  /**
+   * General ViewSet description
+   * @param {String} slug 
+   * @param {module:model/Story} data 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Story}
+   */
+  storiesMakeAudio(slug, data) {
+    return this.storiesMakeAudioWithHttpInfo(slug, data)
+      .then(function (response_and_data) {
+        return response_and_data.data;
+      });
+  }
 
 
-      let pathParams = {
-        'slug': slug
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
+  /**
+   * Patch a story
+   * @param {String} slug 
+   * @param {module:model/Story} data 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Story} and HTTP response
+   */
+  storiesPartialUpdateWithHttpInfo(slug, data) {
+    let postBody = data;
 
-      let authNames = ['api_key'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = Story;
-
-      return this.apiClient.callApi(
-        '/stories/{slug}/unfavorite', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType
-      );
+    // verify the required parameter 'slug' is set
+    if (slug === undefined || slug === null) {
+      throw new Error("Missing the required parameter 'slug' when calling storiesPartialUpdate");
     }
 
-    /**
-     * General ViewSet description
-     * @param {String} slug 
-     * @param {module:model/Story} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Story}
-     */
-    storiesUnfavorite(slug, data) {
-      return this.storiesUnfavoriteWithHttpInfo(slug, data)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
+    // verify the required parameter 'data' is set
+    if (data === undefined || data === null) {
+      throw new Error("Missing the required parameter 'data' when calling storiesPartialUpdate");
     }
 
 
-    /**
-     * Update a story
-     * @param {String} slug 
-     * @param {module:model/Story} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Story} and HTTP response
-     */
-    storiesUpdateWithHttpInfo(slug, data) {
-      let postBody = data;
+    let pathParams = {
+      'slug': slug
+    };
+    let queryParams = {
+    };
+    let headerParams = {
+    };
+    let formParams = {
+    };
 
-      // verify the required parameter 'slug' is set
-      if (slug === undefined || slug === null) {
-        throw new Error("Missing the required parameter 'slug' when calling storiesUpdate");
-      }
+    let authNames = ['api_key'];
+    let contentTypes = ['application/json'];
+    let accepts = ['application/json'];
+    let returnType = Story;
 
-      // verify the required parameter 'data' is set
-      if (data === undefined || data === null) {
-        throw new Error("Missing the required parameter 'data' when calling storiesUpdate");
-      }
+    return this.apiClient.callApi(
+      '/stories/{slug}', 'PATCH',
+      pathParams, queryParams, headerParams, formParams, postBody,
+      authNames, contentTypes, accepts, returnType
+    );
+  }
+
+  /**
+   * Patch a story
+   * @param {String} slug 
+   * @param {module:model/Story} data 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Story}
+   */
+  storiesPartialUpdate(slug, data) {
+    return this.storiesPartialUpdateWithHttpInfo(slug, data)
+      .then(function (response_and_data) {
+        return response_and_data.data;
+      });
+  }
 
 
-      let pathParams = {
-        'slug': slug
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
+  /**
+   * Retrieve a story
+   * @param {String} slug 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Story} and HTTP response
+   */
+  storiesReadWithHttpInfo(slug) {
+    let postBody = null;
 
-      let authNames = ['api_key'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = Story;
-
-      return this.apiClient.callApi(
-        '/stories/{slug}', 'PUT',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType
-      );
+    // verify the required parameter 'slug' is set
+    if (slug === undefined || slug === null) {
+      throw new Error("Missing the required parameter 'slug' when calling storiesRead");
     }
 
-    /**
-     * Update a story
-     * @param {String} slug 
-     * @param {module:model/Story} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Story}
-     */
-    storiesUpdate(slug, data) {
-      return this.storiesUpdateWithHttpInfo(slug, data)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
+
+    let pathParams = {
+      'slug': slug
+    };
+    let queryParams = {
+    };
+    let headerParams = {
+    };
+    let formParams = {
+    };
+
+    let authNames = ['api_key'];
+    let contentTypes = ['application/json'];
+    let accepts = ['application/json'];
+    let returnType = Story;
+
+    return this.apiClient.callApi(
+      '/stories/{slug}', 'GET',
+      pathParams, queryParams, headerParams, formParams, postBody,
+      authNames, contentTypes, accepts, returnType
+    );
+  }
+
+  /**
+   * Retrieve a story
+   * @param {String} slug 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Story}
+   */
+  storiesRead(slug) {
+    return this.storiesReadWithHttpInfo(slug)
+      .then(function (response_and_data) {
+        return response_and_data.data;
+      });
+  }
+
+
+  /**
+   * General ViewSet description
+   * @param {String} slug 
+   * @param {module:model/Story} data 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Story} and HTTP response
+   */
+  storiesUnfavoriteWithHttpInfo(slug, data) {
+    let postBody = data;
+
+    // verify the required parameter 'slug' is set
+    if (slug === undefined || slug === null) {
+      throw new Error("Missing the required parameter 'slug' when calling storiesUnfavorite");
     }
+
+    // verify the required parameter 'data' is set
+    if (data === undefined || data === null) {
+      throw new Error("Missing the required parameter 'data' when calling storiesUnfavorite");
+    }
+
+
+    let pathParams = {
+      'slug': slug
+    };
+    let queryParams = {
+    };
+    let headerParams = {
+    };
+    let formParams = {
+    };
+
+    let authNames = ['api_key'];
+    let contentTypes = ['application/json'];
+    let accepts = ['application/json'];
+    let returnType = Story;
+
+    return this.apiClient.callApi(
+      '/stories/{slug}/unfavorite', 'POST',
+      pathParams, queryParams, headerParams, formParams, postBody,
+      authNames, contentTypes, accepts, returnType
+    );
+  }
+
+  /**
+   * General ViewSet description
+   * @param {String} slug 
+   * @param {module:model/Story} data 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Story}
+   */
+  storiesUnfavorite(slug, data) {
+    return this.storiesUnfavoriteWithHttpInfo(slug, data)
+      .then(function (response_and_data) {
+        return response_and_data.data;
+      });
+  }
+
+
+  /**
+   * Update a story
+   * @param {String} slug 
+   * @param {module:model/Story} data 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Story} and HTTP response
+   */
+  storiesUpdateWithHttpInfo(slug, data) {
+    let postBody = data;
+
+    // verify the required parameter 'slug' is set
+    if (slug === undefined || slug === null) {
+      throw new Error("Missing the required parameter 'slug' when calling storiesUpdate");
+    }
+
+    // verify the required parameter 'data' is set
+    if (data === undefined || data === null) {
+      throw new Error("Missing the required parameter 'data' when calling storiesUpdate");
+    }
+
+
+    let pathParams = {
+      'slug': slug
+    };
+    let queryParams = {
+    };
+    let headerParams = {
+    };
+    let formParams = {
+    };
+
+    let authNames = ['api_key'];
+    let contentTypes = ['application/json'];
+    let accepts = ['application/json'];
+    let returnType = Story;
+
+    return this.apiClient.callApi(
+      '/stories/{slug}', 'PUT',
+      pathParams, queryParams, headerParams, formParams, postBody,
+      authNames, contentTypes, accepts, returnType
+    );
+  }
+
+  /**
+   * Update a story
+   * @param {String} slug 
+   * @param {module:model/Story} data 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Story}
+   */
+  storiesUpdate(slug, data) {
+    return this.storiesUpdateWithHttpInfo(slug, data)
+      .then(function (response_and_data) {
+        return response_and_data.data;
+      });
+  }
 
 
 }

@@ -80,28 +80,6 @@
       </v-expansion-panel>
     </v-expansion-panels>
     <RwvCommentslist :story="story"></RwvCommentslist>
-    <!-- <div class="mx-auto" aling="center">
-      <RwvCommentEditor
-        v-if="isAuthenticated"
-        :slug="slug"
-        :userImage="currentUser.image"
-      >
-      </RwvCommentEditor>
-      <p v-else>
-        <router-link :to="{ name: 'login' }">Sign in</router-link>
-        or
-        <router-link :to="{ name: 'register' }">Sign up</router-link>
-        to add comments on this story.
-      </p>
-      <v-spacer></v-spacer>
-      <RwvComment
-        v-for="(comment, index) in comments"
-        :slug="slug"
-        :comment="comment"
-        :key="index"
-      >
-      </RwvComment>
-    </div> -->
   </v-card>
 </template>
 
@@ -110,8 +88,6 @@ import { mapGetters } from "vuex";
 import marked from "marked";
 import store from "@/store";
 import RwvProfileFollow from "@/components/ProfileFollow.vue";
-// import RwvComment from "@/components/Comment.vue";
-// import RwvCommentEditor from "@/components/CommentEditor.vue";
 import RwvCommentslist from "@/components/CommentsList.vue";
 
 import TagList from "../components/TagList.vue";
@@ -128,8 +104,6 @@ export default {
     }
   },
   components: {
-    // RwvComment,
-    // RwvCommentEditor,
     TagList,
     RwvStoryActions,
     RwvProfileFollow,
