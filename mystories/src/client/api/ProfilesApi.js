@@ -15,6 +15,7 @@
 
 import {ApiClient} from "../ApiClient";
 import {Profile} from '../model/Profile';
+import {ProfileImage} from '../model/ProfileImage';
 
 /**
 * Profiles service.
@@ -39,17 +40,20 @@ export class ProfilesApi {
     /**
      * General description. It need a username.
      * @param {String} userUsername 
-     * @param {Object} opts Optional parameters
-     * @param {String} opts.bio 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Profile} and HTTP response
+     * @param {File} image 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/ProfileImage} and HTTP response
      */
-    profilesChangeImageWithHttpInfo(userUsername, opts) {
-      opts = opts || {};
+    profilesChangeImageWithHttpInfo(userUsername, image) {
       let postBody = null;
 
       // verify the required parameter 'userUsername' is set
       if (userUsername === undefined || userUsername === null) {
         throw new Error("Missing the required parameter 'userUsername' when calling profilesChangeImage");
+      }
+
+      // verify the required parameter 'image' is set
+      if (image === undefined || image === null) {
+        throw new Error("Missing the required parameter 'image' when calling profilesChangeImage");
       }
 
 
@@ -61,13 +65,13 @@ export class ProfilesApi {
       let headerParams = {
       };
       let formParams = {
-        'bio': opts['bio']
+        'image': image
       };
 
       let authNames = ['api_key'];
-      let contentTypes = ['multipart/form-data', 'application/x-www-form-urlencoded'];
+      let contentTypes = ['multipart/form-data'];
       let accepts = ['application/json'];
-      let returnType = Profile;
+      let returnType = ProfileImage;
 
       return this.apiClient.callApi(
         '/profiles/{user__username}/change_image', 'PUT',
@@ -79,12 +83,11 @@ export class ProfilesApi {
     /**
      * General description. It need a username.
      * @param {String} userUsername 
-     * @param {Object} opts Optional parameters
-     * @param {String} opts.bio 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Profile}
+     * @param {File} image 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/ProfileImage}
      */
-    profilesChangeImage(userUsername, opts) {
-      return this.profilesChangeImageWithHttpInfo(userUsername, opts)
+    profilesChangeImage(userUsername, image) {
+      return this.profilesChangeImageWithHttpInfo(userUsername, image)
         .then(function(response_and_data) {
           return response_and_data.data;
         });

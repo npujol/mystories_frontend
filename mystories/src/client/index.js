@@ -22,8 +22,10 @@ import {InlineResponse2003} from './model/InlineResponse2003';
 import {Login} from './model/Login';
 import {Notification} from './model/Notification';
 import {Profile} from './model/Profile';
+import {ProfileImage} from './model/ProfileImage';
 import {Registration} from './model/Registration';
 import {Story} from './model/Story';
+import {StoryImage} from './model/StoryImage';
 import {Tag} from './model/Tag';
 import {User} from './model/User';
 import {AuthApi} from './api/AuthApi';
@@ -121,6 +123,12 @@ export {
     Profile,
 
     /**
+     * The ProfileImage model constructor.
+     * @property {module:model/ProfileImage}
+     */
+    ProfileImage,
+
+    /**
      * The Registration model constructor.
      * @property {module:model/Registration}
      */
@@ -131,6 +139,12 @@ export {
      * @property {module:model/Story}
      */
     Story,
+
+    /**
+     * The StoryImage model constructor.
+     * @property {module:model/StoryImage}
+     */
+    StoryImage,
 
     /**
      * The Tag model constructor.
