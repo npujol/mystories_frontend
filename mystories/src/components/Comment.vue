@@ -11,7 +11,11 @@
           @click="linkTo('profile', { username: comment.author.username })"
           color="grey"
         >
-          <img class="is-rounded" :src="comment.author.image" />
+          <img
+            class="is-rounded"
+            :src="comment.author.image"
+            srcset="https://picsum.photos/510/300?random"
+          />
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title
@@ -82,6 +86,12 @@ export default {
       } catch (err) {
         console.error(err);
       }
+    },
+    linkTo(route, params) {
+      if (params.length === 0) {
+        this.$router.push({ name: route });
+      }
+      this.$router.push({ name: route, params: params });
     }
   }
 };
