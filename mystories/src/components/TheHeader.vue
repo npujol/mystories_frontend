@@ -22,7 +22,9 @@
               <v-icon>mdi-account-circle</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title @click="linkTo('settings', {})">
+              <v-list-item-title
+                @click="linkTo('settings', { username: currentUser.username })"
+              >
                 <h3 class="basil--text">
                   Profile
                 </h3>

@@ -94,7 +94,6 @@ export default {
       if (this.favorited) {
         filters.authorFavorites = this.favorited;
       }
-      // console.log(type, filters);
       return {
         type,
         filters

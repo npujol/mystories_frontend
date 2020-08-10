@@ -43,7 +43,6 @@ export default {
         this.profile.following === "true"
           ? FETCH_PROFILE_UNFOLLOW
           : FETCH_PROFILE_FOLLOW;
-      console.log(action, this.profile.username);
       this.$store.dispatch(action, {
         username: this.profile.username
       });

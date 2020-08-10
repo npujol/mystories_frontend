@@ -39,7 +39,7 @@ const routes: Array<RouteConfig> = [
   },
   {
     name: "settings",
-    path: "/settings",
+    path: "/settings/:username",
     component: () => import("../views/Settings.vue")
   },
   // Handle child routes with a default, by giving the name to the
