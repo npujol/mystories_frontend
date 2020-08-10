@@ -11,11 +11,7 @@
           @click="linkTo('profile', { username: comment.author.username })"
           color="grey"
         >
-          <img
-            class="is-rounded"
-            :src="comment.author.image"
-            srcset="https://picsum.photos/510/300?random"
-          />
+          <img class="is-rounded" :src="comment.author.image" />
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title
