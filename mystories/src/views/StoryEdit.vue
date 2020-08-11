@@ -1,14 +1,32 @@
 <template>
-  <v-card class="pa-2 mx-auto" outlined tile>
-    <v-card-title>
+  <v-card class="pa-2 mx-auto" min-width="80%" oaling="center">
+    <v-card-title class="d-flex text-center justify-center">
       <h3 class="font-weight-bold basil--text">
         New story
       </h3>
     </v-card-title>
+    <v-img
+      aling="center"
+      class="white--text align-end"
+      height="200px"
+      :src="preview"
+    >
+    </v-img>
     <v-spacer></v-spacer>
-    <v-card-text>
+    <v-card-text aling="center">
       <RwvListErrors :errors="errors" />
       <v-form>
+        <v-file-input
+          :rules="[rules.photo]"
+          name="avatar"
+          accept="image/png, image/jpeg, image/bmp"
+          placeholder="Pick an avatar"
+          prepend-icon="mdi-camera"
+          label="Avatar"
+          hide-input
+          @change="previewImage"
+        >
+        </v-file-input>
         <v-text-field
           label="Title"
           name="title"
@@ -16,6 +34,12 @@
           v-model="story.title"
           placeholder="Title"
         ></v-text-field>
+        <v-select
+          v-model="story.lenguage"
+          :items="items"
+          label="Lenguage"
+          dense
+        ></v-select>
         <v-textarea
           label="Description"
           v-model="story.description"
@@ -26,8 +50,9 @@
           outlined
           full-width
           v-model="story.body"
+          @change="compiledMarkdown()"
         ></v-textarea>
-        <div elevation="12" v-html="compiledMarkdown"></div>
+        <div elevation="12" v-html="story.bodyMarkdown"></div>
         <v-layout wrap>
           <v-flex xs12>
             <v-combobox
@@ -110,33 +135,35 @@ export default {
       errors: {},
       valid: false,
       input: "# hello",
-      items: [],
-      search: "" //sync search
+      items: ["en", "es", "de"],
+      search: "", //sync search
+      preview: "https://picsum.photos/510/300?random",
+      rules: {
+        photo: v =>
+          !v || v.size < 2000000 || "Avatar size should be less than 2 MB!"
+      }
     };
   },
-  computed: {
-    ...mapGetters(["story"]),
-    compiledMarkdown: function() {
-      return marked(this.story.body, { sanitize: true });
+  mounted() {
+    if (this.story.image) {
+      this.preview = this.story.image;
     }
   },
+  computed: {
+    ...mapGetters(["story"])
+  },
   methods: {
-    onPublish(slug) {
-      const action = slug ? STORY_EDIT : STORY_PUBLISH;
-      this.inProgress = true;
-      this.$store
-        .dispatch(action)
-        .then(data => {
-          this.inProgress = false;
-          this.$router.push({
-            name: "story",
-            params: { slug: data.slug }
-          });
-        })
-        .catch(response => {
-          this.inProgress = false;
-          this.errors = JSON.parse(response.response.text).errors;
-        });
+    async onPublish(slug) {
+      try {
+        const action = slug ? STORY_EDIT : STORY_PUBLISH;
+        this.inProgress = true;
+        const data = await this.$store.dispatch(action);
+        this.inProgress = false;
+        this.$router.push({ name: "story", params: { slug: data.slug } });
+      } catch (error) {
+        this.inProgress = false;
+        this.errors = JSON.parse(error.response.text).errors;
+      }
     },
     updateTags() {
       this.$nextTick(() => {
@@ -150,6 +177,17 @@ export default {
       _.debounce(function(e) {
         this.story.body = e.target.value;
       }, 300);
+    },
+    previewImage(file) {
+      var reader = new FileReader();
+      this.story.image = file;
+      reader.onload = e => {
+        this.preview = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+    compiledMarkdown() {
+      this.story.bodyMarkdown = marked(this.story.body, { sanitize: true });
     }
   }
 };

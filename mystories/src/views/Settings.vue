@@ -1,7 +1,7 @@
 <template>
-  <v-card min-width="80%" class="elevation mx-auto" aling="center">
+  <v-card min-width="80%" class="pa-2 mx-auto" aling="center">
     <v-card-title class="d-flex text-center justify-center">
-      <h3 class="d-flex font-weight-bold basil--text">
+      <h3 class=" font-weight-bold basil--text">
         Yours settings
       </h3>
     </v-card-title>
@@ -9,7 +9,7 @@
     <v-card-text aling="center">
       <RwvListErrors :errors="errors" />
       <v-form>
-        <v-img aling="center" max-width="20%" class="is-rounded" :src="preview">
+        <v-img aling="center" height="200px" class="is-rounded" :src="preview">
         </v-img>
         <v-file-input
           :rules="[rules.photo]"

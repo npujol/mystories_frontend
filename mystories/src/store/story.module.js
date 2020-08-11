@@ -34,7 +34,7 @@ const initialState = {
     description: "",
     image: "",
     body: "",
-    language: "",
+    language: "en",
     favoritesCount: "",
     createdAt: "",
     updatedAt: "",
@@ -99,10 +99,32 @@ export const actions = {
     context.commit(UPDATE_STORY_IN_LIST, data, { root: true });
     context.commit(SET_STORY, data);
   },
-  [STORY_PUBLISH]({ state }) {
-    return storiesApi.storiesCreate(state.story);
+  async [STORY_PUBLISH]({ state }) {
+    const {
+      title,
+      description,
+      image,
+      body,
+      language,
+      bodyMarkdown,
+      tags
+    } = state.story;
+
+    const newStory = await storiesApi.storiesCreate({
+      title: title,
+      description: description,
+      body: body,
+      language: language,
+      bodyMarkdown: bodyMarkdown,
+      tags: tags
+    });
+    if (image && typeof image !== "string") {
+      await storiesApi.storiesChangeImage(newStory.slug, image);
+    }
+    const data = await storiesApi.storiesRead(newStory.slug);
+    return data;
   },
-  [STORY_DELETE](context, slug) {
+  [STORY_DELETE](slug) {
     return storiesApi.storiesDelete(slug);
   },
   [STORY_EDIT]({ state }) {
