@@ -15,7 +15,6 @@
 
 import {ApiClient} from '../ApiClient';
 import {Profile} from './Profile';
-import {Tag} from './Tag';
 
 /**
  * The Story model module.
@@ -27,9 +26,13 @@ export class Story {
    * Constructs a new <code>Story</code>.
    * @alias module:model/Story
    * @class
+   * @param bodyMarkdown {String} 
+   * @param tags {Array.<String>} 
    * @param title {String} 
    */
-  constructor(title) {
+  constructor(bodyMarkdown, tags, title) {
+    this.bodyMarkdown = bodyMarkdown;
+    this.tags = tags;
     this.title = title;
   }
 
@@ -62,7 +65,7 @@ export class Story {
       if (data.hasOwnProperty('slug'))
         obj.slug = ApiClient.convertToType(data['slug'], 'String');
       if (data.hasOwnProperty('tags'))
-        obj.tags = ApiClient.convertToType(data['tags'], [Tag]);
+        obj.tags = ApiClient.convertToType(data['tags'], ['String']);
       if (data.hasOwnProperty('title'))
         obj.title = ApiClient.convertToType(data['title'], 'String');
       if (data.hasOwnProperty('createdAt'))
@@ -145,7 +148,7 @@ Story.prototype.favoritesCount = undefined;
 Story.prototype.slug = undefined;
 
 /**
- * @member {Array.<module:model/Tag>} tags
+ * @member {Array.<String>} tags
  */
 Story.prototype.tags = undefined;
 

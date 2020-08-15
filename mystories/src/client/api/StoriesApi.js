@@ -19,6 +19,7 @@ import {InlineResponse2001} from '../model/InlineResponse2001';
 import {InlineResponse2002} from '../model/InlineResponse2002';
 import {Story} from '../model/Story';
 import {StoryImage} from '../model/StoryImage';
+import {StoryPrivate} from '../model/StoryPrivate';
 
 /**
 * Stories service.
@@ -43,10 +44,12 @@ export class StoriesApi {
     /**
      * General ViewSet description
      * @param {String} slug 
+     * @param {String} bodyMarkdown 
      * @param {File} image 
+     * @param {Array.<String>} tags 
      * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/StoryImage} and HTTP response
      */
-    storiesChangeImageWithHttpInfo(slug, image) {
+    storiesChangeImageWithHttpInfo(slug, bodyMarkdown, image, tags) {
       let postBody = null;
 
       // verify the required parameter 'slug' is set
@@ -54,9 +57,19 @@ export class StoriesApi {
         throw new Error("Missing the required parameter 'slug' when calling storiesChangeImage");
       }
 
+      // verify the required parameter 'bodyMarkdown' is set
+      if (bodyMarkdown === undefined || bodyMarkdown === null) {
+        throw new Error("Missing the required parameter 'bodyMarkdown' when calling storiesChangeImage");
+      }
+
       // verify the required parameter 'image' is set
       if (image === undefined || image === null) {
         throw new Error("Missing the required parameter 'image' when calling storiesChangeImage");
+      }
+
+      // verify the required parameter 'tags' is set
+      if (tags === undefined || tags === null) {
+        throw new Error("Missing the required parameter 'tags' when calling storiesChangeImage");
       }
 
 
@@ -68,7 +81,9 @@ export class StoriesApi {
       let headerParams = {
       };
       let formParams = {
-        'image': image
+        'body_markdown': bodyMarkdown,
+        'image': image,
+        'tags': this.apiClient.buildCollectionParam(tags, 'multi')
       };
 
       let authNames = ['api_key'];
@@ -86,11 +101,13 @@ export class StoriesApi {
     /**
      * General ViewSet description
      * @param {String} slug 
+     * @param {String} bodyMarkdown 
      * @param {File} image 
+     * @param {Array.<String>} tags 
      * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/StoryImage}
      */
-    storiesChangeImage(slug, image) {
-      return this.storiesChangeImageWithHttpInfo(slug, image)
+    storiesChangeImage(slug, bodyMarkdown, image, tags) {
+      return this.storiesChangeImageWithHttpInfo(slug, bodyMarkdown, image, tags)
         .then(function(response_and_data) {
           return response_and_data.data;
         });
@@ -571,6 +588,55 @@ export class StoriesApi {
      */
     storiesGetAudio(slug) {
       return this.storiesGetAudioWithHttpInfo(slug)
+        .then(function(response_and_data) {
+          return response_and_data.data;
+        });
+    }
+
+
+    /**
+     * General ViewSet description
+     * @param {String} slug 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/StoryPrivate} and HTTP response
+     */
+    storiesGetBodyMarkdownWithHttpInfo(slug) {
+      let postBody = null;
+
+      // verify the required parameter 'slug' is set
+      if (slug === undefined || slug === null) {
+        throw new Error("Missing the required parameter 'slug' when calling storiesGetBodyMarkdown");
+      }
+
+
+      let pathParams = {
+        'slug': slug
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['api_key'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = StoryPrivate;
+
+      return this.apiClient.callApi(
+        '/stories/{slug}/get_body_markdown', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType
+      );
+    }
+
+    /**
+     * General ViewSet description
+     * @param {String} slug 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/StoryPrivate}
+     */
+    storiesGetBodyMarkdown(slug) {
+      return this.storiesGetBodyMarkdownWithHttpInfo(slug)
         .then(function(response_and_data) {
           return response_and_data.data;
         });

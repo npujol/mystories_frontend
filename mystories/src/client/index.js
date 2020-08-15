@@ -26,6 +26,7 @@ import {ProfileImage} from './model/ProfileImage';
 import {Registration} from './model/Registration';
 import {Story} from './model/Story';
 import {StoryImage} from './model/StoryImage';
+import {StoryPrivate} from './model/StoryPrivate';
 import {Tag} from './model/Tag';
 import {User} from './model/User';
 import {AuthApi} from './api/AuthApi';
@@ -145,6 +146,12 @@ export {
      * @property {module:model/StoryImage}
      */
     StoryImage,
+
+    /**
+     * The StoryPrivate model constructor.
+     * @property {module:model/StoryPrivate}
+     */
+    StoryPrivate,
 
     /**
      * The Tag model constructor.

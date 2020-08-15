@@ -15,7 +15,6 @@
 
 import {ApiClient} from '../ApiClient';
 import {Profile} from './Profile';
-import {Tag} from './Tag';
 
 /**
  * The StoryImage model module.
@@ -27,8 +26,12 @@ export class StoryImage {
    * Constructs a new <code>StoryImage</code>.
    * @alias module:model/StoryImage
    * @class
+   * @param bodyMarkdown {String} 
+   * @param tags {Array.<String>} 
    */
-  constructor() {
+  constructor(bodyMarkdown, tags) {
+    this.bodyMarkdown = bodyMarkdown;
+    this.tags = tags;
   }
 
   /**
@@ -60,7 +63,7 @@ export class StoryImage {
       if (data.hasOwnProperty('slug'))
         obj.slug = ApiClient.convertToType(data['slug'], 'String');
       if (data.hasOwnProperty('tags'))
-        obj.tags = ApiClient.convertToType(data['tags'], [Tag]);
+        obj.tags = ApiClient.convertToType(data['tags'], ['String']);
       if (data.hasOwnProperty('title'))
         obj.title = ApiClient.convertToType(data['title'], 'String');
       if (data.hasOwnProperty('createdAt'))
@@ -143,7 +146,7 @@ StoryImage.prototype.favoritesCount = undefined;
 StoryImage.prototype.slug = undefined;
 
 /**
- * @member {Array.<module:model/Tag>} tags
+ * @member {Array.<String>} tags
  */
 StoryImage.prototype.tags = undefined;
 
