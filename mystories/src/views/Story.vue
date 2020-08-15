@@ -6,7 +6,6 @@
       <v-list-item>
         <v-list-item-avatar
           @click="linkTo('profile', { username: story.author.username })"
-          color="grey"
         >
           <img class="is-rounded" :src="story.author.image" />
         </v-list-item-avatar>
@@ -26,6 +25,7 @@
         </v-list-item-content>
         <v-list-item-action>
           <RwvProfileFollow
+            v-if="!isCurrentUser()"
             :username="story.author.username"
           ></RwvProfileFollow>
         </v-list-item-action>
@@ -51,7 +51,10 @@
         </v-list-item-action>
       </v-list-item>
     </v-list>
-    <TagList :tags="story.tags" />
+    <v-chip-group class="flex ma-5" active-class="primary--text">
+      <RwvTag v-for="(value, index) in story.tags" :tag="value" :key="index">
+      </RwvTag>
+    </v-chip-group>
     <v-expansion-panels>
       <v-expansion-panel>
         <v-expansion-panel-header>Info</v-expansion-panel-header>
@@ -73,12 +76,13 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
       <v-expansion-panel>
-        <v-expansion-panel-header>Story</v-expansion-panel-header>
+        <v-expansion-panel-header>Body</v-expansion-panel-header>
         <v-expansion-panel-content>
-          <div aling="center" v-html="parseMarkdown(story.bodyMarkdown)"></div>
+          <div v-html="story.bodyMarkdown"></div>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
+    <v-spacer></v-spacer>
     <RwvCommentslist :story="story"></RwvCommentslist>
   </v-card>
 </template>
@@ -90,9 +94,8 @@ import store from "@/store";
 import RwvProfileFollow from "@/components/ProfileFollow.vue";
 import RwvCommentslist from "@/components/CommentsList.vue";
 
-import TagList from "../components/TagList.vue";
+import RwvTag from "@/components/VTag.vue";
 import RwvStoryActions from "../components/StoryActions.vue";
-
 import { FETCH_STORY, FETCH_COMMENTS } from "@/store/actions.type.js";
 
 export default {
@@ -104,26 +107,29 @@ export default {
     }
   },
   components: {
-    TagList,
+    RwvTag,
     RwvStoryActions,
     RwvProfileFollow,
     RwvCommentslist
   },
-  beforeRouteEnter(to, from, next) {
-    Promise.all([
-      store.dispatch(FETCH_STORY, to.params.slug),
-      store.dispatch(FETCH_COMMENTS, to.params.slug)
-    ]).then(() => {
+  data() {
+    return {
+      errors: []
+    };
+  },
+  async beforeRouteEnter(to, from, next) {
+    try {
+      await store.dispatch(FETCH_STORY, to.params.slug);
+      await store.dispatch(FETCH_COMMENTS, to.params.slug);
       next();
-    });
+    } catch (error) {
+      this.errors = error;
+    }
   },
   computed: {
     ...mapGetters(["story", "currentUser", "comments", "isAuthenticated"])
   },
   methods: {
-    parseMarkdown(content) {
-      return marked(content);
-    },
     linkTo(route, params) {
       if (params.length === 0) {
         this.$router.push({ name: route });
@@ -131,18 +137,10 @@ export default {
       this.$router.push({ name: route, params: params });
     },
     isCurrentUser() {
+      console.log(this.story.bodyMarkdown);
       if (this.currentUser.username && this.story.author.username) {
         return this.currentUser.username === this.story.author.username;
       }
-    },
-    toggleFavorite() {
-      if (!this.isAuthenticated) {
-        this.$router.push({ name: "login" });
-        return;
-      }
-      let action =
-        this.story.favorited === "false" ? FAVORITE_ADD : FAVORITE_REMOVE;
-      this.$store.dispatch(action, this.story.slug);
     }
   }
 };

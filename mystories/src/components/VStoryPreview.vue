@@ -31,7 +31,10 @@
         {{ story.description }}
       </p>
     </v-card-text>
-    <TagList :tags="story.tags" />
+    <v-chip-group class="flex ma-5" active-class="primary--text">
+      <RwvTag v-for="(value, index) in story.tags" :tag="value" :key="index">
+      </RwvTag>
+    </v-chip-group>
     <v-card-actions>
       <v-btn
         elevation="12"
@@ -52,13 +55,13 @@
 
 <script>
 import { mapGetters } from "vuex";
-import TagList from "./TagList.vue";
+import RwvTag from "./VTag.vue";
 import RwvStoryActions from "./StoryActions.vue";
 
 export default {
   name: "RwvStoryPreview",
   components: {
-    TagList,
+    RwvTag,
     RwvStoryActions
   },
   props: {
