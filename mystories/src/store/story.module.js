@@ -2,6 +2,7 @@ import Vue from "vue";
 import { StoriesApi } from "../client";
 
 import {
+  FETCH_STORY_PRIVATE,
   FETCH_STORY,
   FETCH_COMMENTS,
   COMMENT_CREATE,
@@ -72,6 +73,11 @@ export const actions = {
     context.commit(SET_STORY, data);
     return data;
   },
+  async [FETCH_STORY_PRIVATE](context, payload) {
+    const data = await storiesApi.storiesGetBodyMarkdown(payload.slug);
+
+    return data;
+  },
   async [FETCH_COMMENTS](context, payload) {
     context.commit(SET_COMMENTS_START);
     const data = await storiesApi.storiesCommentsList(payload);
@@ -104,18 +110,16 @@ export const actions = {
       title,
       description,
       image,
-      body,
-      language,
       bodyMarkdown,
+      language,
       tags
     } = state.story;
 
     const newStory = await storiesApi.storiesCreate({
       title: title,
       description: description,
-      body: body,
+      body_markdown: bodyMarkdown,
       language: language,
-      bodyMarkdown: bodyMarkdown,
       tags: tags
     });
     if (image && typeof image !== "string") {

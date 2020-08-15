@@ -2,7 +2,7 @@
   <v-card class="pa-2 mx-auto" min-width="80%" oaling="center">
     <v-card-title class="d-flex text-center justify-center">
       <h3 class="font-weight-bold basil--text">
-        New story
+        Story
       </h3>
     </v-card-title>
     <v-img
@@ -35,9 +35,9 @@
           placeholder="Title"
         ></v-text-field>
         <v-select
-          v-model="story.lenguage"
+          v-model="story.language"
           :items="items"
-          label="Lenguage"
+          label="Language"
           dense
         ></v-select>
         <v-textarea
@@ -46,13 +46,10 @@
         ></v-textarea>
         <v-textarea
           label="Body"
-          @input="update"
           outlined
           full-width
-          v-model="story.body"
-          @change="compiledMarkdown()"
+          v-model="story.bodyMarkdown"
         ></v-textarea>
-        <div elevation="12" v-html="story.bodyMarkdown"></div>
         <v-layout wrap>
           <v-flex xs12>
             <v-combobox
@@ -92,6 +89,7 @@ import {
   STORY_PUBLISH,
   STORY_EDIT,
   FETCH_STORY,
+  FETCH_STORY_PRIVATE,
   STORY_EDIT_ADD_TAG,
   STORY_EDIT_REMOVE_TAG,
   STORY_RESET_STATE
@@ -148,6 +146,7 @@ export default {
     if (this.story.image) {
       this.preview = this.story.image;
     }
+    this.getBodyMarkdown();
   },
   computed: {
     ...mapGetters(["story"])
@@ -157,7 +156,7 @@ export default {
       try {
         const action = slug ? STORY_EDIT : STORY_PUBLISH;
         this.inProgress = true;
-        const data = await this.$store.dispatch(action);
+        const data = await this.$store.dispatch(action, this.story);
         this.inProgress = false;
         this.$router.push({ name: "story", params: { slug: data.slug } });
       } catch (error) {
@@ -173,11 +172,6 @@ export default {
         });
       });
     },
-    update() {
-      _.debounce(function(e) {
-        this.story.body = e.target.value;
-      }, 300);
-    },
     previewImage(file) {
       var reader = new FileReader();
       this.story.image = file;
@@ -186,8 +180,17 @@ export default {
       };
       reader.readAsDataURL(file);
     },
-    compiledMarkdown() {
-      this.story.bodyMarkdown = marked(this.story.body, { sanitize: true });
+    async getBodyMarkdown() {
+      if (this.story.slug) {
+        try {
+          const data = await this.$store.dispatch(FETCH_STORY_PRIVATE, {
+            slug: this.story.slug
+          });
+          this.story.bodyMarkdown = data.bodyMarkdown;
+        } catch (error) {
+          this.errors = JSON.parse(error.response.text).errors;
+        }
+      }
     }
   }
 };

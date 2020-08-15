@@ -30,19 +30,6 @@ Add<template>
         No comments are here... yet.
       </div>
       <div class="mx-auto" aling="center">
-        <RwvCommentEditor
-          class="mb-2"
-          v-if="isAuthenticated"
-          :slug="story.slug"
-          :userImage="currentUser.image"
-        >
-        </RwvCommentEditor>
-        <p v-else>
-          <router-link :to="{ name: 'login' }">Sign in</router-link>
-          or
-          <router-link :to="{ name: 'register' }">Sign up</router-link>
-          to add comments on this story.
-        </p>
         <v-spacer></v-spacer>
         <RwvComment
           class="mb-2"

@@ -61,7 +61,7 @@
         <v-expansion-panel-content>
           <dl>
             <dt>Created:</dt>
-            <dd>{{ story.createdAt | date }}</dd>
+            <dd>{{ story.createdAt | date }</dd>
             <dt>Updated:</dt>
             <dd>{{ story.updatedAt | date }}</dd>
             <dt>Language:</dt>
@@ -78,10 +78,10 @@
       <v-expansion-panel>
         <v-expansion-panel-header>Body</v-expansion-panel-header>
         <v-expansion-panel-content>
-          <div v-html="story.bodyMarkdown"></div>
+          <div v-html="story.body"></div>
         </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
+      </v-expansion-panel> </v-expansion-panels
+    >Markdown
     <v-spacer></v-spacer>
     <RwvCommentslist :story="story"></RwvCommentslist>
   </v-card>
@@ -137,7 +137,6 @@ export default {
       this.$router.push({ name: route, params: params });
     },
     isCurrentUser() {
-      console.log(this.story.bodyMarkdown);
       if (this.currentUser.username && this.story.author.username) {
         return this.currentUser.username === this.story.author.username;
       }

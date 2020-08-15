@@ -41,7 +41,8 @@ export default {
   data() {
     return {
       loader: null,
-      loading: false
+      loading: false,
+      canModify: false
     };
   },
   props: {
@@ -62,15 +63,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["profile", "currentUser", "isAuthenticated"]),
-    canModify() {
-      return this.currentUser.username === this.profile.username;
-    }
+    ...mapGetters(["profile", "currentUser", "isAuthenticated"])
   },
   mounted() {
     this.$store.dispatch(FETCH_PROFILE, {
       username: this.story.author.username
     });
+    this.canModify = this.currentUser.username === this.profile.username;
   },
   methods: {
     async deleteStory() {
