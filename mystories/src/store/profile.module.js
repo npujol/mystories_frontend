@@ -1,5 +1,4 @@
 import { ProfilesApi } from "../client";
-import JwtService from "@/common/jwt.service";
 
 import {
   FETCH_PROFILE,
@@ -21,53 +20,43 @@ const getters = {
 };
 
 const actions = {
-  [FETCH_PROFILE](context, payload) {
-    JwtService.setHeader();
+  async [FETCH_PROFILE](context, payload) {
     const { username } = payload;
-    return profilesApi
-      .profilesRead(username)
-      .then(data => {
-        context.commit(SET_PROFILE, data);
-        return data;
-      })
-      .catch(() => {
-        // #todo SET_ERROR cannot work in multiple states
-        context.commit(SET_ERROR, JSON.parse(response.response.text).errors);
-      });
+    try {
+      const data = await profilesApi.profilesRead(username);
+      context.commit(SET_PROFILE, data);
+      return data;
+    } catch (e) {
+      // #todo SET_ERROR cannot work in multiple states
+      context.commit(SET_ERROR, JSON.parse(e.response.text).errors);
+    }
   },
-  [FETCH_PROFILE_FOLLOW](context, payload) {
-    JwtService.setHeader();
+  async [FETCH_PROFILE_FOLLOW](context, payload) {
     const { username } = payload;
-    return profilesApi
-      .profilesFollowCreate(username, "")
-      .then(data => {
-        context.commit(SET_PROFILE, data);
-        return data;
-      })
-      .catch(() => {
-        // #todo SET_ERROR cannot work in multiple states
-        context.commit(SET_ERROR, JSON.parse(response.response.text).errors);
-      });
+    try {
+      const data = await profilesApi.profilesFollowProfile(username, "");
+      context.commit(SET_PROFILE, data);
+      return data;
+    } catch (e) {
+      // #todo SET_ERROR cannot work in multiple states
+      context.commit(SET_ERROR, "e");
+    }
   },
-  [FETCH_PROFILE_UNFOLLOW](context, payload) {
-    JwtService.setHeader();
+  async [FETCH_PROFILE_UNFOLLOW](context, payload) {
     const { username } = payload;
-    return profilesApi
-      .profilesFollowDelete(username, "")
-      .then(data => {
-        context.commit(SET_PROFILE, data);
-        return data;
-      })
-      .catch(() => {
-        // #todo SET_ERROR cannot work in multiple states
-        context.commit(SET_ERROR, JSON.parse(response.response.text).errors);
-      });
+    try {
+      const data = await profilesApi.profilesUnfollowProfile(username, "");
+      context.commit(SET_PROFILE, data);
+      return data;
+    } catch (e) {
+      // #todo SET_ERROR cannot work in multiple states
+      context.commit(SET_ERROR, JSON.parse(e.response.text).errors);
+    }
   }
 };
 
 const mutations = {
   [SET_ERROR](state, error) {
-    console.log(error)
     state.errors = error;
   },
   [SET_PROFILE](state, profile) {

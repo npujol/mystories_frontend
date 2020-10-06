@@ -13,7 +13,14 @@
           {{ profile.email }}
           <p>{{ profile.bio }}</p>
           <template v-if="isCurrentUser()">
-            <v-btn icon :to="{ name: 'settings' }" v-if="isCurrentUser()">
+            <v-btn
+              icon
+              :to="{
+                name: 'settings',
+                params: { username: currentUser.username }
+              }"
+              v-if="isCurrentUser()"
+            >
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
           </template>
@@ -63,7 +70,7 @@ export default {
     followUserLabel() {
       return `${this.profile.following === "true" ? "Following" : "Follow"} ${
         this.profile.username
-        }`;
+      }`;
     }
   },
   methods: {

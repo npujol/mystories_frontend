@@ -84,15 +84,16 @@ const actions = {
       context.commit(PURGE_AUTH);
     }
   },
-  [UPDATE_USER](context, payload) {
+  async [UPDATE_USER](context, payload) {
     const { bio, image } = payload.profile;
     const username = payload.username;
-    JwtService.setHeader();
-    profilesApi.profilesPartialUpdate(username, { image, bio });
-    return usersApi.usersRead(username).then(data => {
-      context.commit(SET_USER, data);
-      return data;
-    });
+    await profilesApi.profilesPartialUpdate(username, { bio });
+    if (image && typeof image !== "string") {
+      await profilesApi.profilesChangeImage(username, image);
+    }
+    const data = await usersApi.usersRead(username);
+    context.commit(SET_USER, data);
+    return data;
   }
 };
 

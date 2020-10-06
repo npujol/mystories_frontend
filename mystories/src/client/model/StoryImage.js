@@ -17,35 +17,33 @@ import {ApiClient} from '../ApiClient';
 import {Profile} from './Profile';
 
 /**
- * The Story model module.
- * @module model/Story
+ * The StoryImage model module.
+ * @module model/StoryImage
  * @version v1
  */
-export class Story {
+export class StoryImage {
   /**
-   * Constructs a new <code>Story</code>.
-   * @alias module:model/Story
+   * Constructs a new <code>StoryImage</code>.
+   * @alias module:model/StoryImage
    * @class
    * @param bodyMarkdown {String} 
    * @param tags {Array.<String>} 
-   * @param title {String} 
    */
-  constructor(bodyMarkdown, tags, title) {
+  constructor(bodyMarkdown, tags) {
     this.bodyMarkdown = bodyMarkdown;
     this.tags = tags;
-    this.title = title;
   }
 
   /**
-   * Constructs a <code>Story</code> from a plain JavaScript object, optionally creating a new instance.
+   * Constructs a <code>StoryImage</code> from a plain JavaScript object, optionally creating a new instance.
    * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
    * @param {Object} data The plain JavaScript object bearing properties of interest.
-   * @param {module:model/Story} obj Optional instance to populate.
-   * @return {module:model/Story} The populated <code>Story</code> instance.
+   * @param {module:model/StoryImage} obj Optional instance to populate.
+   * @return {module:model/StoryImage} The populated <code>StoryImage</code> instance.
    */
   static constructFromObject(data, obj) {
     if (data) {
-      obj = obj || new Story();
+      obj = obj || new StoryImage();
       if (data.hasOwnProperty('author'))
         obj.author = Profile.constructFromObject(data['author']);
       if (data.hasOwnProperty('body'))
@@ -80,24 +78,24 @@ export class Story {
 /**
  * @member {module:model/Profile} author
  */
-Story.prototype.author = undefined;
+StoryImage.prototype.author = undefined;
 
 /**
  * @member {String} body
  */
-Story.prototype.body = undefined;
+StoryImage.prototype.body = undefined;
 
 /**
  * @member {String} bodyMarkdown
  */
-Story.prototype.bodyMarkdown = undefined;
+StoryImage.prototype.bodyMarkdown = undefined;
 
 /**
  * Allowed values for the <code>language</code> property.
  * @enum {String}
  * @readonly
  */
-Story.LanguageEnum = {
+StoryImage.LanguageEnum = {
   /**
    * value: "en"
    * @const
@@ -118,53 +116,53 @@ Story.LanguageEnum = {
 };
 
 /**
- * @member {module:model/Story.LanguageEnum} language
+ * @member {module:model/StoryImage.LanguageEnum} language
  */
-Story.prototype.language = undefined;
+StoryImage.prototype.language = undefined;
 
 /**
  * @member {String} image
  */
-Story.prototype.image = undefined;
+StoryImage.prototype.image = undefined;
 
 /**
  * @member {String} description
  */
-Story.prototype.description = undefined;
+StoryImage.prototype.description = undefined;
 
 /**
  * @member {String} favorited
  */
-Story.prototype.favorited = undefined;
+StoryImage.prototype.favorited = undefined;
 
 /**
  * @member {String} favoritesCount
  */
-Story.prototype.favoritesCount = undefined;
+StoryImage.prototype.favoritesCount = undefined;
 
 /**
  * @member {String} slug
  */
-Story.prototype.slug = undefined;
+StoryImage.prototype.slug = undefined;
 
 /**
  * @member {Array.<String>} tags
  */
-Story.prototype.tags = undefined;
+StoryImage.prototype.tags = undefined;
 
 /**
  * @member {String} title
  */
-Story.prototype.title = undefined;
+StoryImage.prototype.title = undefined;
 
 /**
  * @member {String} createdAt
  */
-Story.prototype.createdAt = undefined;
+StoryImage.prototype.createdAt = undefined;
 
 /**
  * @member {String} updatedAt
  */
-Story.prototype.updatedAt = undefined;
+StoryImage.prototype.updatedAt = undefined;
 
 

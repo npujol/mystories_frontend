@@ -1,7 +1,7 @@
 <template>
-  <v-card min-width="80%" class="elevation mx-auto" aling="center">
+  <v-card min-width="80%" class="pa-2 mx-auto" aling="center">
     <v-card-title class="d-flex text-center justify-center">
-      <h3 class="d-flex font-weight-bold basil--text">
+      <h3 class=" font-weight-bold basil--text">
         Yours settings
       </h3>
     </v-card-title>
@@ -9,12 +9,7 @@
     <v-card-text aling="center">
       <RwvListErrors :errors="errors" />
       <v-form>
-        <v-img
-          aling="center"
-          max-width="20%"
-          class="is-rounded"
-          :src="currentUser.profile.image"
-        >
+        <v-img aling="center" height="200px" class="is-rounded" :src="preview">
         </v-img>
         <v-file-input
           :rules="[rules.photo]"
@@ -60,7 +55,8 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { LOGOUT, UPDATE_USER } from "../store/actions.type.js";
+import store from "@/store";
+import { LOGOUT, UPDATE_USER, FETCH_PROFILE } from "../store/actions.type.js";
 import RwvListErrors from "../components/ListErrors.vue";
 
 export default {
@@ -70,29 +66,44 @@ export default {
     return {
       errors: {},
       valid: false,
+      preview: "https://picsum.photos/510/300?random",
       rules: {
         photo: v =>
           !v || v.size < 2000000 || "Avatar size should be less than 2 MB!"
       }
     };
   },
+  async beforeRouteUpdate(to, from, next) {
+    await store.dispatch(FETCH_PROFILE, { username: to.params.username });
+    return next();
+  },
+  async beforeRouteEnter(to, from, next) {
+    await store.dispatch(FETCH_PROFILE, { username: to.params.username });
+    return next();
+  },
+  mounted() {
+    if (this.profile.image) {
+      this.preview = this.profile.image;
+    }
+  },
   computed: {
-    ...mapGetters(["currentUser"])
+    ...mapGetters(["currentUser", "profile"])
   },
   methods: {
-    updateSettings() {
-      console.log(this.currentUser)
-      this.$store.dispatch(UPDATE_USER, this.currentUser).then(() => {
+    async updateSettings() {
+      try {
+        const data = await store.dispatch(UPDATE_USER, this.currentUser);
         this.$router.push({ name: "home" });
-      }).catch(response => {
+      } catch (error) {
         this.inProgress = false;
-        this.errors = JSON.parse(response.response.text).errors;
-      });
+        this.errors = JSON.parse(error.response.text).errors;
+      }
     },
     previewImage(file) {
       var reader = new FileReader();
+      this.currentUser.profile.image = file;
       reader.onload = e => {
-        this.currentUser.profile.image = e.target.result;
+        this.preview = e.target.result;
       };
       reader.readAsDataURL(file);
     }

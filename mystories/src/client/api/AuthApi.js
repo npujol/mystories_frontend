@@ -16,8 +16,6 @@
 import {ApiClient} from "../ApiClient";
 import {Login} from '../model/Login';
 import {Registration} from '../model/Registration';
-import {TokenObtainPair} from '../model/TokenObtainPair';
-import {TokenRefresh} from '../model/TokenRefresh';
 
 /**
 * Auth service.
@@ -129,102 +127,6 @@ export class AuthApi {
      */
     authRegistrationCreate(data) {
       return this.authRegistrationCreateWithHttpInfo(data)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
-    }
-
-
-    /**
-     * Takes a set of user credentials and returns an access and refresh JSON web token pair to prove the authentication of those credentials.
-     * @param {module:model/TokenObtainPair} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/TokenObtainPair} and HTTP response
-     */
-    authTokenCreateWithHttpInfo(data) {
-      let postBody = data;
-
-      // verify the required parameter 'data' is set
-      if (data === undefined || data === null) {
-        throw new Error("Missing the required parameter 'data' when calling authTokenCreate");
-      }
-
-
-      let pathParams = {
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = ['api_key'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = TokenObtainPair;
-
-      return this.apiClient.callApi(
-        '/auth/token', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType
-      );
-    }
-
-    /**
-     * Takes a set of user credentials and returns an access and refresh JSON web token pair to prove the authentication of those credentials.
-     * @param {module:model/TokenObtainPair} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/TokenObtainPair}
-     */
-    authTokenCreate(data) {
-      return this.authTokenCreateWithHttpInfo(data)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
-    }
-
-
-    /**
-     * Takes a refresh type JSON web token and returns an access type JSON web token if the refresh token is valid.
-     * @param {module:model/TokenRefresh} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/TokenRefresh} and HTTP response
-     */
-    authTokenRefreshCreateWithHttpInfo(data) {
-      let postBody = data;
-
-      // verify the required parameter 'data' is set
-      if (data === undefined || data === null) {
-        throw new Error("Missing the required parameter 'data' when calling authTokenRefreshCreate");
-      }
-
-
-      let pathParams = {
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = ['api_key'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = TokenRefresh;
-
-      return this.apiClient.callApi(
-        '/auth/token/refresh', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType
-      );
-    }
-
-    /**
-     * Takes a refresh type JSON web token and returns an access type JSON web token if the refresh token is valid.
-     * @param {module:model/TokenRefresh} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/TokenRefresh}
-     */
-    authTokenRefreshCreate(data) {
-      return this.authTokenRefreshCreateWithHttpInfo(data)
         .then(function(response_and_data) {
           return response_and_data.data;
         });

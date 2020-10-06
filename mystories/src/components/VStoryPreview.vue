@@ -1,62 +1,44 @@
 <template>
-  <v-card min-width="80%" class="mx-auto" aling="center" tile outlined>
+  <v-card outlined>
     <v-list-item>
+      <v-list-item-avatar
+        color="grey"
+        @click="linkTo('profile', { username: story.author.username })"
+      >
+        <img class="is-rounded" :src="story.author.image"
+      /></v-list-item-avatar>
       <v-list-item-content>
-        <v-list-item-title
-          class="d-flex text-center justify-center headline"
-          aling="center"
-          @click="
-            linkTo('story', {
-              slug: story.slug
-            })
-          "
-        >
-          <h2 class="d-flex font-weight-bold basil--text text-center">
-            {{ story.title }}
-          </h2>
-        </v-list-item-title>
-        <v-spacer></v-spacer>
-        <v-list-item-subtitle
-          class="d-flex text-center justify-center headline"
-          aling="center"
-        >
-          <h3 class="d-flex font-weight-bold basil--text text-center">
-            by {{ story.author.username }}
-          </h3>
-          <v-list-item-avatar
-            @click="linkTo('profile', { username: story.author.username })"
-            color="grey"
+        <v-list-item-title class="headline">{{
+          story.title
+        }}</v-list-item-title>
+        <v-list-item-subtitle>
+          by
+          <router-link
+            class="logo-font"
+            :to="{
+              name: 'profile',
+              params: { username: story.author.username }
+            }"
+            >{{ story.author.username }}</router-link
           >
-            <img class="is-rounded" :src="story.author.image" />
-          </v-list-item-avatar>
         </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
-
-    <v-img
-      src="https://cdn.vuetifyjs.com/images/cards/mountain.jpg"
-      height="194"
-    ></v-img>
-
-    <v-card-text class="mx-auto">
-      <div class="aling-center mx-auto" aling="center">
-        <h4 class="d-flex font-weight-bold basil--text text-center">
-          {{ story.createdAt | date }}
-        </h4>
-      </div>
-      <div class="d-flex  mx-auto" aling="center">
-        <p class="d-flex font-weight-bold basil--text text-center">
-          {{ story.description }}
-        </p>
-      </div>
-      <TagList :tags="story.tags" />
-      <router-view></router-view>
+    <v-img :src="story.image" class="white--text align-end" height="200px">
+    </v-img>
+    <v-card-text>
+      <p class="d-flex text-center justify-center">
+        {{ story.description }}
+      </p>
     </v-card-text>
-
+    <v-chip-group class="flex ma-5" active-class="primary--text">
+      <RwvTag v-for="(value, index) in story.tags" :tag="value" :key="index">
+      </RwvTag>
+    </v-chip-group>
     <v-card-actions>
       <v-btn
-        text
-        color="deep-purple accent-4"
+        elevation="12"
+        color="primary accent-4"
         @click="
           linkTo('story', {
             slug: story.slug
@@ -66,20 +48,20 @@
         <span> Read more </span>
       </v-btn>
       <v-spacer></v-spacer>
-      <RwvStoryActions :story="story" :canModify="isCurrentUser()" />
+      <RwvStoryActions :isPreview="true" :story="story" />
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import TagList from "./TagList.vue";
+import RwvTag from "./VTag.vue";
 import RwvStoryActions from "./StoryActions.vue";
 
 export default {
   name: "RwvStoryPreview",
   components: {
-    TagList,
+    RwvTag,
     RwvStoryActions
   },
   props: {
@@ -97,11 +79,6 @@ export default {
         this.$router.push({ name: route });
       }
       this.$router.push({ name: route, params: params });
-    },
-    isCurrentUser() {
-      if (this.currentUser.username && this.story.author.username) {
-        return this.currentUser.username === this.story.author.username;
-      }
     }
   }
 };

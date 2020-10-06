@@ -1,79 +1,89 @@
 <template>
-  <v-card min-width="80%" class="mx-auto" aling="center" tile outlined>
-    <v-list-item>
-      <v-list-item-content>
-        <v-list-item-title
-          class="d-flex text-center justify-center headline"
-          aling="center"
-          @click="
-            linkTo('story', {
-              slug: story.slug
-            })
-          "
+  <v-card outline>
+    <v-img :src="story.image" class="white--text align-end" height="200px">
+    </v-img>
+    <v-list two-line>
+      <v-list-item>
+        <v-list-item-avatar
+          @click="linkTo('profile', { username: story.author.username })"
         >
-          <h2 class="d-flex font-weight-bold basil--text text-center">
-            {{ story.title }}
-          </h2>
-        </v-list-item-title>
-        <v-spacer></v-spacer>
-        <v-list-item-subtitle
-          class="d-flex text-center justify-center headline"
-          aling="center"
-        >
-          <h3 class="d-flex font-weight-bold basil--text text-center">
-            by {{ story.author.username }}
-          </h3>
-          <v-list-item-avatar
-            @click="linkTo('profile', { username: story.author.username })"
-            color="grey"
+          <img class="is-rounded" :src="story.author.image" />
+        </v-list-item-avatar>
+        <v-list-item-content>
+          <v-list-item-title
+            ><router-link
+              class="logo-font"
+              :to="{
+                name: 'profile',
+                params: { username: story.author.username }
+              }"
+            >
+              {{ story.author.username }}</router-link
+            ></v-list-item-title
           >
-            <img class="is-rounded" :src="story.author.image" />
-          </v-list-item-avatar>
-        </v-list-item-subtitle>
-      </v-list-item-content>
-    </v-list-item>
-    <v-img
-      src="https://cdn.vuetifyjs.com/images/cards/mountain.jpg"
-      height="194"
-    ></v-img>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <rwv-story-actions
-        :story="story"
-        :canModify="isCurrentUser()"
-      ></rwv-story-actions>
-    </v-card-actions>
-
-    <v-card-text class="mx-auto" aling="center">
-      <p class="text-center align-center">{{ story.createdAt | date }}</p>
-      <p class="text-center align-center">{{ story.description }}</p>
-      <TagList :tags="story.tags" />
-      <div aling="center" v-html="parseMarkdown(story.body)"></div>
-      <div min-width="80%" class="row mx-auto" aling="center">
-        <div min-width="80%" class="mx-auto" aling="center">
-          <RwvCommentEditor
-            v-if="isAuthenticated"
-            :slug="slug"
-            :userImage="currentUser.image"
+          <v-list-item-subtitle>Author</v-list-item-subtitle>
+        </v-list-item-content>
+        <v-list-item-action>
+          <RwvProfileFollow
+            v-if="!isCurrentUser()"
+            :username="story.author.username"
+          ></RwvProfileFollow>
+        </v-list-item-action>
+      </v-list-item>
+    </v-list>
+    <v-list one-line>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title
+            class="d-flex text-center justify-right headline"
+            aling="center"
           >
-          </RwvCommentEditor>
-          <p v-else>
-            <router-link :to="{ name: 'login' }">Sign in</router-link>
-            or
-            <router-link :to="{ name: 'register' }">Sign up</router-link>
-            to add comments on this story.
-          </p>
-          <v-spacer></v-spacer>
-          <RwvComment
-            v-for="(comment, index) in comments"
-            :slug="slug"
-            :comment="comment"
-            :key="index"
-          >
-          </RwvComment>
-        </div>
-      </div>
-    </v-card-text>
+            <h2 class="d-flex font-weight-bold basil--text text-center">
+              {{ story.title }}
+            </h2>
+          </v-list-item-title>
+        </v-list-item-content>
+        <v-list-item-action>
+          <rwv-story-actions
+            :story="story"
+            :isPreview="false"
+          ></rwv-story-actions>
+        </v-list-item-action>
+      </v-list-item>
+    </v-list>
+    <v-chip-group class="flex ma-5" active-class="primary--text">
+      <RwvTag v-for="(value, index) in story.tags" :tag="value" :key="index">
+      </RwvTag>
+    </v-chip-group>
+    <v-expansion-panels>
+      <v-expansion-panel>
+        <v-expansion-panel-header>Info</v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <dl>
+            <dt>Created:</dt>
+            <dd>{{ story.createdAt | date }</dd>
+            <dt>Updated:</dt>
+            <dd>{{ story.updatedAt | date }}</dd>
+            <dt>Language:</dt>
+            <dd>{{ story.language }}</dd>
+          </dl>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+      <v-expansion-panel>
+        <v-expansion-panel-header>Description</v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <p class="text-center align-center">{{ story.description }}</p>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+      <v-expansion-panel>
+        <v-expansion-panel-header>Body</v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <div v-html="story.body"></div>
+        </v-expansion-panel-content>
+      </v-expansion-panel> </v-expansion-panels
+    >Markdown
+    <v-spacer></v-spacer>
+    <RwvCommentslist :story="story"></RwvCommentslist>
   </v-card>
 </template>
 
@@ -81,12 +91,12 @@
 import { mapGetters } from "vuex";
 import marked from "marked";
 import store from "@/store";
-import RwvComment from "@/components/Comment.vue";
-import RwvCommentEditor from "@/components/CommentEditor.vue";
-import TagList from "../components/TagList.vue";
-import RwvStoryActions from "../components/StoryActions.vue";
+import RwvProfileFollow from "@/components/ProfileFollow.vue";
+import RwvCommentslist from "@/components/CommentsList.vue";
 
-import { FETCH_HISTORY, FETCH_COMMENTS } from "@/store/actions.type.js";
+import RwvTag from "@/components/VTag.vue";
+import RwvStoryActions from "../components/StoryActions.vue";
+import { FETCH_STORY, FETCH_COMMENTS } from "@/store/actions.type.js";
 
 export default {
   name: "rwv-story",
@@ -97,26 +107,29 @@ export default {
     }
   },
   components: {
-    RwvComment,
-    RwvCommentEditor,
-    TagList,
-    RwvStoryActions
+    RwvTag,
+    RwvStoryActions,
+    RwvProfileFollow,
+    RwvCommentslist
   },
-  beforeRouteEnter(to, from, next) {
-    Promise.all([
-      store.dispatch(FETCH_HISTORY, to.params.slug),
-      store.dispatch(FETCH_COMMENTS, to.params.slug)
-    ]).then(() => {
+  data() {
+    return {
+      errors: []
+    };
+  },
+  async beforeRouteEnter(to, from, next) {
+    try {
+      await store.dispatch(FETCH_STORY, to.params.slug);
+      await store.dispatch(FETCH_COMMENTS, to.params.slug);
       next();
-    });
+    } catch (error) {
+      this.errors = error;
+    }
   },
   computed: {
     ...mapGetters(["story", "currentUser", "comments", "isAuthenticated"])
   },
   methods: {
-    parseMarkdown(content) {
-      return marked(content);
-    },
     linkTo(route, params) {
       if (params.length === 0) {
         this.$router.push({ name: route });
@@ -127,15 +140,6 @@ export default {
       if (this.currentUser.username && this.story.author.username) {
         return this.currentUser.username === this.story.author.username;
       }
-    },
-    toggleFavorite() {
-      if (!this.isAuthenticated) {
-        this.$router.push({ name: "login" });
-        return;
-      }
-      let action =
-        this.story.favorited === "false" ? FAVORITE_ADD : FAVORITE_REMOVE;
-      this.$store.dispatch(action, this.story.slug);
     }
   }
 };

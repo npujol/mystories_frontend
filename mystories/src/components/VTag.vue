@@ -1,5 +1,11 @@
 <template>
-  <v-chip label small draggable @click="linkTo('home', { tag: tag })">
+  <v-chip
+    label
+    small
+    draggable
+    :disabled="disabled"
+    @click="linkTo('home-tag', { tag: tag })"
+  >
     {{ tag }}
   </v-chip>
 </template>
@@ -12,14 +18,14 @@ export default {
       type: String,
       required: true,
       default: () => ""
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: () => false
     }
   },
   methods: {
-    logout() {
-      this.$store.dispatch(LOGOUT).then(() => {
-        this.$router.push({ name: "home" });
-      });
-    },
     linkTo(route, params) {
       if (params.length === 0) {
         this.$router.push({ name: route });

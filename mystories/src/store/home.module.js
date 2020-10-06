@@ -1,10 +1,10 @@
 import { TagsApi, StoriesApi } from "../client";
-import { FETCH_HISTORIES, FETCH_TAGS } from "./actions.type.js";
+import { FETCH_STORIES, FETCH_TAGS } from "./actions.type.js";
 import {
   FETCH_START,
   FETCH_END,
   SET_TAGS,
-  UPDATE_HISTORY_IN_LIST
+  UPDATE_STORY_IN_LIST
 } from "./mutations.type.js";
 
 const storiesApi = new StoriesApi();
@@ -14,7 +14,9 @@ const state = {
   tags: [],
   stories: [],
   isLoading: true,
-  storiesCount: 0
+  storiesCount: 0,
+  limit: 10,
+  tag: null
 };
 
 const getters = {
@@ -29,30 +31,31 @@ const getters = {
   },
   tags(state) {
     return state.tags;
+  },
+  limit(state) {
+    return state.limit;
+  },
+  tag(state) {
+    return state.tag;
   }
 };
 
 const actions = {
-  [FETCH_HISTORIES]({ commit }) {
+  async [FETCH_STORIES]({ commit }, params) {
     commit(FETCH_START);
-    return storiesApi
-      .storiesFeedList()
-      .then(data => {
-        commit(FETCH_END, data);
-      })
-      .catch(error => {
-        throw new Error(error);
-      });
+    const data = await storiesApi.storiesList(params.filters);
+    commit(FETCH_END, data);
+    return data;
   },
-  [FETCH_TAGS]({ commit }) {
-    return tagsApi
-      .tagsList()
-      .then(data => {
-        commit(SET_TAGS, data);
-      })
-      .catch(error => {
-        throw new Error(error);
-      });
+  async [FETCH_TAGS]({ commit }) {
+    const data = await tagsApi.tagsList();
+    commit(SET_TAGS, data);
+    return data;
+  },
+  async [FETCH_TAGS]({ commit }) {
+    const data = await tagsApi.tagsList();
+    commit(SET_TAGS, data);
+    return data;
   }
 };
 
@@ -69,7 +72,7 @@ const mutations = {
   [SET_TAGS](state, data) {
     state.tags = data.results;
   },
-  [UPDATE_HISTORY_IN_LIST](state, data) {
+  [UPDATE_STORY_IN_LIST](state, data) {
     state.stories = state.stories.map(story => {
       if (story.slug !== data.slug) {
         return story;

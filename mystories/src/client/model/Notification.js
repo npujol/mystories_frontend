@@ -28,10 +28,12 @@ export class Notification {
    * @class
    * @param body {String} 
    * @param title {String} 
+   * @param receiver {Number} 
    */
-  constructor(body, title) {
+  constructor(body, title, receiver) {
     this.body = body;
     this.title = title;
+    this.receiver = receiver;
   }
 
   /**
@@ -59,7 +61,7 @@ export class Notification {
       if (data.hasOwnProperty('updatedAt'))
         obj.updatedAt = ApiClient.convertToType(data['updatedAt'], 'String');
       if (data.hasOwnProperty('receiver'))
-        obj.receiver = Profile.constructFromObject(data['receiver']);
+        obj.receiver = ApiClient.convertToType(data['receiver'], 'Number');
     }
     return obj;
   }
@@ -138,7 +140,7 @@ Notification.prototype.createdAt = undefined;
 Notification.prototype.updatedAt = undefined;
 
 /**
- * @member {module:model/Profile} receiver
+ * @member {Number} receiver
  */
 Notification.prototype.receiver = undefined;
 

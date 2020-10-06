@@ -1,15 +1,32 @@
 <template>
-  <v-card min-width="80%" class="elevation mx-auto" aling="center">
+  <v-card class="pa-2 mx-auto" min-width="80%" oaling="center">
     <v-card-title class="d-flex text-center justify-center">
-      <h3 class="d-flex font-weight-bold basil--text">
-        New story
+      <h3 class="font-weight-bold basil--text">
+        Story
       </h3>
     </v-card-title>
+    <v-img
+      aling="center"
+      class="white--text align-end"
+      height="200px"
+      :src="preview"
+    >
+    </v-img>
     <v-spacer></v-spacer>
-    <v-card-text>
+    <v-card-text aling="center">
       <RwvListErrors :errors="errors" />
-
       <v-form>
+        <v-file-input
+          :rules="[rules.photo]"
+          name="avatar"
+          accept="image/png, image/jpeg, image/bmp"
+          placeholder="Pick an avatar"
+          prepend-icon="mdi-camera"
+          label="Avatar"
+          hide-input
+          @change="previewImage"
+        >
+        </v-file-input>
         <v-text-field
           label="Title"
           name="title"
@@ -17,12 +34,22 @@
           v-model="story.title"
           placeholder="Title"
         ></v-text-field>
+        <v-select
+          v-model="story.language"
+          :items="items"
+          label="Language"
+          dense
+        ></v-select>
         <v-textarea
           label="Description"
-          rows="5"
           v-model="story.description"
         ></v-textarea>
-        <v-textarea label="Body" rows="5" v-model="story.body"></v-textarea>
+        <v-textarea
+          label="Body"
+          outlined
+          full-width
+          v-model="story.bodyMarkdown"
+        ></v-textarea>
         <v-layout wrap>
           <v-flex xs12>
             <v-combobox
@@ -59,12 +86,13 @@ import { mapGetters } from "vuex";
 import store from "@/store";
 import RwvListErrors from "@/components/ListErrors.vue";
 import {
-  HISTORY_PUBLISH,
-  HISTORY_EDIT,
-  FETCH_HISTORY,
-  HISTORY_EDIT_ADD_TAG,
-  HISTORY_EDIT_REMOVE_TAG,
-  HISTORY_RESET_STATE
+  STORY_PUBLISH,
+  STORY_EDIT,
+  FETCH_STORY,
+  FETCH_STORY_PRIVATE,
+  STORY_EDIT_ADD_TAG,
+  STORY_EDIT_REMOVE_TAG,
+  STORY_RESET_STATE
 } from "@/store/actions.type.js";
 
 export default {
@@ -79,16 +107,16 @@ export default {
   async beforeRouteUpdate(to, from, next) {
     // Reset state if user goes from /editor/:id to /editor
     // The component is not recreated so we use to hook to reset the state.
-    await store.dispatch(HISTORY_RESET_STATE);
+    await store.dispatch(STORY_RESET_STATE);
     return next();
   },
   async beforeRouteEnter(to, from, next) {
     // SO: https://github.com/vuejs/vue-router/issues/1034
     // If we arrive directly to this url, we need to fetch the story
-    await store.dispatch(HISTORY_RESET_STATE);
+    await store.dispatch(STORY_RESET_STATE);
     if (to.params.slug !== undefined) {
       await store.dispatch(
-        FETCH_HISTORY,
+        FETCH_STORY,
         to.params.slug,
         to.params.previousStory
       );
@@ -96,7 +124,7 @@ export default {
     return next();
   },
   async beforeRouteLeave(to, from, next) {
-    await store.dispatch(HISTORY_RESET_STATE);
+    await store.dispatch(STORY_RESET_STATE);
     next();
   },
   data() {
@@ -104,30 +132,37 @@ export default {
       inProgress: false,
       errors: {},
       valid: false,
-      items: [],
-      search: "" //sync search
+      input: "# hello",
+      items: ["en", "es", "de"],
+      search: "", //sync search
+      preview: "https://picsum.photos/510/300?random",
+      rules: {
+        photo: v =>
+          !v || v.size < 2000000 || "Avatar size should be less than 2 MB!"
+      }
     };
+  },
+  mounted() {
+    if (this.story.image) {
+      this.preview = this.story.image;
+    }
+    this.getBodyMarkdown();
   },
   computed: {
     ...mapGetters(["story"])
   },
   methods: {
-    onPublish(slug) {
-      const action = slug ? HISTORY_EDIT : HISTORY_PUBLISH;
-      this.inProgress = true;
-      this.$store
-        .dispatch(action)
-        .then(data => {
-          this.inProgress = false;
-          this.$router.push({
-            name: "story",
-            params: { slug: data.slug }
-          });
-        })
-        .catch(response => {
-          this.inProgress = false;
-          this.errors = JSON.parse(response.response.text).errors;
-        });
+    async onPublish(slug) {
+      try {
+        const action = slug ? STORY_EDIT : STORY_PUBLISH;
+        this.inProgress = true;
+        const data = await this.$store.dispatch(action, this.story);
+        this.inProgress = false;
+        this.$router.push({ name: "story", params: { slug: data.slug } });
+      } catch (error) {
+        this.inProgress = false;
+        this.errors = JSON.parse(error.response.text).errors;
+      }
     },
     updateTags() {
       this.$nextTick(() => {
@@ -136,6 +171,26 @@ export default {
           this.search = "";
         });
       });
+    },
+    previewImage(file) {
+      var reader = new FileReader();
+      this.story.image = file;
+      reader.onload = e => {
+        this.preview = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+    async getBodyMarkdown() {
+      if (this.story.slug) {
+        try {
+          const data = await this.$store.dispatch(FETCH_STORY_PRIVATE, {
+            slug: this.story.slug
+          });
+          this.story.bodyMarkdown = data.bodyMarkdown;
+        } catch (error) {
+          this.errors = JSON.parse(error.response.text).errors;
+        }
+      }
     }
   }
 };

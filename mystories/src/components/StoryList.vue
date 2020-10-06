@@ -1,29 +1,58 @@
 <template>
-  <div v-if="isLoading">Loading stories...</div>
-  <div class="d-flex flex-column justify-center align-center" v-else>
-    <div v-if="stories.length === 0">
-      No stories are here... yet.
+  <div>
+    <div v-if="isLoading">
+      Loading stories...
+      <v-boilerplate
+        v-for="(story, index) in stories"
+        :key="index"
+        class="mb-2"
+        name="loading"
+        type="list-item-avatar, list-item-content, list-item-title, list-item-subtitle, image, actions"
+      ></v-boilerplate>
     </div>
-    <RwvStoryPreview
-      v-for="(story, index) in stories"
-      :story="story"
-      :key="story.title + index"
-    />
-    <VPagination :pages="pages" :currentPage.sync="currentPage" />
+    <div v-else>
+      <div v-if="stories.length === 0">
+        No stories are here... yet.
+      </div>
+      <RwvStoryPreview
+        v-for="(story, index) in stories"
+        :story="story"
+        :key="story.title + index"
+        class="mb-2"
+      />
+    </div>
+    <v-pagination v-model="currentPage" :length="pages"></v-pagination>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import RwvStoryPreview from "./VStoryPreview.vue";
-import VPagination from "./VPagination.vue";
-import { FETCH_HISTORIES } from "../store/actions.type.js";
+import { FETCH_STORIES } from "../store/actions.type.js";
 
 export default {
   name: "RwvStoryList",
+  inject: ["theme"],
   components: {
     RwvStoryPreview,
-    VPagination
+    VBoilerplate: {
+      functional: true,
+
+      render(h, { data, props, children }) {
+        return h(
+          "v-skeleton-loader",
+          {
+            ...data,
+            props: {
+              boilerplate: true,
+              elevation: 2,
+              ...props
+            }
+          },
+          children
+        );
+      }
+    }
   },
   props: {
     type: {
@@ -42,11 +71,6 @@ export default {
     favorited: {
       type: String,
       required: false
-    },
-    itemsPerPage: {
-      type: Number,
-      required: false,
-      default: 10
     }
   },
   data() {
@@ -58,17 +82,17 @@ export default {
     listConfig() {
       const { type } = this;
       const filters = {
-        offset: (this.currentPage - 1) * this.itemsPerPage,
-        limit: this.itemsPerPage
+        offset: (this.currentPage - 1) * this.limit,
+        limit: this.limit
       };
       if (this.author) {
-        filters.author = this.author;
+        filters.authorUserUsername = this.author;
       }
       if (this.tag) {
-        filters.tag = this.tag;
+        filters.tagsTag = this.tag;
       }
       if (this.favorited) {
-        filters.favorited = this.favorited;
+        filters.authorFavorites = this.favorited;
       }
       return {
         type,
@@ -76,18 +100,16 @@ export default {
       };
     },
     pages() {
-      if (this.isLoading || this.storiesCount <= this.itemsPerPage) {
-        return [];
+      if (this.isLoading || this.storiesCount <= this.limit) {
+        return 0;
       }
-      return [
-        ...Array(Math.ceil(this.storiesCount / this.itemsPerPage)).keys()
-      ].map(e => e + 1);
+      return Math.ceil(this.storiesCount / this.limit);
     },
-    ...mapGetters(["storiesCount", "isLoading", "stories"])
+    ...mapGetters(["storiesCount", "isLoading", "stories", "limit"])
   },
   watch: {
     currentPage(newValue) {
-      this.listConfig.filters.offset = (newValue - 1) * this.itemsPerPage;
+      this.listConfig.filters.offset = (newValue - 1) * this.limit;
       this.fetchStories();
     },
     type() {
@@ -112,7 +134,7 @@ export default {
   },
   methods: {
     fetchStories() {
-      this.$store.dispatch(FETCH_HISTORIES);
+      this.$store.dispatch(FETCH_STORIES, this.listConfig);
     },
     resetPagination() {
       this.listConfig.offset = 0;
