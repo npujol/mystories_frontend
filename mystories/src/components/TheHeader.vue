@@ -4,72 +4,32 @@
   <div>
     <v-navigation-drawer v-model="drawer" app clipped>
       <v-list dense>
-        <v-list-item link>
-          <v-list-item-action>
+        <v-list-item @click="linkTo('home', {})">
+          <h3 class="basil--text align-center">
             <v-icon>mdi-view-dashboard</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title @click="linkTo('home', {})">
-              <h3 class="basil--text">
-                Dashboard
-              </h3>
-            </v-list-item-title>
-          </v-list-item-content>
+            Dashboard
+          </h3>
         </v-list-item>
         <template v-if="isAuthenticated">
-          <v-list-item link>
-            <v-list-item-action>
-              <v-icon>mdi-account-circle</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title
-                @click="linkTo('settings', { username: currentUser.username })"
-              >
-                <h3 class="basil--text">
-                  Profile
-                </h3>
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item link>
-            <v-list-item-action>
+          <v-list-item
+            @click="linkTo('story-edit', { username: currentUser.username })"
+          >
+            <h3 class="basil--text">
               <v-icon>mdi-pencil</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title
-                @click="
-                  linkTo('story-edit', { username: currentUser.username })
-                "
-              >
-                <h3 class="basil--text">
-                  New Story
-                </h3>
-              </v-list-item-title>
-            </v-list-item-content>
+              New story
+            </h3>
           </v-list-item>
-          <v-list-item link>
-            <v-list-item-action>
+          <v-list-item @click="linkTo('profile', {})">
+            <h3 class="basil--text">
               <v-icon>mdi-heart</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title @click="linkTo('profile', {})">
-                <h3 class="basil--text">
-                  Favorited stories
-                </h3>
-              </v-list-item-title>
-            </v-list-item-content>
+              Favorited stories
+            </h3>
           </v-list-item>
-          <v-list-item link>
-            <v-list-item-action>
+          <v-list-item @click="linkTo('profile-favorites')">
+            <h3 class="basil--text">
               <v-icon>mdi-format-list-bulleted-square</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title @click="linkTo('profile-favorites')">
-                <h3 class="basil--text">
-                  My Stories
-                </h3>
-              </v-list-item-title>
-            </v-list-item-content>
+              My stories
+            </h3>
           </v-list-item>
         </template>
       </v-list>
@@ -77,9 +37,9 @@
     <v-app-bar app dark clipped-left>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>
-        <v-btn color="white" icon @click="linkTo('home', {})">
-          <v-icon>mdi-home</v-icon>
-        </v-btn>
+        <h3 class="basil--text">
+          MyStories
+        </h3>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <template v-if="!isAuthenticated">
@@ -91,9 +51,63 @@
         </v-btn>
       </template>
       <template v-else>
-        <v-btn color="primary" fab small dark @click="logout()">
-          <v-icon>mdi-logout</v-icon>
-        </v-btn>
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-badge
+              v-if="currentUser.profile"
+              :content="messages.length"
+              :value="messages"
+              color="blue"
+              overlap
+            >
+              <v-avatar
+                v-bind="attrs"
+                color="grey lighten-2"
+                v-on="on"
+                size="40"
+              >
+                <v-img :src="currentUser.profile.image"></v-img>
+              </v-avatar>
+            </v-badge>
+            <v-badge
+              v-else
+              :content="messages"
+              :value="messages"
+              color="blue"
+              overlap
+            >
+              <v-avatar
+                v-bind="attrs"
+                color="grey lighten-2"
+                v-on="on"
+                size="40"
+              >
+                <v-img :src="preview"></v-img>
+              </v-avatar>
+            </v-badge>
+          </template>
+          <v-list>
+            <v-list-item
+              @click="linkTo('settings', { username: currentUser.username })"
+            >
+              <v-list-item-title>
+                <v-icon>mdi-account-circle</v-icon> Profile
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item
+              @click="linkTo('settings', { username: currentUser.username })"
+            >
+              <v-list-item-title>
+                <v-icon>mdi-bell</v-icon> Notifications
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="logout()">
+              <v-list-item-title
+                ><v-icon>mdi-logout</v-icon> Logout</v-list-item-title
+              >
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </template>
     </v-app-bar>
   </div>
@@ -101,17 +115,24 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { LOGOUT } from "../store/actions.type.js";
+import { LOGOUT, FETCH_MESSAGES } from "../store/actions.type.js";
 
 export default {
   name: "RwvHeader",
   data: () => ({
-    drawer: null
+    drawer: null,
+    polling: null,
+    preview: "https://picsum.photos/510/300?random"
   }),
   computed: {
-    ...mapGetters(["currentUser", "isAuthenticated"])
+    ...mapGetters(["currentUser", "isAuthenticated", "messages"])
   },
   methods: {
+    pollMessages() {
+      this.polling = setInterval(() => {
+        this.$store.dispatch(FETCH_MESSAGES);
+      }, 9000);
+    },
     logout() {
       this.$store.dispatch(LOGOUT).then(() => {
         this.$router.go({ name: "home" });
@@ -123,6 +144,12 @@ export default {
       }
       this.$router.push({ name: route, params: params });
     }
+  },
+  created() {
+    this.pollMessages();
+  },
+  beforeDestroy() {
+    clearInterval(this.polling);
   }
 };
 </script>

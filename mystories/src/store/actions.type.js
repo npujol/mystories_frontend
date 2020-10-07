@@ -22,3 +22,5 @@ export const LOGOUT = "logout";
 export const REGISTER = "register";
 export const UPDATE_USER = "updateUser";
 export const FETCH_STORY_PRIVATE = "fetchStoryPrivate";
+export const FETCH_NEW_MESSAGES_COUNT = "fetch_new_messages_count";
+export const FETCH_MESSAGES = "fetch_messages";

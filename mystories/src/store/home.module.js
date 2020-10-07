@@ -1,14 +1,21 @@
-import { TagsApi, StoriesApi } from "../client";
-import { FETCH_STORIES, FETCH_TAGS } from "./actions.type.js";
+import { TagsApi, StoriesApi, NotificationsApi } from "../client";
+import {
+  FETCH_STORIES,
+  FETCH_TAGS,
+  FETCH_NEW_MESSAGES_COUNT,
+  FETCH_MESSAGES
+} from "./actions.type.js";
 import {
   FETCH_START,
   FETCH_END,
   SET_TAGS,
-  UPDATE_STORY_IN_LIST
+  UPDATE_STORY_IN_LIST,
+  SET_MESSAGES
 } from "./mutations.type.js";
 
 const storiesApi = new StoriesApi();
 const tagsApi = new TagsApi();
+const notificationApi = new NotificationsApi();
 
 const state = {
   tags: [],
@@ -16,7 +23,8 @@ const state = {
   isLoading: true,
   storiesCount: 0,
   limit: 10,
-  tag: null
+  tag: null,
+  messages: []
 };
 
 const getters = {
@@ -37,6 +45,9 @@ const getters = {
   },
   tag(state) {
     return state.tag;
+  },
+  messages(state) {
+    return state.messages;
   }
 };
 
@@ -56,6 +67,19 @@ const actions = {
     const data = await tagsApi.tagsList();
     commit(SET_TAGS, data);
     return data;
+  },
+  async [FETCH_MESSAGES]({ commit }) {
+    const data = await notificationApi.notificationsList();
+    commit(SET_MESSAGES, data);
+    return data;
+  },
+  async [FETCH_NEW_MESSAGES_COUNT]() {
+    var message_count = 0;
+    const data = await notificationApi.notificationsList();
+    if (state.messages.length === 0) {
+      message_count = data.count;
+    }
+    return message_count;
   }
 };
 
@@ -71,6 +95,9 @@ const mutations = {
   },
   [SET_TAGS](state, data) {
     state.tags = data.results;
+  },
+  [SET_MESSAGES](state, data) {
+    state.messages = data.results;
   },
   [UPDATE_STORY_IN_LIST](state, data) {
     state.stories = state.stories.map(story => {
