@@ -61,7 +61,7 @@
         <v-expansion-panel-content>
           <dl>
             <dt>Created:</dt>
-            <dd>{{ story.createdAt | date }</dd>
+            <dd>{{ story.createdAt | date }}</dd>
             <dt>Updated:</dt>
             <dd>{{ story.updatedAt | date }}</dd>
             <dt>Language:</dt>
