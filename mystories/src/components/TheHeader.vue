@@ -95,7 +95,9 @@
               </v-list-item-title>
             </v-list-item>
             <v-list-item
-              @click="linkTo('settings', { username: currentUser.username })"
+              @click="
+                linkTo('notifications', { username: currentUser.username })
+              "
             >
               <v-list-item-title>
                 <v-icon>mdi-bell</v-icon> Notifications
