@@ -24,7 +24,6 @@
         v-for="(msg, index) in messages"
         :message="msg"
         :key="index"
-        class="pa-2"
       />
     </div>
   </v-card>
