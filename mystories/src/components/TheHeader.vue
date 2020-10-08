@@ -25,7 +25,9 @@
               Favorited stories
             </h3>
           </v-list-item>
-          <v-list-item @click="linkTo('profile-favorites')">
+          <v-list-item
+            @click="linkTo('home-my-feed', { author: currentUser.username })"
+          >
             <h3 class="basil--text">
               <v-icon>mdi-format-list-bulleted-square</v-icon>
               My stories
@@ -42,21 +44,13 @@
         </h3>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <template v-if="!isAuthenticated">
-        <v-btn rounded color="error" @click="linkTo('register', {})">
-          Sign up
-        </v-btn>
-        <v-btn rounded color="primary" @click="linkTo('login', {})">
-          Log in
-        </v-btn>
-      </template>
-      <template v-else>
+      <template v-if="isAuthenticated && currentUser.profile">
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
             <v-badge
-              v-if="currentUser.profile"
-              :content="messages.length"
-              :value="messages"
+              v-if="currentUser.profile.image"
+              icon="mdi-email"
+              :value="isNewMessage"
               color="blue"
               overlap
             >
@@ -71,8 +65,8 @@
             </v-badge>
             <v-badge
               v-else
-              :content="messages"
-              :value="messages"
+              icon="mdi-email"
+              :value="isNewMessage"
               color="blue"
               overlap
             >
@@ -111,6 +105,14 @@
           </v-list>
         </v-menu>
       </template>
+      <template v-else>
+        <v-btn rounded color="error" @click="linkTo('register', {})">
+          Sign up
+        </v-btn>
+        <v-btn rounded color="primary" @click="linkTo('login', {})">
+          Log in
+        </v-btn>
+      </template>
     </v-app-bar>
   </div>
 </template>
@@ -127,17 +129,28 @@ export default {
     preview: "https://picsum.photos/510/300?random"
   }),
   computed: {
-    ...mapGetters(["currentUser", "isAuthenticated", "messages"])
+    ...mapGetters(["currentUser", "isAuthenticated", "messages"]),
+    // a computed getter
+    isNewMessage: function() {
+      // `this` points to the vm instance
+      if (this.messages) {
+        return this.messages.length >= 0 ? 1 : null;
+      } else {
+        return null;
+      }
+    }
   },
   methods: {
     pollMessages() {
-      this.polling = setInterval(() => {
-        this.$store.dispatch(FETCH_MESSAGES);
-      }, 9000);
+      if (this.isAuthenticated) {
+        this.polling = setInterval(() => {
+          this.$store.dispatch(FETCH_MESSAGES);
+        }, 9000);
+      }
     },
     logout() {
       this.$store.dispatch(LOGOUT).then(() => {
-        this.$router.go({ name: "home" });
+        this.$router.push({ name: "home" });
       });
     },
     linkTo(route, params) {
