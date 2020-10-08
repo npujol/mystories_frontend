@@ -24,3 +24,5 @@ export const UPDATE_USER = "updateUser";
 export const FETCH_STORY_PRIVATE = "fetchStoryPrivate";
 export const FETCH_NEW_MESSAGES_COUNT = "fetch_new_messages_count";
 export const FETCH_MESSAGES = "fetch_messages";
+export const MESSAGE_DESTROY = "message_destroy";
+export const OPEN_MESSAGE = "open_message";
