@@ -16,7 +16,7 @@ const routes: Array<RouteConfig> = [
         component: () => import("../views/HomeGlobal.vue")
       },
       {
-        path: "my-feed/:author",
+        path: "my-feed/:owner",
         name: "home-my-feed",
         component: () => import("../views/HomeMyFeed.vue")
       },

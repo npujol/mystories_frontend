@@ -21,7 +21,7 @@
       <v-tab
         :disabled="tab === 1"
         v-if="isAuthenticated"
-        @change="linkTo('home-my-feed', { author: currentUser.username })"
+        @change="linkTo('home-my-feed', { owner: currentUser.username })"
       >
         <v-icon>mdi-account-circle</v-icon>
         Your Feed
@@ -87,8 +87,8 @@ export default {
     tag() {
       return this.tags.find(tag => tag.tag === this.$route.params.tag);
     },
-    author() {
-      return this.$route.params.author;
+    owner() {
+      return this.$route.params.owner;
     },
     selected: {
       get() {

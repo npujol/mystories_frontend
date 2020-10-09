@@ -8,7 +8,7 @@
           </h1>
         </v-card-title>
 
-        <RwvStoryList :author="author"></RwvStoryList>
+        <RwvStoryList :owner="owner"></RwvStoryList>
       </v-card>
     </v-col>
   </v-row>
@@ -23,7 +23,7 @@ export default {
     RwvStoryList
   },
   computed: {
-    author() {
+    owner() {
       return this.$route.params.username;
     }
   }

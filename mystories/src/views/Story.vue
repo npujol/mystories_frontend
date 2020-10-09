@@ -5,9 +5,9 @@
     <v-list two-line>
       <v-list-item>
         <v-list-item-avatar
-          @click="linkTo('profile', { username: story.author.username })"
+          @click="linkTo('profile', { username: story.owner.username })"
         >
-          <img class="is-rounded" :src="story.author.image" />
+          <img class="is-rounded" :src="story.owner.image" />
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title
@@ -15,10 +15,10 @@
               class="logo-font"
               :to="{
                 name: 'profile',
-                params: { username: story.author.username }
+                params: { username: story.owner.username }
               }"
             >
-              {{ story.author.username }}</router-link
+              {{ story.owner.username }}</router-link
             ></v-list-item-title
           >
           <v-list-item-subtitle>Author</v-list-item-subtitle>
@@ -26,7 +26,7 @@
         <v-list-item-action>
           <RwvProfileFollow
             v-if="!isCurrentUser()"
-            :username="story.author.username"
+            :username="story.owner.username"
           ></RwvProfileFollow>
         </v-list-item-action>
       </v-list-item>
@@ -137,8 +137,8 @@ export default {
       this.$router.push({ name: route, params: params });
     },
     isCurrentUser() {
-      if (this.currentUser.username && this.story.author.username) {
-        return this.currentUser.username === this.story.author.username;
+      if (this.currentUser.username && this.story.owner.username) {
+        return this.currentUser.username === this.story.owner.username;
       }
     }
   }

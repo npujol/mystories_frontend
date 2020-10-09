@@ -26,7 +26,7 @@
             </h3>
           </v-list-item>
           <v-list-item
-            @click="linkTo('home-my-feed', { author: currentUser.username })"
+            @click="linkTo('home-my-feed', { owner: currentUser.username })"
           >
             <h3 class="basil--text">
               <v-icon>mdi-format-list-bulleted-square</v-icon>
@@ -131,7 +131,7 @@ export default {
   computed: {
     ...mapGetters(["currentUser", "isAuthenticated", "messages"]),
     // a computed getter
-    isNewMessage: function() {
+    isNewMessage: function () {
       // `this` points to the vm instance
       if (this.messages) {
         return this.messages.length >= 0 ? 1 : null;

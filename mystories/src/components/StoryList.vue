@@ -60,7 +60,7 @@ export default {
       required: false,
       default: "all"
     },
-    author: {
+    owner: {
       type: String,
       required: false
     },
@@ -85,14 +85,14 @@ export default {
         offset: (this.currentPage - 1) * this.limit,
         limit: this.limit
       };
-      if (this.author) {
-        filters.authorUserUsername = this.author;
+      if (this.owner) {
+        filters.ownerUserUsername = this.owner;
       }
       if (this.tag) {
         filters.tagsTag = this.tag;
       }
       if (this.favorited) {
-        filters.authorFavorites = this.favorited;
+        filters.ownerFavorites = this.favorited;
       }
       return {
         type,
@@ -116,7 +116,7 @@ export default {
       this.resetPagination();
       this.fetchStories();
     },
-    author() {
+    owner() {
       this.resetPagination();
       this.fetchStories();
     },

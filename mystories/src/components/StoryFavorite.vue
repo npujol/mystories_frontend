@@ -29,7 +29,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch(FETCH_PROFILE, {
-      username: this.story.author.username
+      username: this.story.owner.username
     });
   },
   methods: {

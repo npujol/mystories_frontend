@@ -1,5 +1,5 @@
 <template>
-  <v-card outlined grow class="pa-2">
+  <v-card outlined grow class="pa-2" v-if="isCurrentUser">
     <div>
       <v-row justify="center">
         <v-alert
@@ -20,6 +20,7 @@
                 <v-icon> mdi-eye </v-icon>
               </v-btn>
               <v-btn
+                class="shrink pa-4"
                 color="error"
                 :disabled="inProgress"
                 icon
@@ -50,34 +51,23 @@
                   <v-img
                     class="elevation-6"
                     alt=""
-                    :src="message.author.image"
+                    :src="message.owner.image"
                   ></v-img>
                 </v-list-item-avatar>
 
                 <v-list-item-content>
                   <v-list-item-title>{{
-                    message.author.username
+                    message.owner.username
                   }}</v-list-item-title>
                 </v-list-item-content>
 
                 <v-row align="center" justify="end">
                   <v-btn
                     class="subheading mr-1"
-                    small
-                    text
-                    icon
-                    @click="toggleMessage(opened)"
-                  >
-                    <v-icon>
-                      {{ isOpenIcon }}
-                    </v-icon>
-                  </v-btn>
-                  <v-btn
-                    class="subheading mr-1"
                     text
                     icon
                     small
-                    @click="dialog = false"
+                    @click="closeDialog()"
                   >
                     <v-icon>
                       mdi-close
@@ -94,13 +84,17 @@
 </template>
 
 <script>
-import { OPEN_MESSAGE, MESSAGE_DESTROY } from "../store/actions.type.js";
+import { mapGetters } from "vuex";
+import {
+  OPEN_MESSAGE,
+  MESSAGE_DESTROY,
+  FETCH_MESSAGES
+} from "../store/actions.type.js";
 
 export default {
   data() {
     return {
       dialog: false,
-      opened: false,
       inProgress: false
     };
   },
@@ -111,29 +105,42 @@ export default {
       default: null
     }
   },
-  mounted() {
-    if (this.message) {
-      this.opened = this.message.opened;
-    }
-  },
   computed: {
+    ...mapGetters(["currentUser"]),
+    isCurrentUser() {
+      if (this.currentUser.username && this.message.receiver.username) {
+        return this.message.receiver.username === this.currentUser.username;
+      }
+      return false;
+    },
     isOpenIcon() {
-      return this.opened === true ? "mdi-email-open" : "mdi-email";
+      return this.message.opened === true ? "mdi-email-open" : "mdi-email";
     },
     isOpenColor() {
-      return this.opened === true ? "secondary" : "info";
+      return this.message.opened === true ? "info lighten-2" : "info";
+    },
+    isOpened() {
+      return true;
     }
   },
   methods: {
-    async toggleMessage(value) {
-      this.opened = await this.$store.dispatch(OPEN_MESSAGE, { value });
+    async setMessageStatus(pk, opened) {
+      await this.$store.dispatch(OPEN_MESSAGE, {
+        pk,
+        opened
+      });
+      this.$store.dispatch(FETCH_MESSAGES);
+    },
+    async closeDialog() {
+      this.dialog = false;
+      this.setMessageStatus(this.message.pk, true);
     },
     async destroy(pk) {
       try {
         this.inProgress = true;
         await this.$store.dispatch(MESSAGE_DESTROY, { pk });
         this.inProgress = false;
-        this.$router.go();
+        this.$store.dispatch(FETCH_MESSAGES);
       } catch (err) {
         console.error(err);
       }

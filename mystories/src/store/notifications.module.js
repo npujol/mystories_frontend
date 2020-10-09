@@ -12,16 +12,12 @@ import { SET_MESSAGES, SET_MESSAGE, SET_ERROR } from "./mutations.type.js";
 const notificationsApi = new NotificationsApi();
 const state = {
   errors: [],
-  messages: [],
-  currentMessage: null
+  messages: []
 };
 
 const getters = {
   messages(state) {
     return state.messages;
-  },
-  currentMessage(state) {
-    return this.currentMessage;
   },
   errors(state) {
     return state.errors;
@@ -48,9 +44,11 @@ const actions = {
     return message_count;
   },
   async [OPEN_MESSAGE](context, payload) {
-    console.log("payload", payload);
     try {
-      const data = await notificationsApi.notificationsOpenedStatus(payload);
+      const data = await notificationsApi.notificationsOpenedStatus(
+        payload.pk,
+        payload.opened
+      );
       context.commit(SET_MESSAGE, data);
       return data;
     } catch (e) {
@@ -60,7 +58,6 @@ const actions = {
   },
   async [MESSAGE_DESTROY](context, payload) {
     try {
-      console.log(payload.pk);
       await notificationsApi.notificationsDelete(payload.pk);
       context.commit(FETCH_MESSAGES);
       return;

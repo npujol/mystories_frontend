@@ -92,7 +92,7 @@ export default {
   },
   methods: {
     fetchMessages() {
-      this.$store.dispatch(FETCH_MESSAGES, this.listConfig);
+      this.$store.dispatch(FETCH_MESSAGES);
     },
     resetPagination() {
       this.listConfig.offset = 0;

@@ -8,10 +8,10 @@
     <v-list two-line>
       <v-list-item>
         <v-list-item-avatar
-          @click="linkTo('profile', { username: comment.author.username })"
+          @click="linkTo('profile', { username: comment.owner.username })"
           color="grey"
         >
-          <img class="is-rounded" :src="comment.author.image" />
+          <img class="is-rounded" :src="comment.owner.image" />
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title
@@ -19,10 +19,10 @@
               class="logo-font"
               :to="{
                 name: 'profile',
-                params: { username: comment.author.username }
+                params: { username: comment.owner.username }
               }"
             >
-              {{ comment.author.username }}</router-link
+              {{ comment.owner.username }}</router-link
             ></v-list-item-title
           >
           <v-list-item-subtitle>Author</v-list-item-subtitle>
@@ -50,7 +50,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { COMMENT_DESTROY } from "../store/actions.type.js";
+import { COMMENT_DESTROY, FETCH_MESSAGES } from "../store/actions.type.js";
 
 export default {
   name: "RwvComment",
@@ -65,8 +65,8 @@ export default {
   },
   computed: {
     isCurrentUser() {
-      if (this.currentUser.username && this.comment.author.username) {
-        return this.comment.author.username === this.currentUser.username;
+      if (this.currentUser.username && this.comment.owner.username) {
+        return this.comment.owner.username === this.currentUser.username;
       }
       return false;
     },

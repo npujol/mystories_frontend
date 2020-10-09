@@ -3,9 +3,9 @@
     <v-list-item>
       <v-list-item-avatar
         color="grey"
-        @click="linkTo('profile', { username: story.author.username })"
+        @click="linkTo('profile', { username: story.owner.username })"
       >
-        <img class="is-rounded" :src="story.author.image"
+        <img class="is-rounded" :src="story.owner.image"
       /></v-list-item-avatar>
       <v-list-item-content>
         <v-list-item-title class="headline">{{
@@ -17,9 +17,9 @@
             class="logo-font"
             :to="{
               name: 'profile',
-              params: { username: story.author.username }
+              params: { username: story.owner.username }
             }"
-            >{{ story.author.username }}</router-link
+            >{{ story.owner.username }}</router-link
           >
         </v-list-item-subtitle>
       </v-list-item-content>

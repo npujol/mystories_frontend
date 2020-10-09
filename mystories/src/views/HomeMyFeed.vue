@@ -1,6 +1,6 @@
 <template>
   <div class="home-my-feed">
-    <RwvStoryList type="feed" :author="author" />
+    <RwvStoryList type="feed" :owner="owner" />
   </div>
 </template>
 
@@ -13,8 +13,8 @@ export default {
     RwvStoryList
   },
   computed: {
-    author() {
-      return this.$route.params.author;
+    owner() {
+      return this.$route.params.owner;
     }
   }
 };
