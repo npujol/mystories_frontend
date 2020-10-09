@@ -85,8 +85,9 @@ const actions = {
     }
   },
   async [UPDATE_USER](context, payload) {
-    const { bio, image } = payload.profile;
-    const username = payload.username;
+    const { bio } = payload.currentUser.profile;
+    const image = payload.image;
+    const username = payload.currentUser.username;
     await profilesApi.profilesPartialUpdate(username, { bio });
     if (image && typeof image !== "string") {
       await profilesApi.profilesChangeImage(username, image);

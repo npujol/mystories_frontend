@@ -67,6 +67,7 @@ export default {
       errors: {},
       valid: false,
       preview: "https://picsum.photos/510/300?random",
+      imagefile: null,
       rules: {
         photo: v =>
           !v || v.size < 2000000 || "Avatar size should be less than 2 MB!"
@@ -92,16 +93,20 @@ export default {
   methods: {
     async updateSettings() {
       try {
-        const data = await store.dispatch(UPDATE_USER, this.currentUser);
+        const data = await store.dispatch(UPDATE_USER, {
+          currentUser: this.currentUser,
+          image: this.imagefile
+        });
         this.$router.push({ name: "home" });
       } catch (error) {
+        console.log(error);
         this.inProgress = false;
-        this.errors = JSON.parse(error.response.text).errors;
+        // this.errors = JSON.parse(error.response.text).errors;
       }
     },
     previewImage(file) {
       var reader = new FileReader();
-      this.currentUser.profile.image = file;
+      this.imagefile = file;
       reader.onload = e => {
         this.preview = e.target.result;
       };
