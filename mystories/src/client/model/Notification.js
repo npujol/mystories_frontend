@@ -46,8 +46,8 @@ export class Notification {
       obj = obj || new Notification();
       if (data.hasOwnProperty('pk'))
         obj.pk = ApiClient.convertToType(data['pk'], 'Number');
-      if (data.hasOwnProperty('author'))
-        obj.author = Profile.constructFromObject(data['author']);
+      if (data.hasOwnProperty('owner'))
+        obj.owner = Profile.constructFromObject(data['owner']);
       if (data.hasOwnProperty('body'))
         obj.body = ApiClient.convertToType(data['body'], 'String');
       if (data.hasOwnProperty('title'))
@@ -58,8 +58,8 @@ export class Notification {
         obj.createdAt = ApiClient.convertToType(data['createdAt'], 'String');
       if (data.hasOwnProperty('updatedAt'))
         obj.updatedAt = ApiClient.convertToType(data['updatedAt'], 'String');
-      if (data.hasOwnProperty('receiver'))
-        obj.receiver = Profile.constructFromObject(data['receiver']);
+      if (data.hasOwnProperty('sender'))
+        obj.sender = Profile.constructFromObject(data['sender']);
     }
     return obj;
   }
@@ -71,9 +71,9 @@ export class Notification {
 Notification.prototype.pk = undefined;
 
 /**
- * @member {module:model/Profile} author
+ * @member {module:model/Profile} owner
  */
-Notification.prototype.author = undefined;
+Notification.prototype.owner = undefined;
 
 /**
  * @member {String} body
@@ -101,8 +101,8 @@ Notification.prototype.createdAt = undefined;
 Notification.prototype.updatedAt = undefined;
 
 /**
- * @member {module:model/Profile} receiver
+ * @member {module:model/Profile} sender
  */
-Notification.prototype.receiver = undefined;
+Notification.prototype.sender = undefined;
 
 

@@ -46,8 +46,8 @@ export class Story {
   static constructFromObject(data, obj) {
     if (data) {
       obj = obj || new Story();
-      if (data.hasOwnProperty('author'))
-        obj.author = Profile.constructFromObject(data['author']);
+      if (data.hasOwnProperty('owner'))
+        obj.owner = Profile.constructFromObject(data['owner']);
       if (data.hasOwnProperty('body'))
         obj.body = ApiClient.convertToType(data['body'], 'String');
       if (data.hasOwnProperty('body_markdown'))
@@ -78,9 +78,9 @@ export class Story {
 }
 
 /**
- * @member {module:model/Profile} author
+ * @member {module:model/Profile} owner
  */
-Story.prototype.author = undefined;
+Story.prototype.owner = undefined;
 
 /**
  * @member {String} body

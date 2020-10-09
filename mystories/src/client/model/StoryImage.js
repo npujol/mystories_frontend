@@ -44,8 +44,8 @@ export class StoryImage {
   static constructFromObject(data, obj) {
     if (data) {
       obj = obj || new StoryImage();
-      if (data.hasOwnProperty('author'))
-        obj.author = Profile.constructFromObject(data['author']);
+      if (data.hasOwnProperty('owner'))
+        obj.owner = Profile.constructFromObject(data['owner']);
       if (data.hasOwnProperty('body'))
         obj.body = ApiClient.convertToType(data['body'], 'String');
       if (data.hasOwnProperty('body_markdown'))
@@ -76,9 +76,9 @@ export class StoryImage {
 }
 
 /**
- * @member {module:model/Profile} author
+ * @member {module:model/Profile} owner
  */
-StoryImage.prototype.author = undefined;
+StoryImage.prototype.owner = undefined;
 
 /**
  * @member {String} body

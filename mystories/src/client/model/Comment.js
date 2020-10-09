@@ -45,8 +45,8 @@ export class Comment {
       obj = obj || new Comment();
       if (data.hasOwnProperty('id'))
         obj.id = ApiClient.convertToType(data['id'], 'Number');
-      if (data.hasOwnProperty('author'))
-        obj.author = Profile.constructFromObject(data['author']);
+      if (data.hasOwnProperty('owner'))
+        obj.owner = Profile.constructFromObject(data['owner']);
       if (data.hasOwnProperty('story'))
         obj.story = Story.constructFromObject(data['story']);
       if (data.hasOwnProperty('body'))
@@ -66,9 +66,9 @@ export class Comment {
 Comment.prototype.id = undefined;
 
 /**
- * @member {module:model/Profile} author
+ * @member {module:model/Profile} owner
  */
-Comment.prototype.author = undefined;
+Comment.prototype.owner = undefined;
 
 /**
  * @member {module:model/Story} story
