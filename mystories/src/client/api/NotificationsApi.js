@@ -185,6 +185,62 @@ export class NotificationsApi {
 
 
     /**
+     * General ViewSet description
+     * @param {Number} id A unique integer value identifying this notification.
+     * @param {module:model/Notification} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Notification} and HTTP response
+     */
+    notificationsOpenedStatusWithHttpInfo(id, data) {
+      let postBody = data;
+
+      // verify the required parameter 'id' is set
+      if (id === undefined || id === null) {
+        throw new Error("Missing the required parameter 'id' when calling notificationsOpenedStatus");
+      }
+
+      // verify the required parameter 'data' is set
+      if (data === undefined || data === null) {
+        throw new Error("Missing the required parameter 'data' when calling notificationsOpenedStatus");
+      }
+
+
+      let pathParams = {
+        'id': id
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['api_key'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = Notification;
+
+      return this.apiClient.callApi(
+        '/notifications/{id}/openedStatus', 'POST',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType
+      );
+    }
+
+    /**
+     * General ViewSet description
+     * @param {Number} id A unique integer value identifying this notification.
+     * @param {module:model/Notification} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Notification}
+     */
+    notificationsOpenedStatus(id, data) {
+      return this.notificationsOpenedStatusWithHttpInfo(id, data)
+        .then(function(response_and_data) {
+          return response_and_data.data;
+        });
+    }
+
+
+    /**
      * Patch a notification
      * @param {Number} id A unique integer value identifying this notification.
      * @param {module:model/Notification} data 
