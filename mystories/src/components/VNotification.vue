@@ -108,8 +108,8 @@ export default {
   computed: {
     ...mapGetters(["currentUser"]),
     isCurrentUser() {
-      if (this.currentUser.username && this.message.receiver.username) {
-        return this.message.receiver.username === this.currentUser.username;
+      if (this.currentUser.username && this.message.owner.username) {
+        return this.message.owner.username === this.currentUser.username;
       }
       return false;
     },

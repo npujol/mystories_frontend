@@ -59,7 +59,7 @@ const actions = {
   async [MESSAGE_DESTROY](context, payload) {
     try {
       await notificationsApi.notificationsDelete(payload.pk);
-      context.commit(FETCH_MESSAGES);
+      context.dispatch(FETCH_MESSAGES);
       return;
     } catch (e) {
       // #todo SET_ERROR cannot work in multiple states

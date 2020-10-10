@@ -131,10 +131,10 @@ export default {
   computed: {
     ...mapGetters(["currentUser", "isAuthenticated", "messages"]),
     // a computed getter
-    isNewMessage: function () {
+    isNewMessage: function() {
       // `this` points to the vm instance
       if (this.messages) {
-        return this.messages.length >= 0 ? 1 : null;
+        return this.messages.length > 0 ? 1 : null;
       } else {
         return null;
       }
