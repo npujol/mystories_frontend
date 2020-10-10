@@ -30,7 +30,7 @@ const storiesApi = new StoriesApi();
 const initialState = {
   story: {
     slug: "",
-    author: {},
+    owner: {},
     title: "",
     description: "",
     image: "",
@@ -75,7 +75,6 @@ export const actions = {
   },
   async [FETCH_STORY_PRIVATE](context, payload) {
     const data = await storiesApi.storiesGetBodyMarkdown(payload.slug);
-
     return data;
   },
   async [FETCH_COMMENTS](context, payload) {

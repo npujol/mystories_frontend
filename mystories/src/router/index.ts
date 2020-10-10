@@ -16,7 +16,7 @@ const routes: Array<RouteConfig> = [
         component: () => import("../views/HomeGlobal.vue")
       },
       {
-        path: "my-feed/:author",
+        path: "my-feed/:owner",
         name: "home-my-feed",
         component: () => import("../views/HomeMyFeed.vue")
       },
@@ -42,6 +42,11 @@ const routes: Array<RouteConfig> = [
     path: "/settings/:username",
     component: () => import("../views/Settings.vue")
   },
+  {
+    name: "notifications",
+    path: "/notifications/:username",
+    component: () => import("../views/Notification.vue")
+  },
   // Handle child routes with a default, by giving the name to the
   // child.
   // SO: https://github.com/vuejs/vue-router/issues/777
@@ -50,8 +55,8 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/Profile.vue"),
     children: [
       {
-        path: "",
         name: "profile",
+        path: "",
         component: () => import("../views/ProfileStories.vue")
       },
       {

@@ -1,5 +1,5 @@
 <template>
-  <!-- Used when user is also author -->
+  <!-- Used when user is also owner -->
 
   <span v-if="canModify">
     <v-btn text elevation="12">
@@ -25,7 +25,7 @@
       <v-icon>mdi-delete</v-icon>
     </v-btn>
   </span>
-  <!-- Used in StoryView when not author -->
+  <!-- Used in StoryView when not owner -->
   <span v-else>
     <RwvStoryFavorite :story="story"></RwvStoryFavorite>
   </span>
@@ -67,7 +67,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch(FETCH_PROFILE, {
-      username: this.story.author.username
+      username: this.story.owner.username
     });
     this.canModify = this.currentUser.username === this.profile.username;
   },
