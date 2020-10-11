@@ -24,6 +24,7 @@ import {Notification} from './model/Notification';
 import {Profile} from './model/Profile';
 import {ProfileImage} from './model/ProfileImage';
 import {Registration} from './model/Registration';
+import {Speech} from './model/Speech';
 import {Story} from './model/Story';
 import {StoryImage} from './model/StoryImage';
 import {StoryPrivate} from './model/StoryPrivate';
@@ -134,6 +135,12 @@ export {
      * @property {module:model/Registration}
      */
     Registration,
+
+    /**
+     * The Speech model constructor.
+     * @property {module:model/Speech}
+     */
+    Speech,
 
     /**
      * The Story model constructor.
