@@ -40,16 +40,6 @@
           label="Language"
           dense
         ></v-select>
-        <v-textarea
-          label="Description"
-          v-model="story.description"
-        ></v-textarea>
-        <v-textarea
-          label="Body"
-          outlined
-          full-width
-          v-model="story.bodyMarkdown"
-        ></v-textarea>
         <v-layout wrap>
           <v-flex xs12>
             <v-combobox
@@ -67,7 +57,19 @@
             </v-combobox>
           </v-flex>
         </v-layout>
+        <v-checkbox
+          v-if="!story.slug"
+          v-model="generateAudio"
+          label="Generate Audio"
+        ></v-checkbox>
       </v-form>
+      <v-textarea label="Description" v-model="story.description"></v-textarea>
+      <v-textarea
+        label="Body"
+        outlined
+        full-width
+        v-model="story.bodyMarkdown"
+      ></v-textarea>
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
@@ -92,7 +94,8 @@ import {
   FETCH_STORY_PRIVATE,
   STORY_EDIT_ADD_TAG,
   STORY_EDIT_REMOVE_TAG,
-  STORY_RESET_STATE
+  STORY_RESET_STATE,
+  STORY_AUDIO_ADD
 } from "@/store/actions.type.js";
 
 export default {
@@ -114,7 +117,8 @@ export default {
     // SO: https://github.com/vuejs/vue-router/issues/1034
     // If we arrive directly to this url, we need to fetch the story
     await store.dispatch(STORY_RESET_STATE);
-    if (to.params.slug !== undefined) {
+    console.log(to.params.slug);
+    if (to.params.slug) {
       await store.dispatch(
         FETCH_STORY,
         to.params.slug,
@@ -139,7 +143,8 @@ export default {
       rules: {
         photo: v =>
           !v || v.size < 2000000 || "Avatar size should be less than 2 MB!"
-      }
+      },
+      generateAudio: false
     };
   },
   mounted() {
@@ -156,7 +161,12 @@ export default {
       try {
         const action = slug ? STORY_EDIT : STORY_PUBLISH;
         this.inProgress = true;
-        const data = await this.$store.dispatch(action, this.story);
+        var story = this.story;
+        var generateAudio = this.generateAudio;
+        const data = await this.$store.dispatch(action, {
+          story,
+          generateAudio
+        });
         this.inProgress = false;
         this.$router.push({ name: "story", params: { slug: data.slug } });
       } catch (error) {

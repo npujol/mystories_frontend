@@ -15,3 +15,4 @@ export const RESET_STATE = "resetModuleState";
 export const SET_COMMENTS_START = "setCommentsStart";
 export const SET_MESSAGES = "set_messages";
 export const SET_MESSAGE = "set_message";
+export const SET_AUDIO = "set_audio";

@@ -17,6 +17,7 @@ import {ApiClient} from "../ApiClient";
 import {Comment} from '../model/Comment';
 import {InlineResponse2001} from '../model/InlineResponse2001';
 import {InlineResponse2002} from '../model/InlineResponse2002';
+import {Speech} from '../model/Speech';
 import {Story} from '../model/Story';
 import {StoryImage} from '../model/StoryImage';
 import {StoryPrivate} from '../model/StoryPrivate';
@@ -548,7 +549,7 @@ export class StoriesApi {
     /**
      * General ViewSet description
      * @param {String} slug 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Story} and HTTP response
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Speech} and HTTP response
      */
     storiesGetAudioWithHttpInfo(slug) {
       let postBody = null;
@@ -572,7 +573,7 @@ export class StoriesApi {
       let authNames = ['api_key'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
-      let returnType = Story;
+      let returnType = Speech;
 
       return this.apiClient.callApi(
         '/stories/{slug}/get_audio', 'GET',
@@ -584,7 +585,7 @@ export class StoriesApi {
     /**
      * General ViewSet description
      * @param {String} slug 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Story}
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Speech}
      */
     storiesGetAudio(slug) {
       return this.storiesGetAudioWithHttpInfo(slug)
@@ -696,8 +697,8 @@ export class StoriesApi {
     /**
      * General ViewSet description
      * @param {String} slug 
-     * @param {module:model/Story} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Story} and HTTP response
+     * @param {module:model/Speech} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Speech} and HTTP response
      */
     storiesMakeAudioWithHttpInfo(slug, data) {
       let postBody = data;
@@ -726,7 +727,7 @@ export class StoriesApi {
       let authNames = ['api_key'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
-      let returnType = Story;
+      let returnType = Speech;
 
       return this.apiClient.callApi(
         '/stories/{slug}/make_audio', 'POST',
@@ -738,8 +739,8 @@ export class StoriesApi {
     /**
      * General ViewSet description
      * @param {String} slug 
-     * @param {module:model/Story} data 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Story}
+     * @param {module:model/Speech} data 
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Speech}
      */
     storiesMakeAudio(slug, data) {
       return this.storiesMakeAudioWithHttpInfo(slug, data)
