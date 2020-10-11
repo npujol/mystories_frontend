@@ -75,13 +75,23 @@
           <p class="text-center align-center">{{ story.description }}</p>
         </v-expansion-panel-content>
       </v-expansion-panel>
+      <v-expansion-panel v-if="storyAudio">
+        <v-expansion-panel-header>Audio</v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <vuetify-audio
+            :file="storyAudio.speechFile"
+            color="info"
+            downloadable
+          ></vuetify-audio>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
       <v-expansion-panel>
         <v-expansion-panel-header>Body</v-expansion-panel-header>
         <v-expansion-panel-content>
           <div v-html="story.body"></div>
         </v-expansion-panel-content>
-      </v-expansion-panel> </v-expansion-panels
-    >Markdown
+      </v-expansion-panel>
+    </v-expansion-panels>
     <v-spacer></v-spacer>
     <RwvCommentslist :story="story"></RwvCommentslist>
   </v-card>
@@ -96,7 +106,11 @@ import RwvCommentslist from "@/components/CommentsList.vue";
 
 import RwvTag from "@/components/VTag.vue";
 import RwvStoryActions from "../components/StoryActions.vue";
-import { FETCH_STORY, FETCH_COMMENTS } from "@/store/actions.type.js";
+import {
+  FETCH_STORY,
+  FETCH_COMMENTS,
+  FETCH_STORY_AUDIO
+} from "@/store/actions.type.js";
 
 export default {
   name: "rwv-story",
@@ -110,7 +124,8 @@ export default {
     RwvTag,
     RwvStoryActions,
     RwvProfileFollow,
-    RwvCommentslist
+    RwvCommentslist,
+    VuetifyAudio: () => import("vuetify-audio")
   },
   data() {
     return {
@@ -120,14 +135,22 @@ export default {
   async beforeRouteEnter(to, from, next) {
     try {
       await store.dispatch(FETCH_STORY, to.params.slug);
+      await store.dispatch(FETCH_STORY_AUDIO, to.params.slug);
       await store.dispatch(FETCH_COMMENTS, to.params.slug);
       next();
     } catch (error) {
+      console.log(error);
       this.errors = error;
     }
   },
   computed: {
-    ...mapGetters(["story", "currentUser", "comments", "isAuthenticated"])
+    ...mapGetters([
+      "story",
+      "currentUser",
+      "comments",
+      "isAuthenticated",
+      "storyAudio"
+    ])
   },
   methods: {
     linkTo(route, params) {

@@ -54,7 +54,7 @@ const getters = {
   story(state) {
     return state.story;
   },
-  storyAudiostate() {
+  storyAudio() {
     return state.storyAudio;
   },
   commentsCount(state) {
@@ -146,7 +146,8 @@ export const actions = {
     context.dispatch(STORY_RESET_STATE, newStory.slug);
     return data;
   },
-  [STORY_DELETE](slug) {
+  [STORY_DELETE](context, slug) {
+    console.log(context);
     return storiesApi.storiesDelete(slug);
   },
   [STORY_EDIT]({ state }) {
@@ -192,7 +193,7 @@ export const mutations = {
   [TAG_REMOVE](state, tag) {
     state.story.tags = state.story.tags.filter(t => t !== tag);
   },
-  [RESET_STATE]() {
+  [RESET_STATE](state) {
     for (const f in state) {
       Vue.set(state, f, initialState[f]);
     }
