@@ -14,7 +14,9 @@ import {
   STORY_EDIT_ADD_TAG,
   STORY_EDIT_REMOVE_TAG,
   STORY_DELETE,
-  STORY_RESET_STATE
+  STORY_RESET_STATE,
+  FETCH_STORY_AUDIO,
+  STORY_AUDIO_ADD
 } from "./actions.type.js";
 import {
   RESET_STATE,
@@ -23,7 +25,8 @@ import {
   TAG_ADD,
   TAG_REMOVE,
   UPDATE_STORY_IN_LIST,
-  SET_COMMENTS_START
+  SET_COMMENTS_START,
+  SET_AUDIO
 } from "./mutations.type.js";
 
 const storiesApi = new StoriesApi();
@@ -35,13 +38,14 @@ const initialState = {
     description: "",
     image: "",
     body: "",
-    language: "en",
+    language: "es",
     favoritesCount: "",
     createdAt: "",
     updatedAt: "",
     bodyMarkdown: "",
     tags: []
   },
+  storyAudio: null,
   comments: [],
   commentsCount: 0,
   isCommentsLoading: true
@@ -49,6 +53,9 @@ const initialState = {
 const getters = {
   story(state) {
     return state.story;
+  },
+  storyAudiostate() {
+    return state.storyAudio;
   },
   commentsCount(state) {
     return state.commentsCount;
@@ -75,6 +82,11 @@ export const actions = {
   },
   async [FETCH_STORY_PRIVATE](context, payload) {
     const data = await storiesApi.storiesGetBodyMarkdown(payload.slug);
+    return data;
+  },
+  async [FETCH_STORY_AUDIO](context, storySlug) {
+    const data = await storiesApi.storiesGetAudio(storySlug);
+    context.commit(SET_AUDIO, data);
     return data;
   },
   async [FETCH_COMMENTS](context, payload) {
@@ -104,7 +116,7 @@ export const actions = {
     context.commit(UPDATE_STORY_IN_LIST, data, { root: true });
     context.commit(SET_STORY, data);
   },
-  async [STORY_PUBLISH]({ state }) {
+  async [STORY_PUBLISH](context, payload) {
     const {
       title,
       description,
@@ -112,8 +124,9 @@ export const actions = {
       bodyMarkdown,
       language,
       tags
-    } = state.story;
+    } = context.state.story;
 
+    const { generateAudio } = payload;
     const newStory = await storiesApi.storiesCreate({
       title: title,
       description: description,
@@ -124,7 +137,13 @@ export const actions = {
     if (image && typeof image !== "string") {
       await storiesApi.storiesChangeImage(newStory.slug, image);
     }
+
+    if (newStory.slug && generateAudio) {
+      console.log(generateAudio);
+      context.dispatch(STORY_AUDIO_ADD, newStory.slug);
+    }
     const data = await storiesApi.storiesRead(newStory.slug);
+    context.dispatch(STORY_RESET_STATE, newStory.slug);
     return data;
   },
   [STORY_DELETE](slug) {
@@ -141,6 +160,11 @@ export const actions = {
   },
   [STORY_RESET_STATE]({ commit }) {
     commit(RESET_STATE);
+  },
+  async [STORY_AUDIO_ADD](context, slug) {
+    const data = await storiesApi.storiesMakeAudio(slug, {});
+    context.commit(SET_AUDIO, data);
+    return data;
   }
 };
 
@@ -156,6 +180,9 @@ export const mutations = {
     state.comments = data.results;
     state.commentsCount = data.count;
     state.isCommentsLoading = false;
+  },
+  [SET_AUDIO](state, data) {
+    state.storyAudio = data;
   },
   [TAG_ADD](state, tag) {
     if (state.story.tags.indexOf(tag) === -1) {

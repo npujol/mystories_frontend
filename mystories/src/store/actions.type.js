@@ -27,3 +27,5 @@ export const FETCH_MESSAGES = "fetch_messages";
 export const FETCH_MESSAGE = "fetch_message";
 export const MESSAGE_DESTROY = "message_destroy";
 export const OPEN_MESSAGE = "open_message";
+export const FETCH_STORY_AUDIO = "fetch_story_audio";
+export const STORY_AUDIO_ADD = "story_audio_add";
