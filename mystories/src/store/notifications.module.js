@@ -33,6 +33,7 @@ const actions = {
   async [FETCH_MESSAGES](context) {
     const data = await notificationsApi.notificationsList();
     context.commit(SET_MESSAGES, data);
+    context.dispatch(FETCH_NEW_MESSAGES_COUNT);
     return data;
   },
   async [FETCH_NEW_MESSAGES_COUNT](context) {
