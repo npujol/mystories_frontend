@@ -7,74 +7,61 @@ import {
   MESSAGE_OPEN,
   MESSAGE_DELETE
 } from "./actions.type.js";
-import { SET_MESSAGES, SET_MESSAGE, SET_ERROR } from "./mutations.type.js";
+import { SET_MESSAGES, SET_MESSAGE_COUNT } from "./mutations.type.js";
 
 const notificationsApi = new NotificationsApi();
 const state = {
-  errors: [],
-  messages: []
+  messages: [],
+  countNewMessages: 0
 };
 
 const getters = {
   messages(state) {
     return state.messages;
   },
-  errors(state) {
-    return state.errors;
+  countNewMessages(state) {
+    return state.countNewMessages;
   }
 };
 
 const actions = {
-  async [FETCH_MESSAGE](context, pk) {
-    const data = await notificationsApi.notificationsRead(pk);
+  async [FETCH_MESSAGE](context, payload) {
+    const data = await notificationsApi.notificationsRead(payload);
     context.commit(SET_MESSAGE, data);
     return data;
   },
-  async [FETCH_MESSAGES]({ commit }) {
+  async [FETCH_MESSAGES](context) {
     const data = await notificationsApi.notificationsList();
-    commit(SET_MESSAGES, data);
+    context.commit(SET_MESSAGES, data);
     return data;
   },
-  async [FETCH_NEW_MESSAGES_COUNT]() {
+  async [FETCH_NEW_MESSAGES_COUNT](context) {
     var message_count = 0;
     const data = await notificationsApi.notificationsList();
     if (state.messages.length === 0) {
       message_count = data.count;
     }
+    context.commit(SET_MESSAGE_COUNT, message_count);
     return message_count;
   },
   async [MESSAGE_OPEN](context, payload) {
-    try {
-      const data = await notificationsApi.notificationsOpenedStatus(
-        payload.pk,
-        payload.opened
-      );
-      context.commit(SET_MESSAGE, data);
-      return data;
-    } catch (e) {
-      // #todo SET_ERROR cannot work in multiple states
-      context.commit(SET_ERROR, "e");
-    }
+    const data = await notificationsApi.notificationsOpenedStatus(
+      payload.pk,
+      payload.opened
+    );
+    context.commit(SET_MESSAGE, data);
+    return data;
   },
   async [MESSAGE_DELETE](context, payload) {
-    try {
-      await notificationsApi.notificationsDelete(payload.pk);
-      context.dispatch(FETCH_MESSAGES);
-      return;
-    } catch (e) {
-      // #todo SET_ERROR cannot work in multiple states
-      console.log(e);
-      context.commit(SET_ERROR, JSON.parse(e.response.text).errors);
-    }
+    await notificationsApi.notificationsDelete(payload.pk);
+    context.dispatch(FETCH_MESSAGES);
+    return;
   }
 };
 
 const mutations = {
-  [SET_ERROR](state, error) {
-    state.errors = error;
-  },
-  [SET_MESSAGE](state, data) {
-    state.currentMessage = data;
+  [SET_MESSAGE_COUNT](state, data) {
+    state.countNewMessages = data;
   },
   [SET_MESSAGES](state, data) {
     state.messages = data.results;
