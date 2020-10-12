@@ -1,24 +1,17 @@
-import { AuthApi, UsersApi, ProfilesApi } from "../client";
+import { AuthApi, UsersApi } from "../client";
 import JwtService from "@/common/jwt.service";
 
-import {
-  LOGIN,
-  LOGOUT,
-  REGISTER,
-  CHECK_AUTH,
-  PROFILE_UPDATE
-} from "./actions.type.js";
+import { LOGIN, LOGOUT, REGISTER, CHECK_AUTH } from "./actions.type.js";
 import {
   SET_AUTH,
   PURGE_AUTH,
   SET_ERROR,
   SET_USER,
-  SET_PROFILE
+  RESET_PROFILE
 } from "./mutations.type.js";
 
 const authApi = new AuthApi();
 const usersApi = new UsersApi();
-const profilesApi = new ProfilesApi();
 
 const state = {
   errors: null,
@@ -32,17 +25,19 @@ const getters = {
   },
   isAuthenticated(state) {
     return state.isAuthenticated;
+  },
+  errors(state) {
+    return state.errors;
   }
 };
 
 const actions = {
-  [LOGIN](context, credentials) {
+  [LOGIN](context, payload) {
     return new Promise(resolve => {
       authApi
-        .authLoginCreate(credentials)
+        .authLoginCreate(payload)
         .then(data => {
           context.commit(SET_AUTH, data);
-          context.commit(SET_PROFILE, data.profile);
           resolve(data);
         })
         .catch(response => {
@@ -52,14 +47,14 @@ const actions = {
   },
   [LOGOUT](context) {
     context.commit(PURGE_AUTH);
+    context.commit(RESET_PROFILE);
   },
-  [REGISTER](context, credentials) {
+  [REGISTER](context, payload) {
     return new Promise((resolve, reject) => {
       authApi
-        .authRegistrationCreate(credentials)
+        .authRegistrationCreate(payload)
         .then(data => {
           context.commit(SET_AUTH, data);
-          context.commit(SET_PROFILE, data.profile);
           resolve(data);
         })
         .catch(response => {
@@ -68,33 +63,18 @@ const actions = {
         });
     });
   },
-  [CHECK_AUTH](context) {
+  async [CHECK_AUTH](context) {
     if (JwtService.getToken()) {
-      JwtService.setHeader();
-      usersApi
-        .usersRead(JwtService.getUsername())
-        .then(data => {
-          context.commit(SET_USER, data);
-          context.commit(SET_PROFILE, data.profile);
-        })
-        .catch(response => {
-          context.commit(SET_ERROR, response.errors);
-        });
+      try {
+        JwtService.setHeader();
+        const data = await usersApi.usersRead(JwtService.getUsername());
+        context.commit(SET_USER, data);
+      } catch (error) {
+        context.commit(SET_ERROR, response.errors);
+      }
     } else {
       context.commit(PURGE_AUTH);
     }
-  },
-  async [PROFILE_UPDATE](context, payload) {
-    const { bio } = payload.currentUser.profile;
-    const image = payload.image;
-    const username = payload.currentUser.username;
-    await profilesApi.profilesPartialUpdate(username, { bio });
-    if (image && typeof image !== "string") {
-      await profilesApi.profilesChangeImage(username, image);
-    }
-    const data = await usersApi.usersRead(username);
-    context.commit(SET_USER, data);
-    return data;
   }
 };
 
