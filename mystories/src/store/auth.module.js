@@ -70,7 +70,7 @@ const actions = {
         const data = await usersApi.usersRead(JwtService.getUsername());
         context.commit(SET_USER, data);
       } catch (error) {
-        context.commit(SET_ERROR, response.errors);
+        context.commit(SET_ERROR, error);
       }
     } else {
       context.commit(PURGE_AUTH);
