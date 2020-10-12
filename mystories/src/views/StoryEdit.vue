@@ -117,7 +117,6 @@ export default {
     // SO: https://github.com/vuejs/vue-router/issues/1034
     // If we arrive directly to this url, we need to fetch the story
     await store.dispatch(STORY_RESET_STATE);
-    console.log(to.params.slug);
     if (to.params.slug) {
       await store.dispatch(
         FETCH_STORY,
