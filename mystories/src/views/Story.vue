@@ -134,7 +134,6 @@ export default {
   },
   async beforeRouteEnter(to, from, next) {
     await store.dispatch(FETCH_STORY, to.params.slug);
-    await store.dispatch(FETCH_STORY_AUDIO, to.params.slug);
     await store.dispatch(FETCH_COMMENTS, to.params.slug);
     next();
   },
