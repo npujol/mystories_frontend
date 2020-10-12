@@ -5,19 +5,28 @@ import {
   FETCH_MESSAGE,
   FETCH_MESSAGES,
   MESSAGE_OPEN,
-  MESSAGE_DELETE
+  MESSAGE_DELETE,
+  FETCH_OPENED_MESSAGES
 } from "./actions.type.js";
-import { SET_MESSAGES, SET_MESSAGE_COUNT } from "./mutations.type.js";
+import {
+  SET_MESSAGES,
+  SET_MESSAGE,
+  SET_MESSAGE_COUNT
+} from "./mutations.type.js";
 
 const notificationsApi = new NotificationsApi();
 const state = {
   messages: [],
-  countNewMessages: 0
+  countNewMessages: 0,
+  message: null
 };
 
 const getters = {
   messages(state) {
     return state.messages;
+  },
+  message(state) {
+    return state.message;
   },
   countNewMessages(state) {
     return state.countNewMessages;
@@ -33,13 +42,16 @@ const actions = {
   async [FETCH_MESSAGES](context) {
     const data = await notificationsApi.notificationsList();
     context.commit(SET_MESSAGES, data);
+    return data;
+  },
+  async [FETCH_OPENED_MESSAGES](context) {
+    const data = await notificationsApi.notificationsList(true);
     context.dispatch(FETCH_NEW_MESSAGES_COUNT);
     return data;
   },
-  async [FETCH_NEW_MESSAGES_COUNT](context) {
+  [FETCH_NEW_MESSAGES_COUNT](context, data) {
     var message_count = 0;
-    const data = await notificationsApi.notificationsList();
-    if (state.messages.length === 0) {
+    if (state.messages.length !== 0) {
       message_count = data.count;
     }
     context.commit(SET_MESSAGE_COUNT, message_count);
@@ -66,6 +78,9 @@ const mutations = {
   },
   [SET_MESSAGES](state, data) {
     state.messages = data.results;
+  },
+  [SET_MESSAGE](state, data) {
+    state.message = data.results;
   }
 };
 

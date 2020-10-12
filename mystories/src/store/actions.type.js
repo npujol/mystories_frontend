@@ -27,5 +27,6 @@ export const TAG_STORY_EDIT_DELETE = "deleteTagFromStory";
 export const FETCH_MESSAGE = "fetchMessage";
 export const FETCH_NEW_MESSAGES_COUNT = "fetchNewMessageCount";
 export const FETCH_MESSAGES = "fetchMessages";
+export const FETCH_OPENED_MESSAGES = "fetchOpenedMessages";
 export const MESSAGE_DELETE = "deleteMessage";
 export const MESSAGE_OPEN = "openMessage";
