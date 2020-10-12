@@ -42,7 +42,7 @@ const getters = {
 
 const actions = {
   async [FETCH_STORIES](context, payload) {
-    context.context.commit(FETCH_START);
+    context.commit(FETCH_START);
     const data = await storiesApi.storiesList(payload.filters);
     context.commit(FETCH_END, data);
     return data;
