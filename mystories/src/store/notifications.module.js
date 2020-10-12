@@ -4,8 +4,8 @@ import {
   FETCH_NEW_MESSAGES_COUNT,
   FETCH_MESSAGE,
   FETCH_MESSAGES,
-  OPEN_MESSAGE,
-  MESSAGE_DESTROY
+  MESSAGE_OPEN,
+  MESSAGE_DELETE
 } from "./actions.type.js";
 import { SET_MESSAGES, SET_MESSAGE, SET_ERROR } from "./mutations.type.js";
 
@@ -43,7 +43,7 @@ const actions = {
     }
     return message_count;
   },
-  async [OPEN_MESSAGE](context, payload) {
+  async [MESSAGE_OPEN](context, payload) {
     try {
       const data = await notificationsApi.notificationsOpenedStatus(
         payload.pk,
@@ -56,7 +56,7 @@ const actions = {
       context.commit(SET_ERROR, "e");
     }
   },
-  async [MESSAGE_DESTROY](context, payload) {
+  async [MESSAGE_DELETE](context, payload) {
     try {
       await notificationsApi.notificationsDelete(payload.pk);
       context.dispatch(FETCH_MESSAGES);

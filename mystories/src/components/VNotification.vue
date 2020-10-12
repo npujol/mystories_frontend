@@ -86,8 +86,8 @@
 <script>
 import { mapGetters } from "vuex";
 import {
-  OPEN_MESSAGE,
-  MESSAGE_DESTROY,
+  MESSAGE_OPEN,
+  MESSAGE_DELETE,
   FETCH_MESSAGES
 } from "../store/actions.type.js";
 
@@ -125,7 +125,7 @@ export default {
   },
   methods: {
     async setMessageStatus(pk, opened) {
-      await this.$store.dispatch(OPEN_MESSAGE, {
+      await this.$store.dispatch(MESSAGE_OPEN, {
         pk,
         opened
       });
@@ -138,7 +138,7 @@ export default {
     async destroy(pk) {
       try {
         this.inProgress = true;
-        await this.$store.dispatch(MESSAGE_DESTROY, { pk });
+        await this.$store.dispatch(MESSAGE_DELETE, { pk });
         this.inProgress = false;
         this.$store.dispatch(FETCH_MESSAGES);
       } catch (err) {

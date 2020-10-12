@@ -6,7 +6,7 @@ import {
   LOGOUT,
   REGISTER,
   CHECK_AUTH,
-  UPDATE_USER
+  PROFILE_UPDATE
 } from "./actions.type.js";
 import {
   SET_AUTH,
@@ -84,7 +84,7 @@ const actions = {
       context.commit(PURGE_AUTH);
     }
   },
-  async [UPDATE_USER](context, payload) {
+  async [PROFILE_UPDATE](context, payload) {
     const { bio } = payload.currentUser.profile;
     const image = payload.image;
     const username = payload.currentUser.username;

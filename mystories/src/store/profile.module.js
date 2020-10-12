@@ -2,8 +2,8 @@ import { ProfilesApi } from "../client";
 
 import {
   FETCH_PROFILE,
-  FETCH_PROFILE_FOLLOW,
-  FETCH_PROFILE_UNFOLLOW
+  PROFILE_FOLLOW,
+  PROFILE_UNFOLLOW
 } from "./actions.type.js";
 import { SET_PROFILE, SET_ERROR } from "./mutations.type.js";
 
@@ -31,7 +31,7 @@ const actions = {
       context.commit(SET_ERROR, JSON.parse(e.response.text).errors);
     }
   },
-  async [FETCH_PROFILE_FOLLOW](context, payload) {
+  async [PROFILE_FOLLOW](context, payload) {
     const { username } = payload;
     try {
       const data = await profilesApi.profilesFollowProfile(username, "");
@@ -42,7 +42,7 @@ const actions = {
       context.commit(SET_ERROR, "e");
     }
   },
-  async [FETCH_PROFILE_UNFOLLOW](context, payload) {
+  async [PROFILE_UNFOLLOW](context, payload) {
     const { username } = payload;
     try {
       const data = await profilesApi.profilesUnfollowProfile(username, "");
