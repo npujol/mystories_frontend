@@ -4,7 +4,7 @@
       <v-card-title class="d-flex text-center justify-center">
         <strong class="subheading">Get connected with us!</strong>
         <v-spacer></v-spacer>
-        <v-btn v-for="icon in icons" :key="icon" class="mx-4" icon>
+        <v-btn v-for="icon in icons" :key="icon" icon>
           <v-icon size="24px">{{ icon }}</v-icon>
         </v-btn>
       </v-card-title>
