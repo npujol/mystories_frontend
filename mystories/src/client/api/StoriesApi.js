@@ -647,6 +647,7 @@ export class StoriesApi {
     /**
      * List the stories
      * @param {Object} opts Optional parameters
+     * @param {String} opts.tagsTag 
      * @param {String} opts.ownerUserUsername 
      * @param {String} opts.favoritedByUserUsername 
      * @param {Number} opts.limit Number of results to return per page.
@@ -661,6 +662,7 @@ export class StoriesApi {
       let pathParams = {
       };
       let queryParams = {
+        'tags__tag': opts['tagsTag'],
         'owner__user__username': opts['ownerUserUsername'],
         'favorited_by__user__username': opts['favoritedByUserUsername'],
         'limit': opts['limit'],
@@ -686,6 +688,7 @@ export class StoriesApi {
     /**
      * List the stories
      * @param {Object} opts Optional parameters
+     * @param {String} opts.tagsTag 
      * @param {String} opts.ownerUserUsername 
      * @param {String} opts.favoritedByUserUsername 
      * @param {Number} opts.limit Number of results to return per page.
