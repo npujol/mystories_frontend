@@ -647,6 +647,8 @@ export class StoriesApi {
     /**
      * List the stories
      * @param {Object} opts Optional parameters
+     * @param {String} opts.ownerUserUsername 
+     * @param {String} opts.favoritedByUserUsername 
      * @param {Number} opts.limit Number of results to return per page.
      * @param {Number} opts.offset The initial index from which to return the results.
      * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/InlineResponse2001} and HTTP response
@@ -659,6 +661,8 @@ export class StoriesApi {
       let pathParams = {
       };
       let queryParams = {
+        'owner__user__username': opts['ownerUserUsername'],
+        'favorited_by__user__username': opts['favoritedByUserUsername'],
         'limit': opts['limit'],
         'offset': opts['offset']
       };
@@ -682,6 +686,8 @@ export class StoriesApi {
     /**
      * List the stories
      * @param {Object} opts Optional parameters
+     * @param {String} opts.ownerUserUsername 
+     * @param {String} opts.favoritedByUserUsername 
      * @param {Number} opts.limit Number of results to return per page.
      * @param {Number} opts.offset The initial index from which to return the results.
      * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/InlineResponse2001}
