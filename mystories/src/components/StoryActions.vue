@@ -69,7 +69,8 @@ export default {
     this.$store.dispatch(FETCH_PROFILE, {
       username: this.story.owner.username
     });
-    this.canModify = this.currentUser.username === this.profile.username;
+    this.canModify =
+      this.currentUser.username === this.currentUser.profile.username;
   },
   methods: {
     async deleteStory() {

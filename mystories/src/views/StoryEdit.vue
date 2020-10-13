@@ -92,10 +92,10 @@ import {
   STORY_EDIT,
   FETCH_STORY,
   FETCH_STORY_PRIVATE,
-  STORY_EDIT_ADD_TAG,
-  STORY_EDIT_REMOVE_TAG,
+  TAG_STORY_EDIT_CREATE,
+  TAG_STORY_EDIT_DELETE,
   STORY_RESET_STATE,
-  STORY_AUDIO_ADD
+  STORY_AUDIO_CREATE
 } from "@/store/actions.type.js";
 
 export default {
@@ -117,7 +117,6 @@ export default {
     // SO: https://github.com/vuejs/vue-router/issues/1034
     // If we arrive directly to this url, we need to fetch the story
     await store.dispatch(STORY_RESET_STATE);
-    console.log(to.params.slug);
     if (to.params.slug) {
       await store.dispatch(
         FETCH_STORY,

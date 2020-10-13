@@ -8,8 +8,8 @@
 <script>
 import { mapGetters } from "vuex";
 import {
-  FAVORITE_ADD,
-  FAVORITE_REMOVE,
+  STORY_FAVORITE_CREATE,
+  STORY_FAVORITE_DELETE,
   FETCH_PROFILE
 } from "@/store/actions.type.js";
 
@@ -39,7 +39,7 @@ export default {
         return;
       }
       const action =
-        this.story.favorited === "true" ? FAVORITE_REMOVE : FAVORITE_ADD;
+        this.story.favorited === "true" ? STORY_FAVORITE_DELETE : STORY_FAVORITE_CREATE;
       this.$store.dispatch(action, this.story.slug);
     }
   }

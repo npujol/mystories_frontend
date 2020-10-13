@@ -50,7 +50,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { COMMENT_DESTROY, FETCH_MESSAGES } from "../store/actions.type.js";
+import { COMMENT_DELETE, FETCH_MESSAGES } from "../store/actions.type.js";
 
 export default {
   name: "RwvComment",
@@ -76,7 +76,7 @@ export default {
     async destroy(slug, commentId) {
       try {
         this.inProgress = true;
-        await this.$store.dispatch(COMMENT_DESTROY, { slug, commentId });
+        await this.$store.dispatch(COMMENT_DELETE, { slug, commentId });
         this.inProgress = false;
         this.$router.go();
       } catch (err) {

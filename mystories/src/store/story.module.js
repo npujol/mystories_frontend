@@ -6,24 +6,24 @@ import {
   FETCH_STORY,
   FETCH_COMMENTS,
   COMMENT_CREATE,
-  COMMENT_DESTROY,
-  FAVORITE_ADD,
-  FAVORITE_REMOVE,
+  COMMENT_DELETE,
+  STORY_FAVORITE_CREATE,
+  STORY_FAVORITE_DELETE,
   STORY_PUBLISH,
   STORY_EDIT,
-  STORY_EDIT_ADD_TAG,
-  STORY_EDIT_REMOVE_TAG,
+  TAG_STORY_EDIT_CREATE,
+  TAG_STORY_EDIT_DELETE,
   STORY_DELETE,
   STORY_RESET_STATE,
   FETCH_STORY_AUDIO,
-  STORY_AUDIO_ADD
+  STORY_AUDIO_CREATE
 } from "./actions.type.js";
 import {
   RESET_STATE,
   SET_STORY,
   SET_COMMENTS,
-  TAG_ADD,
-  TAG_REMOVE,
+  TAG_CREATE,
+  TAG_DELETE,
   UPDATE_STORY_IN_LIST,
   SET_COMMENTS_START,
   SET_AUDIO
@@ -101,16 +101,16 @@ export const actions = {
     });
     context.dispatch(FETCH_COMMENTS, payload.slug);
   },
-  async [COMMENT_DESTROY](context, payload) {
+  async [COMMENT_DELETE](context, payload) {
     await storiesApi.storiesCommentsDelete(payload.commentId, payload.slug);
     context.dispatch(FETCH_COMMENTS, payload.slug);
   },
-  async [FAVORITE_ADD](context, slug) {
+  async [STORY_FAVORITE_CREATE](context, slug) {
     const data = await storiesApi.storiesFavorite(slug, {});
     context.commit(UPDATE_STORY_IN_LIST, data, { root: true });
     context.commit(SET_STORY, data);
   },
-  async [FAVORITE_REMOVE](context, slug) {
+  async [STORY_FAVORITE_DELETE](context, slug) {
     const data = await storiesApi.storiesUnfavorite(slug, {});
     // Update list as well. This allows us to favorite an story in the Home view.
     context.commit(UPDATE_STORY_IN_LIST, data, { root: true });
@@ -140,7 +140,7 @@ export const actions = {
 
     if (newStory.slug && generateAudio) {
       console.log(generateAudio);
-      context.dispatch(STORY_AUDIO_ADD, newStory.slug);
+      context.dispatch(STORY_AUDIO_CREATE, newStory.slug);
     }
     const data = await storiesApi.storiesRead(newStory.slug);
     context.dispatch(STORY_RESET_STATE, newStory.slug);
@@ -153,16 +153,16 @@ export const actions = {
   [STORY_EDIT]({ state }) {
     return storiesApi.storiesPartialUpdate(state.story.slug, state.story);
   },
-  [STORY_EDIT_ADD_TAG](context, tag) {
-    context.commit(TAG_ADD, tag);
+  [TAG_STORY_EDIT_CREATE](context, tag) {
+    context.commit(TAG_CREATE, tag);
   },
-  [STORY_EDIT_REMOVE_TAG](context, tag) {
-    context.commit(TAG_REMOVE, tag);
+  [TAG_STORY_EDIT_DELETE](context, tag) {
+    context.commit(TAG_DELETE, tag);
   },
-  [STORY_RESET_STATE]({ commit }) {
-    commit(RESET_STATE);
+  [STORY_RESET_STATE](context) {
+    context.commit(RESET_STATE);
   },
-  async [STORY_AUDIO_ADD](context, slug) {
+  async [STORY_AUDIO_CREATE](context, slug) {
     const data = await storiesApi.storiesMakeAudio(slug, {});
     context.commit(SET_AUDIO, data);
     return data;
@@ -185,12 +185,12 @@ export const mutations = {
   [SET_AUDIO](state, data) {
     state.storyAudio = data;
   },
-  [TAG_ADD](state, tag) {
+  [TAG_CREATE](state, tag) {
     if (state.story.tags.indexOf(tag) === -1) {
       state.story.tags = state.story.tags.concat([tag]);
     }
   },
-  [TAG_REMOVE](state, tag) {
+  [TAG_DELETE](state, tag) {
     state.story.tags = state.story.tags.filter(t => t !== tag);
   },
   [RESET_STATE](state) {

@@ -8,8 +8,8 @@
 <script>
 import { mapGetters } from "vuex";
 import {
-  FETCH_PROFILE_FOLLOW,
-  FETCH_PROFILE_UNFOLLOW,
+  PROFILE_FOLLOW,
+  PROFILE_UNFOLLOW,
   FETCH_PROFILE
 } from "@/store/actions.type.js";
 import RwvListErrors from "@/components/ListErrors.vue";
@@ -41,8 +41,8 @@ export default {
       }
       const action =
         this.profile.following === "true"
-          ? FETCH_PROFILE_UNFOLLOW
-          : FETCH_PROFILE_FOLLOW;
+          ? PROFILE_UNFOLLOW
+          : PROFILE_FOLLOW;
       this.$store.dispatch(action, {
         username: this.profile.username
       });

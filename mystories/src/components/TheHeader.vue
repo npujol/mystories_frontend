@@ -19,23 +19,18 @@
               New story
             </h3>
           </v-list-item>
-          <v-list-item @click="linkTo('profile', {})">
+          <v-list-item
+            @click="linkTo('profile', { username: currentUser.username })"
+          >
             <h3 class="basil--text">
               <v-icon>mdi-heart</v-icon>
               Favorited stories
             </h3>
           </v-list-item>
-          <v-list-item
-            @click="linkTo('home-my-feed', { owner: currentUser.username })"
-          >
-            <h3 class="basil--text">
-              <v-icon>mdi-format-list-bulleted-square</v-icon>
-              My stories
-            </h3>
-          </v-list-item>
         </template>
       </v-list>
     </v-navigation-drawer>
+
     <v-app-bar app dark clipped-left>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>
@@ -48,23 +43,6 @@
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
             <v-badge
-              v-if="currentUser.profile.image"
-              icon="mdi-email"
-              :value="isNewMessage"
-              color="blue"
-              overlap
-            >
-              <v-avatar
-                v-bind="attrs"
-                color="grey lighten-2"
-                v-on="on"
-                size="40"
-              >
-                <v-img :src="currentUser.profile.image"></v-img>
-              </v-avatar>
-            </v-badge>
-            <v-badge
-              v-else
               icon="mdi-email"
               :value="isNewMessage"
               color="blue"
@@ -119,32 +97,34 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { LOGOUT, FETCH_MESSAGES } from "../store/actions.type.js";
+import { LOGOUT, FETCH_OPENED_MESSAGES } from "../store/actions.type.js";
 
 export default {
   name: "RwvHeader",
   data: () => ({
     drawer: null,
-    polling: null,
-    preview: "https://picsum.photos/510/300?random"
+    polling: null
   }),
   computed: {
-    ...mapGetters(["currentUser", "isAuthenticated", "messages"]),
-    // a computed getter
-    isNewMessage: function() {
-      // `this` points to the vm instance
-      if (this.messages) {
-        return this.messages.length > 0 ? 1 : null;
+    ...mapGetters(["currentUser", "isAuthenticated", "countNewMessages"]),
+    isNewMessage() {
+      if (this.countNewMessages) {
+        return this.countNewMessages > 0 ? 1 : null;
       } else {
         return null;
       }
+    },
+    preview() {
+      return this.currentUser.profile.image
+        ? this.currentUser.profile.image
+        : "https://picsum.photos/510/300?random";
     }
   },
   methods: {
     pollMessages() {
       if (this.isAuthenticated) {
         this.polling = setInterval(() => {
-          this.$store.dispatch(FETCH_MESSAGES);
+          this.$store.dispatch(FETCH_OPENED_MESSAGES);
         }, 9000);
       }
     },
@@ -155,9 +135,13 @@ export default {
     },
     linkTo(route, params) {
       if (params.length === 0) {
-        this.$router.push({ name: route });
+        if (this.$router.currentRoute.name !== route) {
+          this.$router.push({ name: route });
+        }
       }
-      this.$router.push({ name: route, params: params });
+      if (this.$router.currentRoute.name !== route) {
+        this.$router.push({ name: route, params: params });
+      }
     }
   },
   created() {

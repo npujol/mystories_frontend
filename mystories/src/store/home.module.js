@@ -41,20 +41,20 @@ const getters = {
 };
 
 const actions = {
-  async [FETCH_STORIES]({ commit }, params) {
-    commit(FETCH_START);
-    const data = await storiesApi.storiesList(params.filters);
-    commit(FETCH_END, data);
+  async [FETCH_STORIES](context, payload) {
+    context.commit(FETCH_START);
+    const data = await storiesApi.storiesList(payload.filters);
+    context.commit(FETCH_END, data);
     return data;
   },
-  async [FETCH_TAGS]({ commit }) {
+  async [FETCH_TAGS](context) {
     const data = await tagsApi.tagsList();
-    commit(SET_TAGS, data);
+    context.commit(SET_TAGS, data);
     return data;
   },
-  async [FETCH_TAGS]({ commit }) {
+  async [FETCH_TAGS](context) {
     const data = await tagsApi.tagsList();
-    commit(SET_TAGS, data);
+    context.commit(SET_TAGS, data);
     return data;
   }
 };

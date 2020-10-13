@@ -56,7 +56,7 @@
 <script>
 import { mapGetters } from "vuex";
 import store from "@/store";
-import { LOGOUT, UPDATE_USER, FETCH_PROFILE } from "../store/actions.type.js";
+import { LOGOUT, PROFILE_UPDATE, FETCH_PROFILE } from "../store/actions.type.js";
 import RwvListErrors from "../components/ListErrors.vue";
 
 export default {
@@ -93,7 +93,7 @@ export default {
   methods: {
     async updateSettings() {
       try {
-        const data = await store.dispatch(UPDATE_USER, {
+        const data = await store.dispatch(PROFILE_UPDATE, {
           currentUser: this.currentUser,
           image: this.imagefile
         });

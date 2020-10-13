@@ -2,14 +2,14 @@ import { ProfilesApi } from "../client";
 
 import {
   FETCH_PROFILE,
-  FETCH_PROFILE_FOLLOW,
-  FETCH_PROFILE_UNFOLLOW
+  PROFILE_UPDATE,
+  PROFILE_FOLLOW,
+  PROFILE_UNFOLLOW
 } from "./actions.type.js";
-import { SET_PROFILE, SET_ERROR } from "./mutations.type.js";
+import { SET_PROFILE, SET_ERROR, RESET_PROFILE } from "./mutations.type.js";
 
 const profilesApi = new ProfilesApi();
 const state = {
-  errors: {},
   profile: {}
 };
 
@@ -31,7 +31,19 @@ const actions = {
       context.commit(SET_ERROR, JSON.parse(e.response.text).errors);
     }
   },
-  async [FETCH_PROFILE_FOLLOW](context, payload) {
+  async [PROFILE_UPDATE](context, payload) {
+    const { bio } = payload.currentUser.profile;
+    const image = payload.image;
+    const username = payload.currentUser.username;
+    await profilesApi.profilesPartialUpdate(username, { bio });
+    if (image && typeof image !== "string") {
+      await profilesApi.profilesChangeImage(username, image);
+    }
+    const data = await usersApi.usersRead(username);
+    context.commit(SET_USER, data);
+    return data;
+  },
+  async [PROFILE_FOLLOW](context, payload) {
     const { username } = payload;
     try {
       const data = await profilesApi.profilesFollowProfile(username, "");
@@ -42,7 +54,7 @@ const actions = {
       context.commit(SET_ERROR, "e");
     }
   },
-  async [FETCH_PROFILE_UNFOLLOW](context, payload) {
+  async [PROFILE_UNFOLLOW](context, payload) {
     const { username } = payload;
     try {
       const data = await profilesApi.profilesUnfollowProfile(username, "");
@@ -56,11 +68,12 @@ const actions = {
 };
 
 const mutations = {
-  [SET_ERROR](state, error) {
-    state.errors = error;
-  },
   [SET_PROFILE](state, profile) {
     state.profile = profile;
+    state.errors = {};
+  },
+  [RESET_PROFILE](state) {
+    state.profile = {};
     state.errors = {};
   }
 };
