@@ -21,6 +21,11 @@ const routes: Array<RouteConfig> = [
         component: () => import("../views/HomeMyFeed.vue")
       },
       {
+        path: "favorites/:username",
+        name: "home-favorites",
+        component: () => import("../views/HomeFavorites.vue")
+      },
+      {
         path: "tag/:tag",
         name: "home-tag",
         component: () => import("../views/HomeTag.vue")

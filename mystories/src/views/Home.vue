@@ -1,16 +1,16 @@
 <template>
-  <v-card color="basil" class="mx-auto" aling="center">
+  <v-card class="mx-auto" aling="center">
     <v-card-title class="d-flex text-center justify-center">
-      <h1 class="font-weight-bold basil--text text-center">
+      <h2 class="font-weight-bold basil--text text-center">
         A place to shared yours stories
-      </h1>
+      </h2>
     </v-card-title>
 
     <v-tabs
       v-model="tab"
       background-color="transparent"
+      color="sucess"
       grow
-      dark
       mandatory
       @change="onChangeTab"
     >
@@ -28,6 +28,14 @@
       </v-tab>
       <v-tab
         :disabled="tab === 2"
+        v-if="isAuthenticated"
+        @change="linkTo('home-favorites', { username: currentUser.username })"
+      >
+        <v-icon>mdi-heart</v-icon>
+        Favorited
+      </v-tab>
+      <v-tab
+        :disabled="tab === 3"
         v-if="tag"
         @change="linkTo('home-tag', { tag })"
       >
@@ -73,11 +81,11 @@ export default {
     RwvTag
   },
   async beforeRouteUpdate(to, from, next) {
-    await this.initialState(to);
+    await this.setTab(to);
     return next();
   },
   async beforeUpdate() {
-    await this.initialState(this.$route);
+    await this.setTab(this.$route);
   },
   mounted() {
     this.$store.dispatch(FETCH_TAGS);
@@ -102,22 +110,29 @@ export default {
   methods: {
     linkTo(route, params) {
       if (params.length === 0) {
-        this.$router.push({ name: route });
+        if (this.$router.currentRoute.name !== route) {
+          this.$router.push({ name: route });
+        }
       }
-      this.$router.push({ name: route, params: params });
+      if (this.$router.currentRoute.name !== route) {
+        this.$router.push({ name: route, params: params });
+      }
     },
     onChangeTab(clickedTab) {
       this.tab = clickedTab;
     },
-    initialState(route) {
+    setTab(route) {
       if (route.name == "home") {
         this.tab = 0;
       }
       if (route.name == "home-my-feed") {
         this.tab = 1;
       }
-      if (route.name == "home-tag") {
+      if (route.name == "home-favorites") {
         this.tab = 2;
+      }
+      if (route.name == "home-tag") {
+        this.tab = 3;
       }
     }
   }
