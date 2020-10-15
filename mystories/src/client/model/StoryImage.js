@@ -26,12 +26,8 @@ export class StoryImage {
    * Constructs a new <code>StoryImage</code>.
    * @alias module:model/StoryImage
    * @class
-   * @param bodyMarkdown {String} 
-   * @param tags {Array.<String>} 
    */
-  constructor(bodyMarkdown, tags) {
-    this.bodyMarkdown = bodyMarkdown;
-    this.tags = tags;
+  constructor() {
   }
 
   /**
@@ -48,8 +44,6 @@ export class StoryImage {
         obj.owner = Profile.constructFromObject(data['owner']);
       if (data.hasOwnProperty('body'))
         obj.body = ApiClient.convertToType(data['body'], 'String');
-      if (data.hasOwnProperty('body_markdown'))
-        obj.bodyMarkdown = ApiClient.convertToType(data['body_markdown'], 'String');
       if (data.hasOwnProperty('language'))
         obj.language = ApiClient.convertToType(data['language'], 'String');
       if (data.hasOwnProperty('image'))
@@ -62,8 +56,6 @@ export class StoryImage {
         obj.favoritesCount = ApiClient.convertToType(data['favoritesCount'], 'String');
       if (data.hasOwnProperty('slug'))
         obj.slug = ApiClient.convertToType(data['slug'], 'String');
-      if (data.hasOwnProperty('tags'))
-        obj.tags = ApiClient.convertToType(data['tags'], ['String']);
       if (data.hasOwnProperty('title'))
         obj.title = ApiClient.convertToType(data['title'], 'String');
       if (data.hasOwnProperty('createdAt'))
@@ -84,11 +76,6 @@ StoryImage.prototype.owner = undefined;
  * @member {String} body
  */
 StoryImage.prototype.body = undefined;
-
-/**
- * @member {String} bodyMarkdown
- */
-StoryImage.prototype.bodyMarkdown = undefined;
 
 /**
  * Allowed values for the <code>language</code> property.
@@ -144,11 +131,6 @@ StoryImage.prototype.favoritesCount = undefined;
  * @member {String} slug
  */
 StoryImage.prototype.slug = undefined;
-
-/**
- * @member {Array.<String>} tags
- */
-StoryImage.prototype.tags = undefined;
 
 /**
  * @member {String} title
