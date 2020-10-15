@@ -56,7 +56,11 @@
 <script>
 import { mapGetters } from "vuex";
 import store from "@/store";
-import { LOGOUT, PROFILE_UPDATE, FETCH_PROFILE } from "../store/actions.type.js";
+import {
+  LOGOUT,
+  PROFILE_UPDATE,
+  FETCH_PROFILE
+} from "../store/actions.type.js";
 import RwvListErrors from "../components/ListErrors.vue";
 
 export default {

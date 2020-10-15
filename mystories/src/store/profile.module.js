@@ -1,4 +1,4 @@
-import { ProfilesApi } from "../client";
+import { ProfilesApi, UsersApi } from "../client";
 
 import {
   FETCH_PROFILE,
@@ -6,9 +6,16 @@ import {
   PROFILE_FOLLOW,
   PROFILE_UNFOLLOW
 } from "./actions.type.js";
-import { SET_PROFILE, SET_ERROR, RESET_PROFILE } from "./mutations.type.js";
+import {
+  SET_PROFILE,
+  SET_ERROR,
+  RESET_PROFILE,
+  SET_USER
+} from "./mutations.type.js";
 
 const profilesApi = new ProfilesApi();
+const usersApi = new UsersApi();
+
 const state = {
   profile: {}
 };
