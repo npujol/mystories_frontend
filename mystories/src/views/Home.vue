@@ -2,36 +2,42 @@
   <v-card class="mx-auto" aling="center">
     <v-card-title class="d-flex text-center justify-center">
       <h2 class="font-weight-bold basil--text text-center">
-        A place to shared yours stories
+        A place to share yours stories
       </h2>
     </v-card-title>
 
     <v-tabs
       v-model="tab"
       background-color="transparent"
-      color="sucess"
       grow
-      mandatory
+      centered
+      icons
       @change="onChangeTab"
     >
-      <v-tab :disabled="tab === 0" @change="linkTo('home', {})">
-        <v-icon>mdi-home</v-icon>
+      <v-tab
+        class="white--text"
+        :disabled="tab === 0"
+        @change="linkTo('home', {})"
+      >
+        <v-icon color="white">mdi-home</v-icon>
         Global Feed
       </v-tab>
       <v-tab
+        class="white--text"
         :disabled="tab === 1"
         v-if="isAuthenticated"
         @change="linkTo('home-my-feed', { username: currentUser.username })"
       >
-        <v-icon>mdi-account-circle</v-icon>
+        <v-icon color="white">mdi-account-circle</v-icon>
         Your Feed
       </v-tab>
       <v-tab
+        class="white--text"
         :disabled="tab === 2"
         v-if="isAuthenticated"
         @change="linkTo('home-favorites', { username: currentUser.username })"
       >
-        <v-icon>mdi-heart</v-icon>
+        <v-icon color="white">mdi-heart</v-icon>
         Favorited
       </v-tab>
       <v-tab
@@ -43,18 +49,13 @@
         {{ tag.tag }}
       </v-tab>
     </v-tabs>
-    <v-chip-group v-if="tag" active-class="primary--text" v-model="selected">
+    <v-chip-group
+      show-arrows
+      active-class="v-slide-item--active"
+      v-model="selected"
+    >
       <RwvTag
         :disabled="value.pk === selected"
-        v-for="value in tags"
-        :tag="value.tag"
-        :key="value.pk"
-      >
-      </RwvTag>
-    </v-chip-group>
-    <v-chip-group v-if="!tag" active-class="primary--text" v-model="selected">
-      <RwvTag
-        :disabled="false"
         v-for="value in tags"
         :tag="value.tag"
         :key="value.pk"
