@@ -1,7 +1,6 @@
 <template>
-  <v-btn icon elevation="12" @click="toggleFavorite()" :color="color">
+  <v-btn icon :color="color" @click="toggleFavorite()">
     <v-icon>mdi-heart</v-icon>
-    <span> {{ story.favoritesCount }} </span>
   </v-btn>
 </template>
 
@@ -33,14 +32,16 @@ export default {
     });
   },
   methods: {
-    toggleFavorite() {
+    async toggleFavorite() {
       if (!this.isAuthenticated) {
         this.$router.push({ name: "login" });
         return;
       }
       const action =
-        this.story.favorited === "true" ? STORY_FAVORITE_DELETE : STORY_FAVORITE_CREATE;
-      this.$store.dispatch(action, this.story.slug);
+        this.story.favorited === "true"
+          ? STORY_FAVORITE_DELETE
+          : STORY_FAVORITE_CREATE;
+      const data = await this.$store.dispatch(action, this.story.slug);
     }
   }
 };

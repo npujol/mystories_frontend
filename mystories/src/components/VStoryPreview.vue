@@ -8,30 +8,24 @@
         <img class="is-rounded" :src="story.owner.image"
       /></v-list-item-avatar>
       <v-list-item-content>
-        <v-list-item-title class="headline">{{
-          story.title
-        }}</v-list-item-title>
-        <v-list-item-subtitle>
-          by
-          <router-link
-            class="logo-font"
-            :to="{
-              name: 'profile',
-              params: { username: story.owner.username }
-            }"
-            >{{ story.owner.username }}</router-link
-          >
+        <v-list-item-title class="headline align-center">
+          {{ story.title }}
+        </v-list-item-title>
+        <v-list-item-subtitle
+          class="text-decoration-underline primary--text"
+          @click="linkTo('profile', { username: story.owner.username })"
+        >
+          {{ story.owner.username }}
         </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
-    <v-img :src="story.image" class="white--text align-end" height="200px">
-    </v-img>
+    <v-img :src="story.image" height="200px"> </v-img>
     <v-card-text>
       <p class="d-flex text-center justify-center">
         {{ story.description }}
       </p>
     </v-card-text>
-    <v-chip-group class="flex ma-5" active-class="primary--text">
+    <v-chip-group class="flex pa-5" show-arrows>
       <RwvTag v-for="(value, index) in story.tags" :tag="value" :key="index">
       </RwvTag>
     </v-chip-group>
@@ -48,7 +42,11 @@
         <span> Read more </span>
       </v-btn>
       <v-spacer></v-spacer>
-      <RwvStoryActions :isPreview="true" :story="story" />
+      <RwvStoryActions
+        v-if="isAuthenticated"
+        :isPreview="true"
+        :story="story"
+      />
     </v-card-actions>
   </v-card>
 </template>
@@ -76,9 +74,13 @@ export default {
   methods: {
     linkTo(route, params) {
       if (params.length === 0) {
-        this.$router.push({ name: route });
+        if (this.$router.currentRoute.name !== route) {
+          this.$router.push({ name: route });
+        }
       }
-      this.$router.push({ name: route, params: params });
+      if (this.$router.currentRoute.name !== route) {
+        this.$router.push({ name: route, params: params });
+      }
     }
   }
 };

@@ -1,27 +1,30 @@
 <template>
   <div>
     <div v-if="isLoading">
-      Loading stories...
       <v-boilerplate
         v-for="(story, index) in stories"
         :key="index"
-        class="mb-2"
         name="loading"
         type="list-item-avatar, list-item-content, list-item-title, list-item-subtitle, image, actions"
       ></v-boilerplate>
     </div>
     <div v-else>
-      <div v-if="stories.length === 0">
+      <div class="text--aling-center" v-if="stories.length === 0">
         No stories are here... yet.
       </div>
       <RwvStoryPreview
         v-for="(story, index) in stories"
         :story="story"
         :key="story.title + index"
-        class="mb-2"
+        class="ma-2"
       />
     </div>
-    <v-pagination v-model="currentPage" :length="pages"></v-pagination>
+    <v-pagination
+      v-if="pages > 0"
+      v-model="currentPage"
+      :total-visible="5"
+      :length="pages"
+    ></v-pagination>
   </div>
 </template>
 
@@ -37,7 +40,6 @@ export default {
     RwvStoryPreview,
     VBoilerplate: {
       functional: true,
-
       render(h, { data, props, children }) {
         return h(
           "v-skeleton-loader",
@@ -92,7 +94,7 @@ export default {
         filters.tagsTag = this.tag;
       }
       if (this.favorited) {
-        filters.ownerFavorites = this.favorited;
+        filters.favoritedByUserUsername = this.favorited;
       }
       return {
         type,
