@@ -1,17 +1,11 @@
 <template>
-  <v-card class="pa-2 mx-auto" min-width="80%" oaling="center">
-    <v-card-title class="d-flex text-center justify-center">
-      <h3 class="font-weight-bold basil--text">
-        Story
-      </h3>
-    </v-card-title>
-    <v-img
-      aling="center"
-      class="white--text align-end"
-      height="200px"
-      :src="preview"
+  <v-card class="pa-2 mx-auto" min-width="80%" aling="center">
+    <v-card-title
+      class="d-flex text-center justify-center font-weight-bold basil--text"
     >
-    </v-img>
+      Story
+    </v-card-title>
+    <v-img height="200px" :src="preview"> </v-img>
     <v-spacer></v-spacer>
     <v-card-text aling="center">
       <RwvListErrors :errors="errors" />
@@ -36,7 +30,7 @@
         ></v-text-field>
         <v-select
           v-model="story.language"
-          :items="items"
+          :items="languages"
           label="Language"
           dense
         ></v-select>
@@ -58,7 +52,7 @@
           </v-flex>
         </v-layout>
         <v-checkbox
-          v-if="!story.slug"
+          v-if="!hadAudio"
           v-model="generateAudio"
           label="Generate Audio"
         ></v-checkbox>
@@ -74,8 +68,9 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn
-        color="primary"
         :disabled="inProgress"
+        elevation="12"
+        color="primary accent-4"
         @click="onPublish(story.slug)"
         >Aceptar
       </v-btn>
@@ -86,7 +81,7 @@
 <script>
 import { mapGetters } from "vuex";
 import store from "@/store";
-import RwvListErrors from "@/components/ListErrors.vue";
+import RwvListErrors from "../components/ListErrors.vue";
 import {
   STORY_PUBLISH,
   STORY_EDIT,
@@ -96,7 +91,7 @@ import {
   TAG_STORY_EDIT_DELETE,
   STORY_RESET_STATE,
   STORY_AUDIO_CREATE
-} from "@/store/actions.type.js";
+} from "../store/actions.type.js";
 
 export default {
   name: "RwvStoryEdit",
@@ -116,7 +111,6 @@ export default {
   async beforeRouteEnter(to, from, next) {
     // SO: https://github.com/vuejs/vue-router/issues/1034
     // If we arrive directly to this url, we need to fetch the story
-    await store.dispatch(STORY_RESET_STATE);
     if (to.params.slug) {
       await store.dispatch(
         FETCH_STORY,
@@ -136,9 +130,10 @@ export default {
       errors: {},
       valid: false,
       input: "# hello",
-      items: ["en", "es", "de"],
+      languages: ["en", "es", "de"],
       search: "", //sync search
       preview: "https://picsum.photos/510/300?random",
+      imagefile: null,
       rules: {
         photo: v =>
           !v || v.size < 2000000 || "Avatar size should be less than 2 MB!"
@@ -153,22 +148,26 @@ export default {
     this.getBodyMarkdown();
   },
   computed: {
-    ...mapGetters(["story"])
+    ...mapGetters(["story", "currentUser", "isAuthenticated", "storyAudio"]),
+    hadAudio() {
+      return this.storyAudio === null;
+    }
   },
   methods: {
     async onPublish(slug) {
       try {
         const action = slug ? STORY_EDIT : STORY_PUBLISH;
         this.inProgress = true;
-        var story = this.story;
-        var generateAudio = this.generateAudio;
+
         const data = await this.$store.dispatch(action, {
-          story,
-          generateAudio
+          story: this.story,
+          generateAudio: this.generateAudio,
+          image: this.imagefile
         });
         this.inProgress = false;
         this.$router.push({ name: "story", params: { slug: data.slug } });
       } catch (error) {
+        console.log(error);
         this.inProgress = false;
         this.errors = JSON.parse(error.response.text).errors;
       }
@@ -183,7 +182,7 @@ export default {
     },
     previewImage(file) {
       var reader = new FileReader();
-      this.story.image = file;
+      this.imagefile = file;
       reader.onload = e => {
         this.preview = e.target.result;
       };

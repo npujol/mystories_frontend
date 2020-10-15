@@ -1,6 +1,6 @@
 <template>
   <!-- Used when user is also the owner -->
-  <span v-if="canModify">
+  <span v-if="isCurrentUser">
     <v-btn icon @click="linkTo('story', { slug: story.slug })">
       <v-icon>mdi-eye</v-icon>
     </v-btn>
@@ -15,14 +15,14 @@
   </span>
   <!-- Used in StoryView when user is not the owner -->
   <span v-else>
-    <RwvStoryFavorite :story="story"></RwvStoryFavorite>
+    <RwvStoryFavorite v-if="!isCurrentUser" :story="story"></RwvStoryFavorite>
   </span>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { STORY_DELETE } from "@/store/actions.type.js";
-import RwvStoryFavorite from "@/components/StoryFavorite.vue";
+import { STORY_DELETE } from "../store/actions.type.js";
+import RwvStoryFavorite from "../components/StoryFavorite.vue";
 
 export default {
   name: "RwvStoryActions",
@@ -49,7 +49,7 @@ export default {
   },
   computed: {
     ...mapGetters(["currentUser", "isAuthenticated"]),
-    canModify() {
+    isCurrentUser() {
       return this.currentUser.username === this.story.owner.username;
     }
   },
@@ -70,9 +70,13 @@ export default {
     },
     linkTo(route, params) {
       if (params.length === 0) {
-        this.$router.push({ name: route });
+        if (this.$router.currentRoute.name !== route) {
+          this.$router.push({ name: route });
+        }
       }
-      this.$router.push({ name: route, params: params });
+      if (this.$router.currentRoute.name !== route) {
+        this.$router.push({ name: route, params: params });
+      }
     }
   }
 };

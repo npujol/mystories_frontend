@@ -25,7 +25,7 @@
         {{ story.description }}
       </p>
     </v-card-text>
-    <v-chip-group class="flex pa-5" show-arrows>
+    <v-chip-group class="flex pa-2" show-arrows>
       <RwvTag v-for="(value, index) in story.tags" :tag="value" :key="index">
       </RwvTag>
     </v-chip-group>

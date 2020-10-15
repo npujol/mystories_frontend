@@ -139,19 +139,27 @@ export const actions = {
     }
 
     if (newStory.slug && generateAudio) {
-      console.log(generateAudio);
       context.dispatch(STORY_AUDIO_CREATE, newStory.slug);
     }
     const data = await storiesApi.storiesRead(newStory.slug);
     context.dispatch(STORY_RESET_STATE, newStory.slug);
     return data;
   },
-  [STORY_DELETE](context, slug) {
-    console.log(context);
+  [STORY_DELETE](slug) {
     return storiesApi.storiesDelete(slug);
   },
-  [STORY_EDIT]({ state }) {
-    return storiesApi.storiesPartialUpdate(state.story.slug, state.story);
+  async [STORY_EDIT](context, payload) {
+    const { story, generateAudio, image } = payload;
+    console.log(story.bodyMarkdown);
+
+    if (image && typeof image !== "string") {
+      await storiesApi.storiesChangeImage(story.slug, image);
+    }
+
+    if (story.slug && generateAudio) {
+      context.dispatch(STORY_AUDIO_CREATE, story.slug);
+    }
+    return storiesApi.storiesPartialUpdate(story.slug, story);
   },
   [TAG_STORY_EDIT_CREATE](context, tag) {
     context.commit(TAG_CREATE, tag);
