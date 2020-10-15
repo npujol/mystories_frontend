@@ -14,7 +14,7 @@ export default {
   },
   computed: {
     owner() {
-      return this.$route.params.owner;
+      return this.$route.params.username;
     }
   }
 };
