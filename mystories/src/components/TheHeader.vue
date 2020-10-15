@@ -125,12 +125,16 @@ export default {
       if (this.isAuthenticated) {
         this.polling = setInterval(() => {
           this.$store.dispatch(FETCH_OPENED_MESSAGES);
-        }, 9000);
+        }, 15000);
       }
     },
     logout() {
       this.$store.dispatch(LOGOUT).then(() => {
-        this.$router.push({ name: "home" });
+        if (this.$router.currentRoute.name !== "home") {
+          this.$router.push({ name: "home" });
+        } else {
+          this.$router.go({ name: "home" });
+        }
       });
     },
     linkTo(route, params) {
