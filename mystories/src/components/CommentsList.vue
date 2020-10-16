@@ -1,14 +1,9 @@
-Add<template>
+<template>
   <div>
     <div class="mx-auto" aling="center">
-      <RwvCommentEditor
-        class="mb-2"
-        v-if="isAuthenticated"
-        :slug="story.slug"
-        :userImage="currentUser.image"
-      >
+      <RwvCommentEditor class="mb-2" v-if="isAuthenticated" :slug="story.slug">
       </RwvCommentEditor>
-      <p v-else>
+      <p class="pa-2" aling="center" v-else>
         <router-link :to="{ name: 'login' }">Sign in</router-link>
         or
         <router-link :to="{ name: 'register' }">Sign up</router-link>
@@ -26,7 +21,7 @@ Add<template>
       ></v-boilerplate>
     </div>
     <div v-else>
-      <div v-if="comments.length === 0">
+      <div class="mb-2 justify-center" v-if="comments.length === 0">
         No comments are here... yet.
       </div>
       <div class="mx-auto" aling="center">
@@ -41,15 +36,20 @@ Add<template>
         </RwvComment>
       </div>
     </div>
-    <v-pagination v-model="currentPage" :length="pages"></v-pagination>
+    <v-pagination
+      v-if="pages > 0"
+      :total-visible="5"
+      v-model="currentPage"
+      :length="pages"
+    ></v-pagination>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import RwvStoryPreview from "./VStoryPreview.vue";
-import RwvComment from "@/components/Comment.vue";
-import RwvCommentEditor from "@/components/CommentEditor.vue";
+import RwvComment from "../components/Comment.vue";
+import RwvCommentEditor from "../components/CommentEditor.vue";
 import { FETCH_COMMENTS } from "../store/actions.type.js";
 
 export default {
@@ -60,7 +60,6 @@ export default {
     RwvCommentEditor,
     VBoilerplate: {
       functional: true,
-
       render(h, { data, props, children }) {
         return h(
           "v-skeleton-loader",
@@ -89,15 +88,8 @@ export default {
       currentPage: 1
     };
   },
-  beforeRouteEnter(to, from, next) {
-    Promise.all([
-      store.dispatch(FETCH_COMMENTS, {
-        slugStory: to.params.slug,
-        filters: { offset: 0, limit: 10 }
-      })
-    ]).then(() => {
-      next();
-    });
+  mounted() {
+    this.fetchComments();
   },
   computed: {
     listConfig() {
