@@ -18,6 +18,8 @@ const notificationsApi = new NotificationsApi();
 const state = {
   messages: [],
   countNewMessages: 0,
+  countMessages: 0,
+  isMessagesLoading: true,
   message: null
 };
 
@@ -30,6 +32,12 @@ const getters = {
   },
   countNewMessages(state) {
     return state.countNewMessages;
+  },
+  isMessagesLoading(state) {
+    return state.isMessagesLoading;
+  },
+  countMessages(state) {
+    return state.countMessages;
   }
 };
 
@@ -39,8 +47,8 @@ const actions = {
     context.commit(SET_MESSAGE, data);
     return data;
   },
-  async [FETCH_MESSAGES](context) {
-    const data = await notificationsApi.notificationsList();
+  async [FETCH_MESSAGES](context, payload) {
+    const data = await notificationsApi.notificationsList(payload);
     context.commit(SET_MESSAGES, data);
     return data;
   },
@@ -51,7 +59,7 @@ const actions = {
   },
   [FETCH_NEW_MESSAGES_COUNT](context, data) {
     var message_count = 0;
-    if (state.messages.length !== 0) {
+    if (state.messages.length !== 0 && data) {
       message_count = data.count;
     }
     context.commit(SET_MESSAGE_COUNT, message_count);
@@ -78,6 +86,8 @@ const mutations = {
   },
   [SET_MESSAGES](state, data) {
     state.messages = data.results;
+    state.countMessages = data.count;
+    state.isMessagesLoading = false;
   },
   [SET_MESSAGE](state, data) {
     state.message = data.results;

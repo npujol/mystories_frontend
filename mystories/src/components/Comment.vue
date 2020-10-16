@@ -1,9 +1,7 @@
 <template>
   <v-card outlined>
-    <v-card-title>
-      <h3 class="d-flex text-center justify-center">
-        COMMENT
-      </h3>
+    <v-card-title class="d-flex text-center justify-center">
+      Comment
     </v-card-title>
     <v-list two-line>
       <v-list-item>
@@ -25,7 +23,9 @@
               {{ comment.owner.username }}</router-link
             ></v-list-item-title
           >
-          <v-list-item-subtitle>Author</v-list-item-subtitle>
+          <v-list-item-subtitle>{{
+            comment.createdAt | date
+          }}</v-list-item-subtitle>
         </v-list-item-content>
         <v-list-item-action>
           <v-btn
@@ -39,18 +39,15 @@
         </v-list-item-action>
       </v-list-item>
     </v-list>
-    <v-card-text>
-      <p class="d-flex text-center justify-center">
-        {{ comment.body }}
-      </p>
-      <p>Date: {{ comment.createdAt | date }}</p>
+    <v-card-text class="d-flex text-center justify-center">
+      {{ comment.body }}
     </v-card-text>
   </v-card>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { COMMENT_DELETE, FETCH_MESSAGES } from "../store/actions.type.js";
+import { COMMENT_DELETE } from "../store/actions.type.js";
 
 export default {
   name: "RwvComment",
@@ -85,9 +82,13 @@ export default {
     },
     linkTo(route, params) {
       if (params.length === 0) {
-        this.$router.push({ name: route });
+        if (this.$router.currentRoute.name !== route) {
+          this.$router.push({ name: route });
+        }
       }
-      this.$router.push({ name: route, params: params });
+      if (this.$router.currentRoute.name !== route) {
+        this.$router.push({ name: route, params: params });
+      }
     }
   }
 };

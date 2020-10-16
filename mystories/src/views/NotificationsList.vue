@@ -6,7 +6,7 @@
       </h3>
     </v-card-title>
     <v-spacer></v-spacer>
-    <div v-if="!messages">
+    <div v-if="isMessagesLoading">
       Loading notifications...
       <v-boilerplate
         v-for="(msg, index) in messages"
@@ -21,11 +21,18 @@
         No notifications are here... yet.
       </div>
       <RwvNotification
+        v-else
         v-for="(msg, index) in messages"
         :message="msg"
         :key="index"
       />
     </div>
+    <v-pagination
+      v-if="pages > 0"
+      :total-visible="5"
+      v-model="currentPage"
+      :length="pages"
+    ></v-pagination>
   </v-card>
 </template>
 
@@ -35,13 +42,12 @@ import RwvNotification from "@/components/VNotification.vue";
 import { FETCH_MESSAGES } from "../store/actions.type.js";
 
 export default {
-  name: "RwvStoryList",
+  name: "RwvNotificationsList",
   inject: ["theme"],
   components: {
     RwvNotification,
     VBoilerplate: {
       functional: true,
-
       render(h, { data, props, children }) {
         return h(
           "v-skeleton-loader",
@@ -69,22 +75,20 @@ export default {
         offset: (this.currentPage - 1) * this.limit,
         limit: this.limit
       };
-      return {
-        filters
-      };
+      return filters;
     },
     pages() {
-      if (this.messages.length <= this.limit) {
+      if (this.countMessages <= this.limit) {
         return 0;
       }
-      return Math.ceil(this.messages.length / this.limit);
+      return Math.ceil(this.countMessages / this.limit);
     },
-    ...mapGetters(["messages"])
+    ...mapGetters(["messages", "limit", "isMessagesLoading", "countMessages"])
   },
   watch: {
     currentPage(newValue) {
       this.listConfig.filters.offset = (newValue - 1) * this.limit;
-      this.fetchStories();
+      this.fetchMessages();
     }
   },
   mounted() {
@@ -92,7 +96,7 @@ export default {
   },
   methods: {
     fetchMessages() {
-      this.$store.dispatch(FETCH_MESSAGES);
+      this.$store.dispatch(FETCH_MESSAGES, this.listConfig);
     },
     resetPagination() {
       this.listConfig.offset = 0;

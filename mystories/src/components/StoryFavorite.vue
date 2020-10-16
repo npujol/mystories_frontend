@@ -1,7 +1,6 @@
 <template>
-  <v-btn icon elevation="12" @click="toggleFavorite()" :color="color">
+  <v-btn icon :color="color" @click="toggleFavorite()">
     <v-icon>mdi-heart</v-icon>
-    <span> {{ story.favoritesCount }} </span>
   </v-btn>
 </template>
 
@@ -9,8 +8,7 @@
 import { mapGetters } from "vuex";
 import {
   STORY_FAVORITE_CREATE,
-  STORY_FAVORITE_DELETE,
-  FETCH_PROFILE
+  STORY_FAVORITE_DELETE
 } from "@/store/actions.type.js";
 
 export default {
@@ -19,7 +17,7 @@ export default {
     story: { type: Object, required: true }
   },
   computed: {
-    ...mapGetters(["profile", "currentUser", "isAuthenticated"]),
+    ...mapGetters(["currentUser", "isAuthenticated"]),
     favoriteStoryLabel() {
       return this.story.favorited === "true" ? "Favorite" : "";
     },
@@ -27,20 +25,17 @@ export default {
       return this.story.favorited === "true" ? "error" : "white";
     }
   },
-  mounted() {
-    this.$store.dispatch(FETCH_PROFILE, {
-      username: this.story.owner.username
-    });
-  },
   methods: {
-    toggleFavorite() {
+    async toggleFavorite() {
       if (!this.isAuthenticated) {
         this.$router.push({ name: "login" });
         return;
       }
       const action =
-        this.story.favorited === "true" ? STORY_FAVORITE_DELETE : STORY_FAVORITE_CREATE;
-      this.$store.dispatch(action, this.story.slug);
+        this.story.favorited === "true"
+          ? STORY_FAVORITE_DELETE
+          : STORY_FAVORITE_CREATE;
+      const data = await this.$store.dispatch(action, this.story.slug);
     }
   }
 };

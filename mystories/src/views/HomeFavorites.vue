@@ -1,6 +1,6 @@
 <template>
-  <div class="home-my-feed">
-    <RwvStoryList type="feed" :owner="owner" />
+  <div>
+    <RwvStoryList type="favorites" :favorited="owner" />
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 import RwvStoryList from "@/components/StoryList.vue";
 
 export default {
-  name: "rwv-home-my-feed",
+  name: "rwv-home-favorites",
   components: {
     RwvStoryList
   },

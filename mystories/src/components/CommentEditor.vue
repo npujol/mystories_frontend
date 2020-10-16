@@ -14,8 +14,9 @@
       </v-form>
     </v-card-text>
     <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn class="mr-4" @click="onSubmit(slug, comment)">Post</v-btn>
+      <v-btn elevation="12" color="primary accent-4" @click="onSubmit()"
+        >OK</v-btn
+      >
     </v-card-actions>
   </v-card>
 </template>
@@ -29,8 +30,7 @@ export default {
   components: { RwvListErrors },
   props: {
     slug: { type: String, required: true },
-    content: { type: String, required: false },
-    userImage: { type: String, required: false }
+    content: { type: String, required: false }
   },
   data() {
     return {
@@ -39,16 +39,19 @@ export default {
     };
   },
   methods: {
-    onSubmit(slug, comment) {
-      this.$store
-        .dispatch(COMMENT_CREATE, { slug, comment })
-        .then(() => {
-          this.comment = null;
-          this.errors = {};
-        })
-        .catch(response => {
-          this.errors = JSON.parse(response.response.text).errors;
-        });
+    async onSubmit() {
+      try {
+        if (this.comment !== null) {
+          const data = this.$store.dispatch(COMMENT_CREATE, {
+            slug: this.slug,
+            comment: this.comment
+          });
+        }
+        this.comment = null;
+        this.errors = {};
+      } catch (error) {
+        this.errors = error;
+      }
     }
   }
 };

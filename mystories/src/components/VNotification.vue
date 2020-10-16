@@ -106,7 +106,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["currentUser"]),
+    ...mapGetters(["currentUser", "limit"]),
     isCurrentUser() {
       if (this.currentUser.username && this.message.owner.username) {
         return this.message.owner.username === this.currentUser.username;
@@ -129,7 +129,10 @@ export default {
         pk,
         opened
       });
-      this.$store.dispatch(FETCH_MESSAGES);
+      this.$store.dispatch(FETCH_MESSAGES, {
+        offset: 0,
+        limit: this.limit
+      });
     },
     async closeDialog() {
       this.dialog = false;
@@ -140,9 +143,12 @@ export default {
         this.inProgress = true;
         await this.$store.dispatch(MESSAGE_DELETE, { pk });
         this.inProgress = false;
-        this.$store.dispatch(FETCH_MESSAGES);
-      } catch (err) {
-        console.error(err);
+        this.$store.dispatch(FETCH_MESSAGES, {
+          offset: 0,
+          limit: this.limit
+        });
+      } catch (error) {
+        console.error(error);
       }
     }
   }

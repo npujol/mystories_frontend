@@ -21,6 +21,11 @@ const routes: Array<RouteConfig> = [
         component: () => import("../views/HomeMyFeed.vue")
       },
       {
+        path: "favorites/:username",
+        name: "home-favorites",
+        component: () => import("../views/HomeFavorites.vue")
+      },
+      {
         path: "tag/:tag",
         name: "home-tag",
         component: () => import("../views/HomeTag.vue")
@@ -45,7 +50,7 @@ const routes: Array<RouteConfig> = [
   {
     name: "notifications",
     path: "/notifications/:username",
-    component: () => import("../views/Notification.vue")
+    component: () => import("../views/NotificationsList.vue")
   },
   // Handle child routes with a default, by giving the name to the
   // child.

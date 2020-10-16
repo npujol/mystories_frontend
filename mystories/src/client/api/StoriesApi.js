@@ -45,12 +45,10 @@ export class StoriesApi {
     /**
      * General ViewSet description
      * @param {String} slug 
-     * @param {String} bodyMarkdown 
      * @param {File} image 
-     * @param {Array.<String>} tags 
      * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/StoryImage} and HTTP response
      */
-    storiesChangeImageWithHttpInfo(slug, bodyMarkdown, image, tags) {
+    storiesChangeImageWithHttpInfo(slug, image) {
       let postBody = null;
 
       // verify the required parameter 'slug' is set
@@ -58,19 +56,9 @@ export class StoriesApi {
         throw new Error("Missing the required parameter 'slug' when calling storiesChangeImage");
       }
 
-      // verify the required parameter 'bodyMarkdown' is set
-      if (bodyMarkdown === undefined || bodyMarkdown === null) {
-        throw new Error("Missing the required parameter 'bodyMarkdown' when calling storiesChangeImage");
-      }
-
       // verify the required parameter 'image' is set
       if (image === undefined || image === null) {
         throw new Error("Missing the required parameter 'image' when calling storiesChangeImage");
-      }
-
-      // verify the required parameter 'tags' is set
-      if (tags === undefined || tags === null) {
-        throw new Error("Missing the required parameter 'tags' when calling storiesChangeImage");
       }
 
 
@@ -82,9 +70,7 @@ export class StoriesApi {
       let headerParams = {
       };
       let formParams = {
-        'body_markdown': bodyMarkdown,
-        'image': image,
-        'tags': this.apiClient.buildCollectionParam(tags, 'multi')
+        'image': image
       };
 
       let authNames = ['api_key'];
@@ -102,13 +88,11 @@ export class StoriesApi {
     /**
      * General ViewSet description
      * @param {String} slug 
-     * @param {String} bodyMarkdown 
      * @param {File} image 
-     * @param {Array.<String>} tags 
      * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/StoryImage}
      */
-    storiesChangeImage(slug, bodyMarkdown, image, tags) {
-      return this.storiesChangeImageWithHttpInfo(slug, bodyMarkdown, image, tags)
+    storiesChangeImage(slug, image) {
+      return this.storiesChangeImageWithHttpInfo(slug, image)
         .then(function(response_and_data) {
           return response_and_data.data;
         });
@@ -647,6 +631,9 @@ export class StoriesApi {
     /**
      * List the stories
      * @param {Object} opts Optional parameters
+     * @param {String} opts.tagsTag 
+     * @param {String} opts.ownerUserUsername 
+     * @param {String} opts.favoritedByUserUsername 
      * @param {Number} opts.limit Number of results to return per page.
      * @param {Number} opts.offset The initial index from which to return the results.
      * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/InlineResponse2001} and HTTP response
@@ -659,6 +646,9 @@ export class StoriesApi {
       let pathParams = {
       };
       let queryParams = {
+        'tags__tag': opts['tagsTag'],
+        'owner__user__username': opts['ownerUserUsername'],
+        'favorited_by__user__username': opts['favoritedByUserUsername'],
         'limit': opts['limit'],
         'offset': opts['offset']
       };
@@ -682,6 +672,9 @@ export class StoriesApi {
     /**
      * List the stories
      * @param {Object} opts Optional parameters
+     * @param {String} opts.tagsTag 
+     * @param {String} opts.ownerUserUsername 
+     * @param {String} opts.favoritedByUserUsername 
      * @param {Number} opts.limit Number of results to return per page.
      * @param {Number} opts.offset The initial index from which to return the results.
      * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/InlineResponse2001}
