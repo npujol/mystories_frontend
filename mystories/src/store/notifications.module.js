@@ -48,7 +48,7 @@ const actions = {
     return data;
   },
   async [FETCH_MESSAGES](context, payload) {
-    const data = await notificationsApi.notificationsList(payload.filters);
+    const data = await notificationsApi.notificationsList(payload);
     context.commit(SET_MESSAGES, data);
     return data;
   },

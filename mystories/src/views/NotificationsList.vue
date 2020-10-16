@@ -75,9 +75,7 @@ export default {
         offset: (this.currentPage - 1) * this.limit,
         limit: this.limit
       };
-      return {
-        filters
-      };
+      return filters;
     },
     pages() {
       if (this.countMessages <= this.limit) {
