@@ -14,8 +14,12 @@
       </v-form>
     </v-card-text>
     <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn class="mr-4" @click="onSubmit(slug, comment)">Post</v-btn>
+      <v-btn
+        elevation="12"
+        color="primary accent-4"
+        @click="onSubmit(slug, comment)"
+        >OK</v-btn
+      >
     </v-card-actions>
   </v-card>
 </template>
