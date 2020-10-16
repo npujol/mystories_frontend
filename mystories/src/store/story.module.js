@@ -142,7 +142,7 @@ export const actions = {
       context.dispatch(STORY_AUDIO_CREATE, newStory.slug);
     }
     const data = await storiesApi.storiesRead(newStory.slug);
-    context.dispatch(STORY_RESET_STATE, newStory.slug);
+    context.dispatch(STORY_RESET_STATE);
     return data;
   },
   [STORY_DELETE](slug) {
@@ -150,7 +150,6 @@ export const actions = {
   },
   async [STORY_EDIT](context, payload) {
     const { story, generateAudio, image } = payload;
-    console.log(story.bodyMarkdown);
 
     if (image && typeof image !== "string") {
       await storiesApi.storiesChangeImage(story.slug, image);
@@ -159,7 +158,15 @@ export const actions = {
     if (story.slug && generateAudio) {
       context.dispatch(STORY_AUDIO_CREATE, story.slug);
     }
-    return storiesApi.storiesPartialUpdate(story.slug, story);
+    const data = await storiesApi.storiesPartialUpdate(story.slug, {
+      title: story.title,
+      description: story.description,
+      body_markdown: story.bodyMarkdown,
+      language: story.language,
+      tags: story.tags
+    });
+    context.dispatch(STORY_RESET_STATE);
+    return data;
   },
   [TAG_STORY_EDIT_CREATE](context, tag) {
     context.commit(TAG_CREATE, tag);
