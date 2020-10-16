@@ -1,69 +1,89 @@
 <template>
-  <v-card class="mx-auto" aling="center">
-    <v-card-title class="d-flex text-center justify-center">
-      <h2 class="font-weight-bold basil--text text-center">
-        A place to share yours stories
-      </h2>
-    </v-card-title>
-
-    <v-tabs
-      v-model="tab"
-      background-color="transparent"
-      grow
-      centered
-      icons
-      @change="onChangeTab"
-    >
-      <v-tab
-        class="white--text"
-        :disabled="tab === 0"
-        @change="linkTo('home', {})"
+  <v-container fluid>
+    <v-fab-transition>
+      <v-btn
+        fab
+        color="red accent-2"
+        buttom
+        left
+        fixed
+        @click="linkTo('story-edit', { username: currentUser.username })"
       >
-        <v-icon color="white">mdi-home</v-icon>
-        Global Feed
-      </v-tab>
-      <v-tab
-        class="white--text"
-        :disabled="tab === 1"
-        v-if="isAuthenticated"
-        @change="linkTo('home-my-feed', { username: currentUser.username })"
-      >
-        <v-icon color="white">mdi-account-circle</v-icon>
-        Your Feed
-      </v-tab>
-      <v-tab
-        class="white--text"
-        :disabled="tab === 2"
-        v-if="isAuthenticated"
-        @change="linkTo('home-favorites', { username: currentUser.username })"
-      >
-        <v-icon color="white">mdi-heart</v-icon>
-        Favorited
-      </v-tab>
-      <v-tab
-        :disabled="tab === 3"
-        v-if="tag"
-        @change="linkTo('home-tag', { tag })"
-      >
-        <v-icon>mdi-tag</v-icon>
-        {{ tag.tag }}
-      </v-tab>
-    </v-tabs>
-    <v-chip-group
-      show-arrows
-      active-class="v-slide-item--active"
-      v-model="selected"
-    >
-      <RwvTag
-        :disabled="value.pk === selected"
-        v-for="value in tags"
-        :tag="value.tag"
-        :key="value.pk"
-      >
-      </RwvTag>
-    </v-chip-group>
-    <router-view></router-view>
-  </v-card>
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </v-fab-transition>
+    <v-card class="mx-auto" aling="center">
+      <v-card-title class="text-center aling-center justify-space-around">
+        <h2 class="font-weight-bold basil--text text-center">
+          A place to share yours stories
+        </h2>
+      </v-card-title>
+      <v-spacer></v-spacer>
+      <template>
+        <v-tabs
+          v-model="tab"
+          background-color="transparent"
+          grow
+          centered
+          icons
+          @change="onChangeTab"
+        >
+          <v-tab
+            class="white--text"
+            :disabled="tab === 0"
+            @change="linkTo('home', {})"
+          >
+            <v-icon color="white">mdi-home</v-icon>
+            Global Feed
+          </v-tab>
+          <v-tab
+            class="white--text"
+            :disabled="tab === 1"
+            v-if="isAuthenticated"
+            @change="linkTo('home-my-feed', { username: currentUser.username })"
+          >
+            <v-icon color="white">mdi-account-circle</v-icon>
+            Your Feed
+          </v-tab>
+          <v-tab
+            class="white--text"
+            :disabled="tab === 2"
+            v-if="isAuthenticated"
+            @change="
+              linkTo('home-favorites', { username: currentUser.username })
+            "
+          >
+            <v-icon color="white">mdi-heart</v-icon>
+            Favorited
+          </v-tab>
+          <v-tab
+            :disabled="tab === 3"
+            v-if="tag"
+            @change="linkTo('home-tag', { tag })"
+          >
+            <v-icon>mdi-tag</v-icon>
+            {{ tag.tag }}
+          </v-tab>
+        </v-tabs>
+      </template>
+      <v-card-text>
+        <v-chip-group
+          show-arrows
+          active-class="v-slide-item--active"
+          v-model="selected"
+        >
+          <RwvTag
+            :disabled="value.pk === selected"
+            v-for="value in tags"
+            :tag="value.tag"
+            :key="value.pk"
+          >
+          </RwvTag>
+        </v-chip-group>
+        <router-view></router-view>
+      </v-card-text>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
