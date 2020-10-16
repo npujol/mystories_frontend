@@ -50,7 +50,7 @@ const routes: Array<RouteConfig> = [
   {
     name: "notifications",
     path: "/notifications/:username",
-    component: () => import("../views/Notification.vue")
+    component: () => import("../views/NotificationsList.vue")
   },
   // Handle child routes with a default, by giving the name to the
   // child.
