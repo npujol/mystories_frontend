@@ -8,8 +8,7 @@
 import { mapGetters } from "vuex";
 import {
   STORY_FAVORITE_CREATE,
-  STORY_FAVORITE_DELETE,
-  FETCH_PROFILE
+  STORY_FAVORITE_DELETE
 } from "@/store/actions.type.js";
 
 export default {
@@ -18,18 +17,13 @@ export default {
     story: { type: Object, required: true }
   },
   computed: {
-    ...mapGetters(["profile", "currentUser", "isAuthenticated"]),
+    ...mapGetters(["currentUser", "isAuthenticated"]),
     favoriteStoryLabel() {
       return this.story.favorited === "true" ? "Favorite" : "";
     },
     color() {
       return this.story.favorited === "true" ? "error" : "white";
     }
-  },
-  mounted() {
-    this.$store.dispatch(FETCH_PROFILE, {
-      username: this.story.owner.username
-    });
   },
   methods: {
     async toggleFavorite() {
