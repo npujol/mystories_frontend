@@ -79,7 +79,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import store from "@/store";
+import store from "../store";
 import RwvListErrors from "../components/ListErrors.vue";
 import {
   STORY_PUBLISH,
@@ -149,7 +149,10 @@ export default {
   computed: {
     ...mapGetters(["story", "currentUser", "isAuthenticated", "storyAudio"]),
     hadAudio() {
-      return this.storyAudio === null;
+      return this.storyAudio !== null;
+    },
+    isCurrentUser() {
+      return this.currentUser.username === this.story.owner.username;
     }
   },
   methods: {
@@ -186,14 +189,15 @@ export default {
       reader.readAsDataURL(file);
     },
     async getBodyMarkdown() {
-      if (this.story.slug) {
+      if (this.isCurrentUser && this.story.slug) {
         try {
           const data = await this.$store.dispatch(FETCH_STORY_PRIVATE, {
             slug: this.story.slug
           });
           this.story.bodyMarkdown = data.bodyMarkdown;
         } catch (error) {
-          this.errors = JSON.parse(error.response.text).errors;
+          await store.dispatch(STORY_RESET_STATE);
+          this.$router.go({ name: "story-edit" });
         }
       }
     }

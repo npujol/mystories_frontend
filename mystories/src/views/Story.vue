@@ -45,7 +45,7 @@
           <p class="text-center align-center">{{ story.description }}</p>
         </v-expansion-panel-content>
       </v-expansion-panel>
-      <v-expansion-panel v-if="storyAudio">
+      <v-expansion-panel v-if="hadAudio">
         <v-expansion-panel-header>Audio</v-expansion-panel-header>
         <v-expansion-panel-content>
           <vuetify-audio
@@ -101,9 +101,13 @@ export default {
   mounted() {
     this.$store.dispatch(FETCH_STORY, this.slug);
     this.$store.dispatch(FETCH_COMMENTS, this.slug);
+    this.$store.dispatch(FETCH_STORY_AUDIO, this.slug);
   },
   computed: {
     ...mapGetters(["story", "currentUser", "isAuthenticated", "storyAudio"]),
+    hadAudio() {
+      return this.storyAudio !== null;
+    },
     isCurrentUser() {
       return this.currentUser.username === this.story.owner.username;
     }
