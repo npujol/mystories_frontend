@@ -47,7 +47,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { COMMENT_DELETE, FETCH_MESSAGES } from "../store/actions.type.js";
+import { COMMENT_DELETE } from "../store/actions.type.js";
 
 export default {
   name: "RwvComment",
