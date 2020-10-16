@@ -10,30 +10,12 @@
             Dashboard
           </h3>
         </v-list-item>
-        <template v-if="isAuthenticated">
-          <v-list-item
-            @click="linkTo('story-edit', { username: currentUser.username })"
-          >
-            <h3 class="basil--text">
-              <v-icon>mdi-pencil</v-icon>
-              New story
-            </h3>
-          </v-list-item>
-          <v-list-item
-            @click="linkTo('profile', { username: currentUser.username })"
-          >
-            <h3 class="basil--text">
-              <v-icon>mdi-heart</v-icon>
-              Favorited stories
-            </h3>
-          </v-list-item>
-        </template>
       </v-list>
     </v-navigation-drawer>
 
     <v-app-bar app dark clipped-left>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>
+      <v-toolbar-title @click="linkTo('home', {})">
         <h3 class="basil--text">
           MyStories
         </h3>
