@@ -65,14 +65,13 @@
         v-model="story.bodyMarkdown"
       ></v-textarea>
     </v-card-text>
-    <v-card-actions>
-      <v-spacer></v-spacer>
+    <v-card-actions aling="center">
       <v-btn
         :disabled="inProgress"
         elevation="12"
         color="primary accent-4"
         @click="onPublish(story.slug)"
-        >Aceptar
+        >OK
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -158,7 +157,6 @@ export default {
       try {
         const action = slug ? STORY_EDIT : STORY_PUBLISH;
         this.inProgress = true;
-
         const data = await this.$store.dispatch(action, {
           story: this.story,
           generateAudio: this.generateAudio,
@@ -167,7 +165,6 @@ export default {
         this.inProgress = false;
         this.$router.push({ name: "story", params: { slug: data.slug } });
       } catch (error) {
-        console.log(error);
         this.inProgress = false;
         this.errors = JSON.parse(error.response.text).errors;
       }

@@ -46,9 +46,11 @@
         ></v-textarea>
       </v-form>
     </v-card-text>
-    <v-card-actions>
+    <v-card-actions aling="center">
       <v-spacer></v-spacer>
-      <v-btn class="mr-4" @click="updateSettings()">Update</v-btn>
+      <v-btn elevation="12" color="primary accent-4" @click="updateSettings()"
+        >OK</v-btn
+      >
     </v-card-actions>
   </v-card>
 </template>
