@@ -17,9 +17,9 @@ Vue.filter("error", ErrorFilter);
 
 const apiClient = ApiClient.instance;
 if (process.env.NODE_ENV === "production") {
-  apiClient.publicPath = '/api';
+  apiClient.basePath = '/api';
 } else {
-  apiClient.publicPath = 'http://localhost:8000/api'.replace(/\/+$/, '');
+  apiClient.basePath = 'http://localhost:8000/api'.replace(/\/+$/, '');
 }
 
 // Ensure we checked auth before each page load.
