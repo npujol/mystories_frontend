@@ -148,7 +148,6 @@ export default {
           limit: this.limit
         });
       } catch (error) {
-        console.error(error);
       }
     }
   }
