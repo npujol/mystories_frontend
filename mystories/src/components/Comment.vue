@@ -77,7 +77,6 @@ export default {
         this.inProgress = false;
         this.$router.go();
       } catch (err) {
-        console.error(err);
       }
     },
     linkTo(route, params) {
