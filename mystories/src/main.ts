@@ -17,10 +17,11 @@ Vue.filter("error", ErrorFilter);
 
 const apiClient = ApiClient.instance;
 if (process.env.NODE_ENV === "production") {
-  apiClient.basePath = '/api';
+  apiClient.publicPath = '/api';
 } else {
-  apiClient.basePath = 'http://localhost:8000/api'.replace(/\/+$/, '');
+  apiClient.publicPath = 'http://localhost:8000/api'.replace(/\/+$/, '');
 }
+
 // Ensure we checked auth before each page load.
 router.beforeEach((to, from, next) =>
   Promise.all([store.dispatch(CHECK_AUTH)]).then(() => next())
