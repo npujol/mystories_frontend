@@ -16,8 +16,11 @@ Vue.filter("date", DateFilter);
 Vue.filter("error", ErrorFilter);
 
 const apiClient = ApiClient.instance;
-apiClient.basePath = 'http://192.168.178.24:8000'.replace(/\/+$/, '');
-
+if (process.env.NODE_ENV === "production") {
+  apiClient.basePath = '/api';
+} else {
+  apiClient.basePath = 'http://localhost:8000/api'.replace(/\/+$/, '');
+}
 // Ensure we checked auth before each page load.
 router.beforeEach((to, from, next) =>
   Promise.all([store.dispatch(CHECK_AUTH)]).then(() => next())
