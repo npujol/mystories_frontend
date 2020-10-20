@@ -9,7 +9,7 @@
         colored-border
         type="error"
       >
-        <span v-for="err in value" :key="err" v-text="err" />
+        {{ value[0] }}
       </v-alert>
     </div>
   </v-card>
