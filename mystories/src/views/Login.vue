@@ -8,13 +8,14 @@
     <v-spacer></v-spacer>
     <v-card-text>
       <RwvListErrors :errors="errors" />
-      <v-form>
+      <v-form v-model="valid" lazy-validation>
         <v-text-field
           label="Email"
           name="Email"
           prepend-icon="mdi-mail"
           :rules="[rules.email, rules.length(5), rules.required]"
           filled
+          :counter="25"
           v-model="email"
         ></v-text-field>
         <v-text-field
@@ -31,7 +32,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="primary" @click="onSubmit(email, password)">Sign in</v-btn>
+      <v-btn color="primary" @click="onSubmit()">Sign in</v-btn>
     </v-card-actions>
     <v-spacer></v-spacer>
     <v-card-text>
@@ -56,7 +57,7 @@ export default {
     return {
       email: null,
       password: null,
-      valid: false,
+      valid: true,
       rules: {
         email: v =>
           !!(v || "").match(
@@ -66,19 +67,19 @@ export default {
           (v || "").length >= len ||
           `Invalid character length, required ${len}`,
         password: v =>
-          !!(v || "").match(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/
-          ) ||
+          !!(v || "").match(/^(?=.*[a-z])(?=.*[A-Z]).+$/) ||
           "Password must contain an upper case letter, a numeric character, and a special character",
         required: v => !!v || "This field is required"
       }
     };
   },
   methods: {
-    onSubmit(email, password) {
-      this.$store
-        .dispatch(LOGIN, { email, password })
-        .then(() => this.$router.push({ name: "home" }));
+    async onSubmit() {
+      const data = await this.$store.dispatch(LOGIN, {
+        email: this.email,
+        password: this.password
+      });
+      this.$router.push({ name: "home" });
     }
   },
   computed: {
