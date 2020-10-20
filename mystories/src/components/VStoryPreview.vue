@@ -5,7 +5,7 @@
         color="grey"
         @click="linkTo('profile', { username: story.owner.username })"
       >
-        <img class="is-rounded" :src="story.owner.image"
+        <img class="is-rounded" :src="preview"
       /></v-list-item-avatar>
       <v-list-item-content>
         <v-list-item-title class="headline align-center">
@@ -66,6 +66,16 @@ export default {
     story: {
       type: Object,
       required: true
+    }
+  },
+  data() {
+    return {
+      preview: "https://picsum.photos/510/300?random"
+    };
+  },
+  mounted() {
+    if (this.story.owner.image) {
+      this.preview = this.story.owner.image;
     }
   },
   computed: {
