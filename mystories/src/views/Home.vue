@@ -1,11 +1,11 @@
 <template>
   <v-container fluid>
-    <v-fab-transition>
+    <v-fab-transition v-if="isAuthenticated">
       <v-btn
         fab
         color="red accent-2"
         buttom
-        left
+        right
         fixed
         @click="linkTo('story-edit', { username: currentUser.username })"
       >
