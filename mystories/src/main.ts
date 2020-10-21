@@ -5,8 +5,6 @@ import router from "./router";
 import store from "./store";
 import { ApiClient } from "./client";
 import vuetify from './plugins/vuetify.js'
-import { ValidationProvider, extend } from 'vee-validate';
-
 
 import { CHECK_AUTH } from "./store/actions.type.js";
 import DateFilter from "./common/date.filter.js";
@@ -15,6 +13,7 @@ import ErrorFilter from "./common/error.filter.js";
 Vue.config.productionTip = false;
 Vue.filter("date", DateFilter);
 Vue.filter("error", ErrorFilter);
+
 
 const apiClient = ApiClient.instance;
 if (process.env.NODE_ENV === "production") {
@@ -34,11 +33,3 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount("#app");
-
-extend('secret', {
-  validate: value => value === 'example',
-  message: 'This is not the magic word'
-});
-
-// Register it globally
-Vue.component('ValidationProvider', ValidationProvider);
