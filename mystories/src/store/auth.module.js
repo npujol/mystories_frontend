@@ -14,7 +14,7 @@ const authApi = new AuthApi();
 const usersApi = new UsersApi();
 
 const state = {
-  errors: {},
+  errors: null,
   user: {},
   isAuthenticated: !!JwtService.getToken()
 };
@@ -96,18 +96,18 @@ const mutations = {
   [SET_AUTH](state, user) {
     state.isAuthenticated = true;
     state.user = user;
-    state.errors = {};
+    state.errors = null;
     JwtService.saveCredentials(user.username, user.token);
   },
   [SET_USER](state, user) {
     state.isAuthenticated = true;
     state.user = user;
-    state.errors = {};
+    state.errors = null;
   },
   [PURGE_AUTH](state) {
     state.isAuthenticated = false;
     state.user = {};
-    state.errors = {};
+    state.errors = null;
     JwtService.destroyCredentials();
   }
 };
