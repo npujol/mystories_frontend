@@ -1,89 +1,102 @@
 <template>
-  <v-card class="elevation mx-auto ">
-    <v-card-title class="d-flex text-center justify-center">
-      <h3 class="d-flex font-weight-bold basil--text">
-        Register
-      </h3>
-    </v-card-title>
-    <v-spacer></v-spacer>
-    <v-card-text>
-      <RwvListErrors :errors="errors" />
-      <v-form>
-        <v-text-field
-          label="Username"
-          name="username"
-          prepend-icon="mdi-account"
-          :rules="[rules.length(3), rules.required]"
-          type="text"
-          v-model="username"
-        ></v-text-field>
-        <v-text-field
-          label="Email"
-          name="Email"
-          prepend-icon="mdi-mail"
-          :rules="[rules.email, rules.length(6)]"
-          type="text"
-          required
-          filled
-          v-model="email"
-        ></v-text-field>
-        <v-text-field
-          id="password"
-          label="Password"
-          name="password"
-          prepend-icon="mdi-lock"
-          type="password"
-          :rules="[rules.password, rules.length(6)]"
-          required
-          filled
-          v-model="password"
-        ></v-text-field>
-      </v-form>
-    </v-card-text>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn color="primary" @click="onSubmit()">Sign up</v-btn>
-    </v-card-actions>
-    <v-spacer></v-spacer>
-    <v-card-text>
-      <p>
+  <ValidationObserver ref="obs">
+    <v-card slot-scope="{ invalid, validated }">
+      <v-card-title class="d-flex text-center justify-center">
+        <h3 class="d-flex font-weight-bold basil--text">
+          Register
+        </h3>
+      </v-card-title>
+      <v-alert
+        v-if="errors && errors.error"
+        dismissible
+        type="error"
+        aling="center"
+      >
+        {{ errors.error }}
+      </v-alert>
+      <v-card-text>
+        <v-form>
+          <ValidationProvider name="username" rules="required|alpha">
+            <v-text-field
+              slot-scope="{ errors, valid }"
+              v-model="username"
+              :counter="20"
+              :error-messages="errors"
+              :success="valid"
+              label="Username"
+              prepend-icon="mdi-account"
+              filled
+              required
+            ></v-text-field>
+          </ValidationProvider>
+          <ValidationProvider name="email" rules="required|email">
+            <v-text-field
+              slot-scope="{ errors, valid }"
+              v-model="email"
+              :error-messages="errors"
+              :success="valid"
+              label="E-mail"
+              prepend-icon="mdi-mail"
+              filled
+              required
+            ></v-text-field>
+          </ValidationProvider>
+          <ValidationProvider
+            name="password"
+            :rules="{
+              required: true,
+              regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/
+            }"
+          >
+            <v-text-field
+              slot-scope="{ errors, valid }"
+              v-model="password"
+              :error-messages="errors"
+              :success="valid"
+              label="Password"
+              prepend-icon="mdi-lock"
+              type="password"
+              filled
+              required
+            ></v-text-field>
+          </ValidationProvider>
+        </v-form>
+      </v-card-text>
+      <v-card-actions>
         <router-link :to="{ name: 'login' }">
           Have an account?
         </router-link>
-      </p>
-    </v-card-text>
-  </v-card>
+        <v-spacer></v-spacer>
+        <v-btn @click="clear">Clear</v-btn>
+        <v-btn color="primary" @click="submit" :disabled="invalid || !validated"
+          >OK</v-btn
+        >
+      </v-card-actions>
+    </v-card>
+  </ValidationObserver>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import { REGISTER } from "@/store/actions.type.js";
-import RwvListErrors from "../components/ListErrors.vue";
+import { REGISTER } from "../store/actions.type.js";
+import { extend, ValidationObserver, ValidationProvider } from "vee-validate";
+import { required, email, alpha, regex } from "vee-validate/dist/rules";
+extend("email", email);
+extend("alpha", alpha);
+extend("regex", regex);
+extend("required", {
+  ...required,
+  message: "This field is required"
+});
 
 export default {
-  name: "RwvRegister",
-  components: { RwvListErrors },
+  name: "RegisterView",
+  components: { ValidationProvider, ValidationObserver },
   data() {
     return {
       username: "",
       email: "",
-      password: "",
-      valid: false,
-      rules: {
-        email: v =>
-          !!(v || "").match(
-            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-          ) || "Please enter a valid email",
-        length: len => v =>
-          (v || "").length >= len ||
-          `Invalid character length, required ${len}`,
-        password: v =>
-          !!(v || "").match(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/
-          ) ||
-          "Password must contain an upper case letter, a numeric character, and a special character",
-        required: v => !!v || "This field is required"
-      }
+      password: ""
     };
   },
   computed: {
@@ -92,14 +105,31 @@ export default {
     })
   },
   methods: {
-    onSubmit() {
-      this.$store
-        .dispatch(REGISTER, {
-          email: this.email,
-          password: this.password,
-          username: this.username
-        })
-        .then(() => this.$router.push({ name: "home" }));
+    async clear() {
+      this.name = this.email = this.select = this.checkbox = "";
+      this.$nextTick(() => {
+        this.$refs.obs.reset();
+      });
+    },
+    async submit() {
+      const validated = await this.$refs.obs.validate();
+      if (validated) {
+        try {
+          const data = await this.$store.dispatch(REGISTER, {
+            email: this.email,
+            password: this.password,
+            username: this.username
+          });
+          this.$router.push({ name: "home" });
+        } catch (response) {
+          const errors = JSON.parse(response.response.text).errors;
+          this.$refs.obs.setErrors({
+            username: errors.username,
+            email: errors.email,
+            password: errors.password
+          });
+        }
+      }
     }
   }
 };
