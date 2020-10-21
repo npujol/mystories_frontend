@@ -5,6 +5,7 @@ import router from "./router";
 import store from "./store";
 import { ApiClient } from "./client";
 import vuetify from './plugins/vuetify.js'
+import { ValidationProvider, extend } from 'vee-validate';
 
 
 import { CHECK_AUTH } from "./store/actions.type.js";
@@ -33,3 +34,11 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount("#app");
+
+extend('secret', {
+  validate: value => value === 'example',
+  message: 'This is not the magic word'
+});
+
+// Register it globally
+Vue.component('ValidationProvider', ValidationProvider);
