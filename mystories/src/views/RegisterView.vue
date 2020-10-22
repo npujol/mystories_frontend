@@ -67,7 +67,7 @@
           Have an account?
         </router-link>
         <v-spacer></v-spacer>
-        <v-btn @click="clear">Clear</v-btn>
+        <v-btn color="primary" @click="clear">Clear</v-btn>
         <v-btn color="primary" @click="submit" :disabled="invalid || !validated"
           >OK</v-btn
         >
@@ -79,15 +79,7 @@
 <script>
 import { mapState } from "vuex";
 import { REGISTER } from "../store/actions.type.js";
-import { extend, ValidationObserver, ValidationProvider } from "vee-validate";
-import { required, email, alpha, regex } from "vee-validate/dist/rules";
-extend("email", email);
-extend("alpha", alpha);
-extend("regex", regex);
-extend("required", {
-  ...required,
-  message: "This field is required"
-});
+import { ValidationObserver, ValidationProvider } from "vee-validate";
 
 export default {
   name: "RegisterView",
@@ -106,7 +98,7 @@ export default {
   },
   methods: {
     async clear() {
-      this.name = this.email = this.select = this.checkbox = "";
+      this.username = this.email = this.password = "";
       this.$nextTick(() => {
         this.$refs.obs.reset();
       });
