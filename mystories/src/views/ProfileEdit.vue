@@ -1,17 +1,19 @@
 <template>
-  <v-card min-width="80%" class="pa-2 mx-auto" aling="center">
-    <v-card-title class="d-flex text-center justify-center">
-      <h3 class=" font-weight-bold basil--text">
-        Yours settings
-      </h3>
-    </v-card-title>
-    <v-spacer></v-spacer>
-    <v-card-text aling="center">
-      <RwvListErrors :errors="errors" />
-      <v-form>
+  <ValidationObserver ref="obs">
+    <v-card slot-scope="{ invalid, validated }">
+      <v-card-title class="d-flex text-center justify-center">
+        <h3 class="d-flex font-weight-bold basil--text">
+          Settings
+        </h3>
+      </v-card-title>
+      <v-alert v-if="errors && errors.error" dismissible type="error">
+        {{ errors.error | error }}
+      </v-alert>
+      <v-card-text>
         <v-img aling="center" height="200px" class="is-rounded" :src="preview">
         </v-img>
         <v-file-input
+          :error-messages="errors"
           :rules="[rules.photo]"
           name="avatar"
           accept="image/png, image/jpeg, image/bmp"
@@ -23,57 +25,65 @@
         >
         </v-file-input>
         <v-text-field
-          label="Username"
-          name="username"
-          prepend-icon="mdi-account"
-          type="text"
           v-model="currentUser.username"
+          label="Username"
+          prepend-icon="mdi-account"
           disabled
+          filled
         ></v-text-field>
         <v-text-field
-          label="Email"
-          name="Email"
           v-model="currentUser.email"
+          label="E-mail"
           prepend-icon="mdi-mail"
-          type="text"
+          filled
           disabled
         ></v-text-field>
-        <v-textarea
-          auto-grow
-          label="Bio"
-          rows="5"
-          v-model="currentUser.profile.bio"
-        ></v-textarea>
-      </v-form>
-    </v-card-text>
-    <v-card-actions aling="center">
-      <v-spacer></v-spacer>
-      <v-btn elevation="12" color="primary accent-4" @click="updateSettings()"
-        >OK</v-btn
-      >
-    </v-card-actions>
-  </v-card>
+        <v-form>
+          <ValidationProvider name="bio" rules="required">
+            <v-textarea
+              slot-scope="{ errors, valid }"
+              :success="valid"
+              :error-messages="errors"
+              v-model="currentUser.profile.bio"
+              :counter="250"
+              auto-grow
+              prepend-icon="mdi-pencil"
+              label="Bio"
+              rows="5"
+            ></v-textarea>
+          </ValidationProvider>
+        </v-form>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn color="primary" @click="clear">Clear</v-btn>
+        <v-spacer></v-spacer>
+        <v-btn color="error" @click="linkTo('home', {})">Cancel</v-btn>
+        <v-btn color="primary" @click="submit" :disabled="invalid || !validated"
+          >OK
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </ValidationObserver>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import store from "@/store";
 import {
   LOGOUT,
   PROFILE_UPDATE,
   FETCH_PROFILE
 } from "../store/actions.type.js";
-import RwvListErrors from "../components/ListErrors.vue";
+import { imageUpdate } from "../components/mixins/imageUpdate.js";
+import { linkTo } from "../components/mixins/linkTo.js";
+import { ValidationObserver, ValidationProvider } from "vee-validate";
 
 export default {
-  name: "RwvSettings",
-  components: { RwvListErrors },
+  name: "ProfileEdit",
+  mixins: [imageUpdate, linkTo],
+  components: { ValidationObserver, ValidationProvider },
   data() {
     return {
-      errors: {},
-      valid: false,
-      preview: "https://picsum.photos/510/300?random",
-      imagefile: null,
       rules: {
         photo: v =>
           !v || v.size < 2000000 || "Avatar size should be less than 2 MB!"
@@ -94,28 +104,37 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      errors: state => state.auth.errors
+    }),
     ...mapGetters(["currentUser", "profile"])
   },
   methods: {
-    async updateSettings() {
-      try {
-        const data = await store.dispatch(PROFILE_UPDATE, {
-          currentUser: this.currentUser,
-          image: this.imagefile
-        });
-        this.$router.push({ name: "home" });
-      } catch (error) {
-        this.inProgress = false;
-        // this.errors = JSON.parse(error.response.text).errors;
-      }
+    async clear() {
+      this.profile.bio = this.email = this.password = "";
+      this.$nextTick(() => {
+        this.$refs.obs.reset();
+      });
     },
-    previewImage(file) {
-      var reader = new FileReader();
-      this.imagefile = file;
-      reader.onload = e => {
-        this.preview = e.target.result;
-      };
-      reader.readAsDataURL(file);
+    async submit() {
+      const validated = await this.$refs.obs.validate();
+      if (validated) {
+        try {
+          const data = await store.dispatch(PROFILE_UPDATE, {
+            currentUser: this.currentUser,
+            image: this.imageFile
+          });
+          this.$router.push({ name: "home" });
+        } catch (response) {
+          const errors = JSON.parse(response.response.text).errors;
+          this.$refs.obs.setErrors({
+            username: errors.username,
+            email: errors.email,
+            bio: errors.bio,
+            image: errors.image
+          });
+        }
+      }
     }
   }
 };
