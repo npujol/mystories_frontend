@@ -5,6 +5,8 @@ import router from "./router";
 import store from "./store";
 import { ApiClient } from "./client";
 import vuetify from "./plugins/vuetify.js";
+import "./plugins/vee-validate.js"
+
 
 import { CHECK_AUTH } from "./store/actions.type.js";
 import DateFilter from "./common/date.filter.js";
