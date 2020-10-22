@@ -80,7 +80,6 @@ const actions = {
         const data = await usersApi.usersRead(JwtService.getUsername());
         context.commit(SET_USER, data);
       } catch (error) {
-        console.log(error);
         context.commit(SET_ERROR, error);
       }
     } else {
