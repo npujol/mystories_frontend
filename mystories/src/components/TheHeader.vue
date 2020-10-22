@@ -42,7 +42,7 @@
           </template>
           <v-list>
             <v-list-item
-              @click="linkTo('settings', { username: currentUser.username })"
+              @click="linkTo('profile', { username: currentUser.username })"
             >
               <v-list-item-title>
                 <v-icon>mdi-account-circle</v-icon> Profile
