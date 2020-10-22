@@ -35,29 +35,29 @@ const routes: Array<RouteConfig> = [
   {
     name: "login",
     path: "/login",
-    component: () => import("../views/LoginView.vue")
+    component: () => import("../views/AuthLoginView.vue")
   },
   {
     name: "register",
     path: "/register",
-    component: () => import("../views/RegisterView.vue")
+    component: () => import("../views/AuthRegisterView.vue")
   },
   {
     name: "settings",
     path: "/settings/:username",
-    component: () => import("../views/Settings.vue")
+    component: () => import("../views/ProfileEdit.vue")
   },
   {
     name: "notifications",
     path: "/notifications/:username",
-    component: () => import("../views/NotificationsList.vue")
+    component: () => import("../views/NotificationsView.vue")
   },
   // Handle child routes with a default, by giving the name to the
   // child.
   // SO: https://github.com/vuejs/vue-router/issues/777
   {
     path: "/@:username",
-    component: () => import("../views/Profile.vue"),
+    component: () => import("../views/ProfileView.vue"),
     children: [
       {
         name: "profile",
@@ -74,12 +74,18 @@ const routes: Array<RouteConfig> = [
   {
     name: "story",
     path: "/stories/:slug",
-    component: () => import("../views/Story.vue"),
+    component: () => import("../views/StoryView.vue"),
     props: true
   },
   {
+    name: "story-new",
+    path: "/new/",
+    props: true,
+    component: () => import("../views/StoryNew.vue")
+  },
+  {
     name: "story-edit",
-    path: "/editor/:slug?",
+    path: "/editor/:slug",
     props: true,
     component: () => import("../views/StoryEdit.vue")
   }

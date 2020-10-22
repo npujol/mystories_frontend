@@ -7,7 +7,6 @@
             A place to shared yours stories
           </h1>
         </v-card-title>
-
         <RwvStoryList :owner="owner"></RwvStoryList>
       </v-card>
     </v-col>
