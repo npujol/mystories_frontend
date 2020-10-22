@@ -1,76 +1,151 @@
 <template>
-  <v-card color="basil" aling="center" class="mx-auto">
-    <v-list-item>
-      <v-list-item-avatar color="grey">
-        <img class="is-rounded" :src="profile.image" />
-      </v-list-item-avatar>
-      <v-spacer></v-spacer>
-      <v-list-item-content>
-        <v-list-item-title>
-          {{ profile.username }}
-        </v-list-item-title>
-        <v-list-item-subtitle>
-          {{ profile.email }}
-          <p>{{ profile.bio }}</p>
-          <template v-if="isCurrentUser()">
-            <v-btn
-              icon
-              :to="{
-                name: 'settings',
-                params: { username: currentUser.username }
-              }"
-              v-if="isCurrentUser()"
-            >
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-          </template>
-          <template v-else
-            ><v-btn text @click="toggleFollow">
-              <v-icon>mdi-account</v-icon>
-              <span> {{ followUserLabel }}</span>
-            </v-btn>
-          </template>
-        </v-list-item-subtitle>
-      </v-list-item-content>
-    </v-list-item>
-    <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
-      <v-tab @click="linkTo('profile', {})">
-        <v-icon>mdi-account</v-icon>
-        My stories
-      </v-tab>
-      <v-tab
-        v-if="isAuthenticated"
-        @click="linkTo('profile-favorites', { username: currentUser.username })"
+  <v-container fluid>
+    <v-fab-transition v-if="isAuthenticated">
+      <v-btn
+        fab
+        color="red accent-2"
+        button
+        right
+        fixed
+        @click="linkTo('story-edit', { username: currentUser.username })"
       >
-        <v-icon>mdi-heart</v-icon>
-        Favorites
-      </v-tab>
-    </v-tabs>
-    <router-view></router-view>
-  </v-card>
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </v-fab-transition>
+    <v-card outlined>
+      <v-img :src="preview" class="white--text align-end" height="200px">
+        <v-container background-color="transparent">
+          <v-row>
+            <v-card-title class="headline font-weight-bold">
+              {{ profile.username }}
+            </v-card-title>
+            <v-spacer></v-spacer>
+            <v-card-actions>
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    v-if="isCurrentUser"
+                    v-bind="attrs"
+                    v-on="on"
+                    icon
+                    @click="
+                      linkTo('settings', { username: currentUser.username })
+                    "
+                  >
+                    <v-icon>mdi-account-edit</v-icon>
+                  </v-btn>
+                </template>
+                <span>Edit Profile</span>
+              </v-tooltip>
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    v-if="!isCurrentUser"
+                    v-bind="attrs"
+                    v-on="on"
+                    icon
+                    :color="followUserColor"
+                    @click="toggleFollow"
+                  >
+                    <v-icon>mdi-account-check</v-icon>
+                  </v-btn>
+                </template>
+                <span>{{ followUserMessage }}</span>
+              </v-tooltip>
+            </v-card-actions>
+          </v-row>
+        </v-container>
+      </v-img>
+      <v-card-title shrink class="headline font-weight-bold">
+        <v-list two-line>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title class="primary--text">
+                About {{ profile.username }}
+              </v-list-item-title>
+              <v-list-item-content>
+                {{ profile.bio }}
+              </v-list-item-content>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-card-title>
+      <v-card-subtitle class="text-center aling-center justify-space-around">
+        <h2 class="font-weight-bold basil--text text-center">
+          A place to share yours stories
+        </h2>
+      </v-card-subtitle>
+      <v-alert v-if="errors && errors.error" dismissible type="error">
+        {{ errors.error | error }}
+      </v-alert>
+      <v-spacer></v-spacer>
+      <template>
+        <v-tabs
+          v-model="tab"
+          background-color="transparent"
+          grow
+          centered
+          icons
+        >
+          <v-tab
+            class="white--text"
+            @click="linkTo('profile', { username: profile.username })"
+          >
+            <v-icon>mdi-account</v-icon>
+            Stories
+          </v-tab>
+          <v-tab
+            v-if="isCurrentUser()"
+            class="white--text"
+            @click="linkTo('profile-favorites', { username: profile.username })"
+          >
+            <v-icon color="white">mdi-heart</v-icon>
+            Favorites
+          </v-tab>
+        </v-tabs>
+      </template>
+      <v-card-text>
+        <router-view></router-view>
+      </v-card-text>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
+import { linkTo } from "../components/mixins/linkTo.js";
+
 import {
   FETCH_PROFILE,
   PROFILE_FOLLOW,
   PROFILE_UNFOLLOW
-} from "@/store/actions.type.js";
+} from "../store/actions.type.js";
 
 export default {
-  name: "RwvProfile",
+  name: "ProfileView",
+  mixins: [linkTo],
   data() {
     return {
-      tab: null
+      tab: null,
+      preview: "https://picsum.photos/510/300?random"
     };
   },
   computed: {
+    ...mapState({
+      errors: state => state.auth.errors
+    }),
     ...mapGetters(["currentUser", "profile", "isAuthenticated"]),
-    followUserLabel() {
-      return `${this.profile.following === "true" ? "Following" : "Follow"} ${
-        this.profile.username
-      }`;
+    followUserColor() {
+      return this.profile.following === "true" ? "error" : "white";
+    },
+    followUserMessage() {
+      return this.profile.following === "true" ? "Unfollow" : "Follow";
+    }
+  },
+  mounted() {
+    this.$store.dispatch(FETCH_PROFILE, this.$route.params);
+    if (this.profile.image) {
+      this.preview = this.profile.image;
     }
   },
   methods: {
@@ -90,12 +165,6 @@ export default {
       this.$store.dispatch(action, {
         username: this.profile.username
       });
-    },
-    linkTo(route, params) {
-      if (params.length === 0) {
-        this.$router.push({ name: route });
-      }
-      this.$router.push({ name: route, params: params });
     }
   },
   watch: {
