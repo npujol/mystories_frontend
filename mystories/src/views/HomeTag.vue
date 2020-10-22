@@ -6,7 +6,7 @@
 import RwvStoryList from "../components/StoryList.vue";
 
 export default {
-  name: "RwvHomeTag",
+  name: "HomeTag",
   components: {
     RwvStoryList
   },

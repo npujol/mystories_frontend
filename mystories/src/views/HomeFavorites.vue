@@ -5,10 +5,10 @@
 </template>
 
 <script>
-import RwvStoryList from "@/components/StoryList.vue";
+import RwvStoryList from "../components/StoryList.vue";
 
 export default {
-  name: "rwv-home-favorites",
+  name: "HomeFavorites",
   components: {
     RwvStoryList
   },

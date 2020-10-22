@@ -5,7 +5,7 @@
 import RwvStoryList from "../components/StoryList.vue";
 
 export default {
-  name: "rwv-home-global",
+  name: "HomeGlobal",
   components: {
     RwvStoryList
   }

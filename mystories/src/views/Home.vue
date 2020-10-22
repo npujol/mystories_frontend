@@ -4,7 +4,7 @@
       <v-btn
         fab
         color="red accent-2"
-        buttom
+        button
         right
         fixed
         @click="linkTo('story-edit', { username: currentUser.username })"
@@ -89,10 +89,12 @@
 <script>
 import { mapGetters } from "vuex";
 import RwvTag from "../components/VTag.vue";
+import { linkTo } from "../components/mixins/linkTo.js";
 import { FETCH_TAGS } from "../store/actions.type.js";
 
 export default {
   name: "home",
+  mixins: [linkTo],
   data() {
     return {
       tab: null
@@ -129,16 +131,6 @@ export default {
     }
   },
   methods: {
-    linkTo(route, params) {
-      if (params.length === 0) {
-        if (this.$router.currentRoute.name !== route) {
-          this.$router.push({ name: route });
-        }
-      }
-      if (this.$router.currentRoute.name !== route) {
-        this.$router.push({ name: route, params: params });
-      }
-    },
     onChangeTab(clickedTab) {
       this.tab = clickedTab;
     },
