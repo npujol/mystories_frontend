@@ -76,8 +76,7 @@ export default {
         await this.$store.dispatch(COMMENT_DELETE, { slug, commentId });
         this.inProgress = false;
         this.$router.go();
-      } catch (err) {
-      }
+      } catch (err) {}
     },
     linkTo(route, params) {
       if (params.length === 0) {

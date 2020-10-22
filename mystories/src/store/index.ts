@@ -5,7 +5,7 @@ import home from "./home.module.js";
 import auth from "./auth.module.js";
 import story from "./story.module.js";
 import profile from "./profile.module.js";
-import notifications from "./notifications.module.js"
+import notifications from "./notifications.module.js";
 
 Vue.use(Vuex);
 

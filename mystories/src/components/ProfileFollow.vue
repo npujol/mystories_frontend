@@ -40,9 +40,7 @@ export default {
         return;
       }
       const action =
-        this.profile.following === "true"
-          ? PROFILE_UNFOLLOW
-          : PROFILE_FOLLOW;
+        this.profile.following === "true" ? PROFILE_UNFOLLOW : PROFILE_FOLLOW;
       this.$store.dispatch(action, {
         username: this.profile.username
       });

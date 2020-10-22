@@ -68,8 +68,9 @@ export default {
   computed: {
     ...mapGetters(["currentUser", "profile", "isAuthenticated"]),
     followUserLabel() {
-      return `${this.profile.following === "true" ? "Following" : "Follow"} ${this.profile.username
-        }`;
+      return `${this.profile.following === "true" ? "Following" : "Follow"} ${
+        this.profile.username
+      }`;
     }
   },
   methods: {
@@ -85,9 +86,7 @@ export default {
         return;
       }
       const action =
-        this.profile.following === "true"
-          ? PROFILE_UNFOLLOW
-          : PROFILE_FOLLOW;
+        this.profile.following === "true" ? PROFILE_UNFOLLOW : PROFILE_FOLLOW;
       this.$store.dispatch(action, {
         username: this.profile.username
       });

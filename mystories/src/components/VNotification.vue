@@ -147,8 +147,7 @@ export default {
           offset: 0,
           limit: this.limit
         });
-      } catch (error) {
-      }
+      } catch (error) {}
     }
   }
 };
