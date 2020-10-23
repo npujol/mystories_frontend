@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="mx-auto" aling="center">
-      <RwvCommentEditor class="mb-2" v-if="isAuthenticated" :slug="story.slug">
-      </RwvCommentEditor>
+      <CommentEditor class="mb-2" v-if="isAuthenticated" :slug="story.slug">
+      </CommentEditor>
       <p class="pa-2" aling="center" v-else>
         <router-link :to="{ name: 'login' }">Sign in</router-link>
         or
@@ -26,14 +26,14 @@
       </div>
       <div class="mx-auto" aling="center">
         <v-spacer></v-spacer>
-        <RwvComment
+        <Comment
           class="mb-2"
           v-for="(comment, index) in comments"
           :slug="story.slug"
           :comment="comment"
           :key="index"
         >
-        </RwvComment>
+        </Comment>
       </div>
     </div>
     <v-pagination
@@ -48,16 +48,16 @@
 <script>
 import { mapGetters } from "vuex";
 import RwvStoryPreview from "./VStoryPreview.vue";
-import RwvComment from "../components/Comment.vue";
-import RwvCommentEditor from "../components/CommentEditor.vue";
+import Comment from "../components/Comment.vue";
+import CommentEditor from "../components/CommentEditor.vue";
 import { FETCH_COMMENTS } from "../store/actions.type.js";
 
 export default {
   name: "RwvStoryList",
   inject: ["theme"],
   components: {
-    RwvComment,
-    RwvCommentEditor,
+    Comment,
+    CommentEditor,
     VBoilerplate: {
       functional: true,
       render(h, { data, props, children }) {

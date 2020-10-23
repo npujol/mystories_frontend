@@ -63,14 +63,14 @@
       </v-expansion-panel>
     </v-expansion-panels>
     <v-spacer></v-spacer>
-    <RwvCommentslist class="pa-2" :story="story"></RwvCommentslist>
+    <Commentslist class="pa-2" :story="story"></Commentslist>
   </v-card>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import marked from "marked";
-import RwvCommentslist from "../components/CommentsList.vue";
+import Commentslist from "../components/CommentsList.vue";
 import RwvTag from "../components/VTag.vue";
 import RwvStoryActions from "../components/StoryActions.vue";
 import {
@@ -90,7 +90,7 @@ export default {
   components: {
     RwvTag,
     RwvStoryActions,
-    RwvCommentslist,
+    Commentslist,
     VuetifyAudio: () => import("vuetify-audio")
   },
   data() {
