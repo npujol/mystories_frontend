@@ -56,7 +56,7 @@ const routes: Array<RouteConfig> = [
   // child.
   // SO: https://github.com/vuejs/vue-router/issues/777
   {
-    path: "/@:username",
+    path: "/:username",
     component: () => import("../views/ProfileView.vue"),
     children: [
       {

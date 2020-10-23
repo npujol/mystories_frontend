@@ -42,7 +42,10 @@
           </template>
           <v-list>
             <v-list-item
-              @click="linkTo('profile', { username: currentUser.username })"
+              :to="{
+                name: 'profile',
+                params: { username: currentUser.username }
+              }"
             >
               <v-list-item-title>
                 <v-icon>mdi-account-circle</v-icon> Profile
@@ -80,9 +83,11 @@
 <script>
 import { mapGetters } from "vuex";
 import { LOGOUT, FETCH_OPENED_MESSAGES } from "../store/actions.type.js";
+import { linkTo } from "./mixins/linkTo.js";
 
 export default {
   name: "RwvHeader",
+  mixins: [linkTo],
   data: () => ({
     drawer: null,
     polling: null
@@ -118,16 +123,6 @@ export default {
           this.$router.go({ name: "home" });
         }
       });
-    },
-    linkTo(route, params) {
-      if (params.length === 0) {
-        if (this.$router.currentRoute.name !== route) {
-          this.$router.push({ name: route });
-        }
-      }
-      if (this.$router.currentRoute.name !== route) {
-        this.$router.push({ name: route, params: params });
-      }
     }
   },
   created() {

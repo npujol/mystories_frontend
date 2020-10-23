@@ -21,10 +21,9 @@
             </v-card-title>
             <v-spacer></v-spacer>
             <v-card-actions>
-              <v-tooltip top>
+              <v-tooltip v-if="isCurrentUser" top>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
-                    v-if="isCurrentUser"
                     v-bind="attrs"
                     v-on="on"
                     icon
@@ -37,10 +36,9 @@
                 </template>
                 <span>Edit Profile</span>
               </v-tooltip>
-              <v-tooltip top>
+              <v-tooltip v-if="!isCurrentUser" top>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
-                    v-if="!isCurrentUser"
                     v-bind="attrs"
                     v-on="on"
                     icon
@@ -95,7 +93,7 @@
             Stories
           </v-tab>
           <v-tab
-            v-if="isCurrentUser()"
+            v-if="isCurrentUser"
             class="white--text"
             @click="linkTo('profile-favorites', { username: profile.username })"
           >
@@ -113,6 +111,7 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
+import store from "@/store";
 import { linkTo } from "../components/mixins/linkTo.js";
 
 import {
@@ -140,21 +139,30 @@ export default {
     },
     followUserMessage() {
       return this.profile.following === "true" ? "Unfollow" : "Follow";
-    }
-  },
-  mounted() {
-    this.$store.dispatch(FETCH_PROFILE, this.$route.params);
-    if (this.profile.image) {
-      this.preview = this.profile.image;
-    }
-  },
-  methods: {
+    },
     isCurrentUser() {
       if (this.currentUser.username && this.profile.username) {
         return this.currentUser.username === this.profile.username;
       }
       return false;
-    },
+    }
+  },
+  async beforeRouteUpdate(to, from, next) {
+    await store.dispatch(FETCH_PROFILE, {
+      username: to.params.username
+    });
+    return next();
+  },
+  async beforeRouteEnter(to, from, next) {
+    await store.dispatch(FETCH_PROFILE, { username: to.params.username });
+    return next();
+  },
+  mounted() {
+    if (this.profile.image) {
+      this.preview = this.profile.image;
+    }
+  },
+  methods: {
     toggleFollow() {
       if (!this.isAuthenticated) {
         this.$router.push({ name: "login" });
