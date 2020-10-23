@@ -155,7 +155,14 @@ export default {
       this.inProgress = true;
       await this.$store.dispatch(MESSAGE_DELETE, { pk: this.message.pk });
       this.inProgress = false;
+<<<<<<< HEAD:mystories/src/components/Notification.vue
       this.$router.go();
+=======
+      this.$store.dispatch(FETCH_MESSAGES, {
+        offset: 0,
+        limit: this.limit
+      });
+>>>>>>> b865e5cbcc1b380bf3cb2aef46e7df4d09cb711b:mystories/src/components/VNotification.vue
     }
   }
 };

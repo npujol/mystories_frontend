@@ -84,8 +84,13 @@ export default {
     this.fetchMessages();
   },
   methods: {
+<<<<<<< HEAD
     async fetchMessages() {
       await this.$store.dispatch(FETCH_MESSAGES, this.listConfig);
+=======
+    fetchMessages() {
+      this.$store.dispatch(FETCH_MESSAGES, this.listConfig);
+>>>>>>> b865e5cbcc1b380bf3cb2aef46e7df4d09cb711b
     }
   }
 };
