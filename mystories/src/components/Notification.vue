@@ -24,7 +24,7 @@
                 color="error"
                 :disabled="inProgress"
                 icon
-                @click="destroy(message.pk)"
+                @click="destroy()"
               >
                 <v-icon> mdi-delete</v-icon>
               </v-btn>
@@ -49,16 +49,23 @@
               <v-list-item class="grow">
                 <v-list-item-avatar color="grey darken-3">
                   <v-img
+                    :src="message.owner.image"
                     class="elevation-6"
                     alt=""
-                    :src="message.owner.image"
+                    @click="
+                      linkTo('profile', { username: message.owner.username })
+                    "
                   ></v-img>
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                  <v-list-item-title>{{
-                    message.owner.username
-                  }}</v-list-item-title>
+                  <v-list-item-title
+                    @click="
+                      linkTo('profile', { username: message.owner.username })
+                    "
+                  >
+                    {{ message.owner.username }}
+                  </v-list-item-title>
                 </v-list-item-content>
 
                 <v-row align="center" justify="end">
@@ -85,6 +92,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { linkTo } from "./mixins/linkTo.js";
 import {
   MESSAGE_OPEN,
   MESSAGE_DELETE,
@@ -92,6 +100,8 @@ import {
 } from "../store/actions.type.js";
 
 export default {
+  name: "Notification",
+  mixins: [linkTo],
   data() {
     return {
       dialog: false,
@@ -138,16 +148,14 @@ export default {
       this.dialog = false;
       this.setMessageStatus(this.message.pk, true);
     },
-    async destroy(pk) {
-      try {
-        this.inProgress = true;
-        await this.$store.dispatch(MESSAGE_DELETE, { pk });
-        this.inProgress = false;
-        this.$store.dispatch(FETCH_MESSAGES, {
-          offset: 0,
-          limit: this.limit
-        });
-      } catch (error) {}
+    async destroy() {
+      this.inProgress = true;
+      await this.$store.dispatch(MESSAGE_DELETE, { pk: this.message.pk });
+      this.inProgress = false;
+      this.$store.dispatch(FETCH_MESSAGES, {
+        offset: 0,
+        limit: this.limit
+      });
     }
   }
 };
