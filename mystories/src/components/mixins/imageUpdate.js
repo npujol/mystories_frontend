@@ -2,7 +2,11 @@ export const imageUpdate = {
   data() {
     return {
       preview: "https://picsum.photos/510/300?random",
-      imageFile: null
+      imageFile: null,
+      rules: {
+        photo: v =>
+          !v || v.size < 2000000 || "Avatar size should be less than 2 MB!"
+      }
     };
   },
   methods: {
