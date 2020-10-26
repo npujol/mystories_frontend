@@ -35,8 +35,8 @@
       </v-list-item>
     </v-list>
     <v-chip-group show-arrows class="flex pa-2">
-      <RwvTag v-for="(value, index) in story.tags" :tag="value" :key="index">
-      </RwvTag>
+      <Tag v-for="(value, index) in story.tags" :tag="value" :key="index">
+      </Tag>
     </v-chip-group>
     <v-expansion-panels>
       <v-expansion-panel>
@@ -71,8 +71,8 @@
 import { mapGetters } from "vuex";
 import marked from "marked";
 import Commentslist from "../components/CommentsList.vue";
-import RwvTag from "../components/VTag.vue";
 import RwvStoryActions from "../components/StoryActions.vue";
+import Tag from "../components/Tag.vue";
 import {
   FETCH_STORY,
   FETCH_COMMENTS,
@@ -88,7 +88,7 @@ export default {
     }
   },
   components: {
-    RwvTag,
+    Tag,
     RwvStoryActions,
     Commentslist,
     VuetifyAudio: () => import("vuetify-audio")
