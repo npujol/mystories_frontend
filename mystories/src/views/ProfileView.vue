@@ -7,7 +7,7 @@
         button
         right
         fixed
-        @click="linkTo('story-edit', { username: currentUser.username })"
+        @click="linkTo('story-new', {})"
       >
         <v-icon>mdi-plus</v-icon>
       </v-btn>
