@@ -33,9 +33,8 @@ const actions = {
       const data = await profilesApi.profilesRead(username);
       context.commit(SET_PROFILE, data);
       return data;
-    } catch (e) {
-      // #todo SET_ERROR cannot work in multiple states
-      context.commit(SET_ERROR, JSON.parse(e.response.text).errors);
+    } catch (error) {
+      context.commit(SET_ERROR, error);
     }
   },
   async [PROFILE_UPDATE](context, payload) {
@@ -53,23 +52,21 @@ const actions = {
   async [PROFILE_FOLLOW](context, payload) {
     const { username } = payload;
     try {
-      const data = await profilesApi.profilesFollowProfile(username, "");
+      const data = await profilesApi.profilesFollow(username, "");
       context.commit(SET_PROFILE, data);
       return data;
-    } catch (e) {
-      // #todo SET_ERROR cannot work in multiple states
-      context.commit(SET_ERROR, "e");
+    } catch (error) {
+      context.commit(SET_ERROR, error);
     }
   },
   async [PROFILE_UNFOLLOW](context, payload) {
     const { username } = payload;
     try {
-      const data = await profilesApi.profilesUnfollowProfile(username, "");
+      const data = await profilesApi.profilesUnfollow(username, "");
       context.commit(SET_PROFILE, data);
       return data;
-    } catch (e) {
-      // #todo SET_ERROR cannot work in multiple states
-      context.commit(SET_ERROR, JSON.parse(e.response.text).errors);
+    } catch (error) {
+      context.commit(SET_ERROR, error);
     }
   }
 };

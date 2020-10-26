@@ -1,64 +1,82 @@
 <template>
-  <v-card outlined>
-    <v-card-title class="d-flex text-center justify-center">
-      Comment
+  <v-card class="mx-auto" dark outlined>
+    <v-card-title>
+      <v-icon medium left>
+        mdi-comment
+      </v-icon>
+      <span class="title font-weight-light"> Comment</span>
     </v-card-title>
-    <v-list two-line>
-      <v-list-item>
-        <v-list-item-avatar
-          @click="linkTo('profile', { username: comment.owner.username })"
-          color="grey"
-        >
-          <img class="is-rounded" :src="comment.owner.image" />
-        </v-list-item-avatar>
-        <v-list-item-content>
-          <v-list-item-title
-            ><router-link
-              class="logo-font"
-              :to="{
-                name: 'profile',
-                params: { username: comment.owner.username }
-              }"
-            >
-              {{ comment.owner.username }}</router-link
-            ></v-list-item-title
-          >
-          <v-list-item-subtitle>{{
-            comment.createdAt | date
-          }}</v-list-item-subtitle>
-        </v-list-item-content>
-        <v-list-item-action>
-          <v-btn
-            v-if="isCurrentUser"
-            :disabled="inProgress"
-            icon
-            @click="destroy(slug, comment.id)"
-          >
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
-        </v-list-item-action>
-      </v-list-item>
-    </v-list>
-    <v-card-text class="d-flex text-center justify-center">
+
+    <v-card-text class="headline font-weight-bold">
       {{ comment.body }}
     </v-card-text>
+
+    <v-card-actions>
+      <v-list-item class="grow">
+        <v-list-item-avatar color="grey darken-3">
+          <v-img
+            :src="comment.owner.image"
+            class="elevation-6"
+            alt=""
+            @click="linkTo('profile', { username: comment.owner.username })"
+          ></v-img>
+        </v-list-item-avatar>
+
+        <v-list-item-content>
+          <v-list-item-title
+            class="text-decoration-underline primary--text"
+            @click="linkTo('profile', { username: comment.owner.username })"
+          >
+            {{ comment.owner.username }}
+          </v-list-item-title>
+        </v-list-item-content>
+        <v-spacer></v-spacer>
+        <v-tooltip v-if="isCurrentUser" top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              v-bind="attrs"
+              v-on="on"
+              class="subheading mr-1"
+              :disabled="inProgress"
+              color="error"
+              icon
+              small
+              @click="destroy()"
+            >
+              <v-icon>
+                mdi-delete
+              </v-icon>
+            </v-btn>
+          </template>
+          <span>Delete</span>
+        </v-tooltip>
+      </v-list-item>
+    </v-card-actions>
   </v-card>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { COMMENT_DELETE } from "../store/actions.type.js";
+import { COMMENT_DELETE, FETCH_COMMENTS } from "../store/actions.type.js";
+import { linkTo } from "./mixins/linkTo.js";
 
 export default {
-  name: "RwvComment",
+  name: "Comment",
+  mixins: [linkTo],
   props: {
     slug: { type: String, required: true },
     comment: { type: Object, required: true }
   },
   data() {
     return {
-      inProgress: false
+      inProgress: false,
+      preview: "https://picsum.photos/510/300?random"
     };
+  },
+  mounted() {
+    if (this.comment.owner.image) {
+      this.preview = this.comment.owner.image;
+    }
   },
   computed: {
     isCurrentUser() {
@@ -70,24 +88,18 @@ export default {
     ...mapGetters(["currentUser"])
   },
   methods: {
-    async destroy(slug, commentId) {
-      try {
-        this.inProgress = true;
-        await this.$store.dispatch(COMMENT_DELETE, { slug, commentId });
-        this.inProgress = false;
-        this.$router.go();
-      } catch (err) {
-      }
-    },
-    linkTo(route, params) {
-      if (params.length === 0) {
-        if (this.$router.currentRoute.name !== route) {
-          this.$router.push({ name: route });
-        }
-      }
-      if (this.$router.currentRoute.name !== route) {
-        this.$router.push({ name: route, params: params });
-      }
+    async destroy() {
+      this.inProgress = true;
+      const data = await this.$store.dispatch(COMMENT_DELETE, {
+        slugStory: this.slug,
+        commentId: this.comment.id
+      });
+      this.inProgress = false;
+      this.$store.dispatch(FETCH_COMMENTS, {
+        slugStory: this.slug,
+        offset: 0,
+        limit: this.limit
+      });
     }
   }
 };

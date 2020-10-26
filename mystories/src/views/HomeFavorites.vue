@@ -1,16 +1,16 @@
 <template>
   <div>
-    <RwvStoryList type="favorites" :favorited="owner" />
+    <StoryList type="favorites" :favorited="owner" />
   </div>
 </template>
 
 <script>
-import RwvStoryList from "@/components/StoryList.vue";
+import StoryList from "../components/StoryList.vue";
 
 export default {
-  name: "rwv-home-favorites",
+  name: "HomeFavorites",
   components: {
-    RwvStoryList
+    StoryList
   },
   computed: {
     owner() {

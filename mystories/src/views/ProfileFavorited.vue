@@ -2,26 +2,19 @@
   <v-row class="d-flex justify-center">
     <v-col>
       <v-card color="basil" class="mx-auto">
-        <v-card-title class="text-center justify-center">
-          <h1 class="font-weight-bold display-3 basil--text text-center">
-            Yours favorited stories
-          </h1>
-        </v-card-title>
-
-        <RwvStoryList :favorited="favorited" :items-per-page="5">
-        </RwvStoryList>
+        <StoryList :favorited="favorited"> </StoryList>
       </v-card>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import RwvStoryList from "@/components/StoryList.vue";
+import StoryList from "../components/StoryList.vue";
 
 export default {
-  name: "RwvProfileFavorited",
+  name: "ProfileFavorited",
   components: {
-    RwvStoryList
+    StoryList
   },
   computed: {
     favorited() {

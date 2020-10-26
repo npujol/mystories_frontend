@@ -4,7 +4,8 @@ import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
 import { ApiClient } from "./client";
-import vuetify from './plugins/vuetify.js'
+import vuetify from "./plugins/vuetify.js";
+import "./plugins/vee-validate.js"
 
 
 import { CHECK_AUTH } from "./store/actions.type.js";
@@ -17,9 +18,9 @@ Vue.filter("error", ErrorFilter);
 
 const apiClient = ApiClient.instance;
 if (process.env.NODE_ENV === "production") {
-  apiClient.basePath = '/api';
+  apiClient.basePath = "/api";
 } else {
-  apiClient.basePath = 'http://localhost:8000/api'.replace(/\/+$/, '');
+  apiClient.basePath = "http://localhost:8000/api".replace(/\/+$/, "");
 }
 
 // Ensure we checked auth before each page load.

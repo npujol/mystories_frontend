@@ -1,11 +1,5 @@
 <template>
-  <v-card color="basil" aling="center" class="mx-auto">
-    <v-card-title class="d-flex text-center justify-center">
-      <h3 class=" font-weight-bold basil--text">
-        Notifications
-      </h3>
-    </v-card-title>
-    <v-spacer></v-spacer>
+  <div v-if="isAuthenticated">
     <div v-if="isMessagesLoading">
       Loading notifications...
       <v-boilerplate
@@ -33,16 +27,18 @@
       v-model="currentPage"
       :length="pages"
     ></v-pagination>
-  </v-card>
+  </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import RwvNotification from "@/components/VNotification.vue";
+import RwvNotification from "./Notification.vue";
 import { FETCH_MESSAGES } from "../store/actions.type.js";
+import { pagination } from "./mixins/pagination.js";
 
 export default {
-  name: "RwvNotificationsList",
+  name: "NotificationsList",
+  mixins: [pagination],
   inject: ["theme"],
   components: {
     RwvNotification,
@@ -64,30 +60,23 @@ export default {
       }
     }
   },
-  data() {
-    return {
-      currentPage: 1
-    };
-  },
   computed: {
-    listConfig() {
-      const filters = {
-        offset: (this.currentPage - 1) * this.limit,
-        limit: this.limit
-      };
-      return filters;
-    },
     pages() {
       if (this.countMessages <= this.limit) {
         return 0;
       }
       return Math.ceil(this.countMessages / this.limit);
     },
-    ...mapGetters(["messages", "limit", "isMessagesLoading", "countMessages"])
+    ...mapGetters([
+      "messages",
+      "isMessagesLoading",
+      "countMessages",
+      "isAuthenticated"
+    ])
   },
   watch: {
     currentPage(newValue) {
-      this.listConfig.filters.offset = (newValue - 1) * this.limit;
+      this.filters.offset = (newValue - 1) * this.limit;
       this.fetchMessages();
     }
   },
@@ -96,11 +85,7 @@ export default {
   },
   methods: {
     fetchMessages() {
-      this.$store.dispatch(FETCH_MESSAGES, this.listConfig);
-    },
-    resetPagination() {
-      this.listConfig.offset = 0;
-      this.currentPage = 1;
+      this.$store.dispatch(FETCH_MESSAGES, this.filters);
     }
   }
 };

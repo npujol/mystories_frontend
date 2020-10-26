@@ -6,14 +6,14 @@
       aling="center"
       active-class="primary--text"
     >
-      <RwvTag v-for="tag in tags" :tag="tag.tag" :key="tag.pk"> </RwvTag>
+      <Tag v-for="tag in tags" :tag="tag.tag" :key="tag.pk"> </Tag>
     </v-chip-group>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import RwvTag from "../components/VTag.vue";
+import Tag from "../components/Tag.vue";
 import { FETCH_TAGS } from "../store/actions.type.js";
 
 export default {
@@ -22,7 +22,7 @@ export default {
     tags: Array
   },
   components: {
-    RwvTag
+    Tag
   }
 };
 </script>

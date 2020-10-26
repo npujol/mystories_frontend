@@ -11,8 +11,10 @@
 </template>
 
 <script>
+import { linkTo } from "./mixins/linkTo.js";
 export default {
-  name: "RwvTag",
+  name: "Tag",
+  mixins: [linkTo],
   props: {
     tag: {
       type: String,
@@ -23,14 +25,6 @@ export default {
       type: Boolean,
       required: false,
       default: () => false
-    }
-  },
-  methods: {
-    linkTo(route, params) {
-      if (params.length === 0) {
-        this.$router.push({ name: route });
-      }
-      this.$router.push({ name: route, params: params });
     }
   }
 };

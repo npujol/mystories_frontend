@@ -1,5 +1,5 @@
 {
-  "name": "myhistories",
+  "name": "mystories",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -15,6 +15,7 @@
     "marked": "^1.1.0",
     "register-service-worker": "^1.7.1",
     "superagent": "^5.2.2",
+    "vee-validate": "^3.4.2",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^8.4.2",
@@ -39,7 +40,6 @@
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^5.0.2",
     "@vue/test-utils": "^1.0.3",
-    "axios": "^0.19.2",
     "babel-eslint": "^10.1.0",
     "bulma": "^0.9.0",
     "chai": "^4.1.2",

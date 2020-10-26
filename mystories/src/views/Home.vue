@@ -1,11 +1,11 @@
 <template>
   <v-container fluid>
-    <v-fab-transition>
+    <v-fab-transition v-if="isAuthenticated">
       <v-btn
         fab
         color="red accent-2"
-        buttom
-        left
+        button
+        right
         fixed
         @click="linkTo('story-edit', { username: currentUser.username })"
       >
@@ -72,13 +72,13 @@
           active-class="v-slide-item--active"
           v-model="selected"
         >
-          <RwvTag
+          <Tag
             :disabled="value.pk === selected"
             v-for="value in tags"
             :tag="value.tag"
             :key="value.pk"
           >
-          </RwvTag>
+          </Tag>
         </v-chip-group>
         <router-view></router-view>
       </v-card-text>
@@ -88,18 +88,20 @@
 
 <script>
 import { mapGetters } from "vuex";
-import RwvTag from "../components/VTag.vue";
+import Tag from "../components/Tag.vue";
+import { linkTo } from "../components/mixins/linkTo.js";
 import { FETCH_TAGS } from "../store/actions.type.js";
 
 export default {
   name: "home",
+  mixins: [linkTo],
   data() {
     return {
       tab: null
     };
   },
   components: {
-    RwvTag
+    Tag
   },
   async beforeRouteUpdate(to, from, next) {
     await this.setTab(to);
@@ -129,16 +131,6 @@ export default {
     }
   },
   methods: {
-    linkTo(route, params) {
-      if (params.length === 0) {
-        if (this.$router.currentRoute.name !== route) {
-          this.$router.push({ name: route });
-        }
-      }
-      if (this.$router.currentRoute.name !== route) {
-        this.$router.push({ name: route, params: params });
-      }
-    },
     onChangeTab(clickedTab) {
       this.tab = clickedTab;
     },

@@ -4,9 +4,6 @@ import { StoriesApi } from "../client";
 import {
   FETCH_STORY_PRIVATE,
   FETCH_STORY,
-  FETCH_COMMENTS,
-  COMMENT_CREATE,
-  COMMENT_DELETE,
   STORY_FAVORITE_CREATE,
   STORY_FAVORITE_DELETE,
   STORY_PUBLISH,
@@ -21,11 +18,9 @@ import {
 import {
   RESET_STATE,
   SET_STORY,
-  SET_COMMENTS,
   TAG_CREATE,
   TAG_DELETE,
   UPDATE_STORY_IN_LIST,
-  SET_COMMENTS_START,
   SET_AUDIO
 } from "./mutations.type.js";
 
@@ -46,9 +41,6 @@ const initialState = {
     tags: []
   },
   storyAudio: null,
-  comments: [],
-  commentsCount: 0,
-  isCommentsLoading: true
 };
 const getters = {
   story(state) {
@@ -56,27 +48,15 @@ const getters = {
   },
   storyAudio() {
     return state.storyAudio;
-  },
-  commentsCount(state) {
-    return state.commentsCount;
-  },
-  comments(state) {
-    return state.comments;
-  },
-  isCommentsLoading(state) {
-    return state.isCommentsLoading;
   }
 };
 
 export const state = { ...initialState };
 
 export const actions = {
-  async [FETCH_STORY](context, storySlug, prevStory) {
+  async [FETCH_STORY](context, payload) {
     // avoid extraneous network call if story exists
-    if (prevStory !== undefined) {
-      return context.commit(SET_STORY, prevStory);
-    }
-    const data = await storiesApi.storiesRead(storySlug);
+    const data = await storiesApi.storiesRead(payload.slug);
     context.commit(SET_STORY, data);
     return data;
   },
@@ -84,26 +64,10 @@ export const actions = {
     const data = await storiesApi.storiesGetBodyMarkdown(payload.slug);
     return data;
   },
-  async [FETCH_STORY_AUDIO](context, storySlug) {
-    const data = await storiesApi.storiesGetAudio(storySlug);
+  async [FETCH_STORY_AUDIO](context, payload) {
+    const data = await storiesApi.storiesGetAudio(payload.slug);
     context.commit(SET_AUDIO, data);
     return data;
-  },
-  async [FETCH_COMMENTS](context, payload) {
-    context.commit(SET_COMMENTS_START);
-    const data = await storiesApi.storiesCommentsList(payload);
-    context.commit(SET_COMMENTS, data);
-    return data;
-  },
-  async [COMMENT_CREATE](context, payload) {
-    await storiesApi.storiesCommentsCreate(payload.slug, {
-      body: payload.comment
-    });
-    context.dispatch(FETCH_COMMENTS, payload.slug);
-  },
-  async [COMMENT_DELETE](context, payload) {
-    await storiesApi.storiesCommentsDelete(payload.commentId, payload.slug);
-    context.dispatch(FETCH_COMMENTS, payload.slug);
   },
   async [STORY_FAVORITE_CREATE](context, slug) {
     const data = await storiesApi.storiesFavorite(slug, {});
@@ -145,8 +109,8 @@ export const actions = {
     context.dispatch(STORY_RESET_STATE);
     return data;
   },
-  [STORY_DELETE](slug) {
-    return storiesApi.storiesDelete(slug);
+  [STORY_DELETE](context, payload) {
+    return storiesApi.storiesDelete(payload.slug);
   },
   async [STORY_EDIT](context, payload) {
     const { story, generateAudio, image } = payload;
@@ -186,16 +150,8 @@ export const actions = {
 
 /* eslint no-param-reassign: ["error", { "props": false }] */
 export const mutations = {
-  [SET_COMMENTS_START](state) {
-    state.isCommentsLoading = true;
-  },
   [SET_STORY](state, story) {
     state.story = story;
-  },
-  [SET_COMMENTS](state, data) {
-    state.comments = data.results;
-    state.commentsCount = data.count;
-    state.isCommentsLoading = false;
   },
   [SET_AUDIO](state, data) {
     state.storyAudio = data;
