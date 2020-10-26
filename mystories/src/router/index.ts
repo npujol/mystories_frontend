@@ -79,7 +79,7 @@ const routes: Array<RouteConfig> = [
   },
   {
     name: "story-new",
-    path: "/new/",
+    path: "/story-new",
     props: true,
     component: () => import("../views/StoryNew.vue")
   },
