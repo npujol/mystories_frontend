@@ -8,7 +8,6 @@
     <v-img height="200px" :src="preview"> </v-img>
     <v-spacer></v-spacer>
     <v-card-text aling="center">
-      <RwvListErrors :errors="errors" />
       <v-form>
         <v-file-input
           :rules="[rules.photo]"
@@ -80,7 +79,6 @@
 <script>
 import { mapGetters } from "vuex";
 import store from "../store";
-import RwvListErrors from "../components/ListErrors.vue";
 import {
   STORY_PUBLISH,
   STORY_EDIT,
@@ -94,7 +92,6 @@ import {
 
 export default {
   name: "RwvStoryEdit",
-  components: { RwvListErrors },
   props: {
     previousStory: {
       type: Object,
