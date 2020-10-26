@@ -1,16 +1,16 @@
 <template>
   <div class="home-my-feed">
-    <RwvStoryList type="feed" :owner="owner" />
+    <StoryList type="feed" :owner="owner" />
   </div>
 </template>
 
 <script>
-import RwvStoryList from "../components/StoryList.vue";
+import StoryList from "../components/StoryList.vue";
 
 export default {
   name: "HomeMyFeed",
   components: {
-    RwvStoryList
+    StoryList
   },
   computed: {
     owner() {

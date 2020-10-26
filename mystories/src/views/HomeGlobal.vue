@@ -1,13 +1,13 @@
 <template>
-  <div class="home-global"><RwvStoryList type="all" /></div>
+  <div class="home-global"><StoryList type="all" /></div>
 </template>
 <script>
-import RwvStoryList from "../components/StoryList.vue";
+import StoryList from "../components/StoryList.vue";
 
 export default {
   name: "HomeGlobal",
   components: {
-    RwvStoryList
+    StoryList
   }
 };
 </script>

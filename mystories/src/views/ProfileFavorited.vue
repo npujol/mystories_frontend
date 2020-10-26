@@ -2,19 +2,19 @@
   <v-row class="d-flex justify-center">
     <v-col>
       <v-card color="basil" class="mx-auto">
-        <RwvStoryList :favorited="favorited"> </RwvStoryList>
+        <StoryList :favorited="favorited"> </StoryList>
       </v-card>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import RwvStoryList from "../components/StoryList.vue";
+import StoryList from "../components/StoryList.vue";
 
 export default {
   name: "ProfileFavorited",
   components: {
-    RwvStoryList
+    StoryList
   },
   computed: {
     favorited() {

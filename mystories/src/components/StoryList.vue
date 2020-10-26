@@ -4,7 +4,6 @@
       <v-boilerplate
         v-for="(story, index) in stories"
         :key="index"
-        name="loading"
         type="list-item-avatar, list-item-content, list-item-title, list-item-subtitle, image, actions"
       ></v-boilerplate>
     </div>
@@ -32,10 +31,12 @@
 <script>
 import { mapGetters } from "vuex";
 import StoryPreview from "./StoryPreview.vue";
+import { pagination } from "../components/mixins/pagination.js";
 import { FETCH_STORIES } from "../store/actions.type.js";
 
 export default {
-  name: "RwvStoryList",
+  name: "StoryList",
+  mixins: [pagination],
   inject: ["theme"],
   components: {
     StoryPreview,
@@ -76,43 +77,18 @@ export default {
       required: false
     }
   },
-  data() {
-    return {
-      currentPage: 1
-    };
-  },
   computed: {
-    listConfig() {
-      const { type } = this;
-      const filters = {
-        offset: (this.currentPage - 1) * this.limit,
-        limit: this.limit
-      };
-      if (this.owner) {
-        filters.ownerUserUsername = this.owner;
-      }
-      if (this.tag) {
-        filters.tagsTag = this.tag;
-      }
-      if (this.favorited) {
-        filters.favoritedByUserUsername = this.favorited;
-      }
-      return {
-        type,
-        filters
-      };
-    },
     pages() {
       if (this.isLoading || this.storiesCount <= this.limit) {
         return 0;
       }
       return Math.ceil(this.storiesCount / this.limit);
     },
-    ...mapGetters(["storiesCount", "isLoading", "stories", "limit"])
+    ...mapGetters(["storiesCount", "isLoading", "stories"])
   },
   watch: {
     currentPage(newValue) {
-      this.listConfig.filters.offset = (newValue - 1) * this.limit;
+      this.filters.offset = (newValue - 1) * this.limit;
       this.fetchStories();
     },
     type() {
@@ -137,11 +113,19 @@ export default {
   },
   methods: {
     fetchStories() {
-      this.$store.dispatch(FETCH_STORIES, this.listConfig);
-    },
-    resetPagination() {
-      this.listConfig.offset = 0;
-      this.currentPage = 1;
+      if (this.owner) {
+        this.filters.ownerUserUsername = this.owner;
+      }
+      if (this.tag) {
+        this.filters.tagsTag = this.tag;
+      }
+      if (this.favorited) {
+        this.filters.favoritedByUserUsername = this.favorited;
+      }
+      this.$store.dispatch(FETCH_STORIES, {
+        type: this,
+        filters: this.filters
+      });
     }
   }
 };

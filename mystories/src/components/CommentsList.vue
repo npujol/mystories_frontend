@@ -1,9 +1,8 @@
 <template>
   <div>
     <div class="mx-auto" aling="center">
-      <CommentEditor class="mb-2" v-if="isAuthenticated" :slug="story.slug">
-      </CommentEditor>
-      <p class="pa-2" aling="center" v-else>
+      <CommentEditor v-if="isAuthenticated" :slug="story.slug"> </CommentEditor>
+      <p aling="center" v-else>
         <router-link :to="{ name: 'login' }">Sign in</router-link>
         or
         <router-link :to="{ name: 'register' }">Sign up</router-link>
@@ -21,7 +20,7 @@
       ></v-boilerplate>
     </div>
     <div v-else>
-      <div class="mb-2 justify-center" v-if="comments.length === 0">
+      <div class="mb-2 justify-center" v-if="commentsCount === 0">
         No comments are here... yet.
       </div>
       <div class="mx-auto" aling="center">
@@ -47,13 +46,14 @@
 
 <script>
 import { mapGetters } from "vuex";
-import RwvStoryPreview from "./VStoryPreview.vue";
 import Comment from "../components/Comment.vue";
 import CommentEditor from "../components/CommentEditor.vue";
+import { pagination } from "../components/mixins/pagination.js";
 import { FETCH_COMMENTS } from "../store/actions.type.js";
 
 export default {
-  name: "RwvStoryList",
+  name: "StoryList",
+  mixins: [pagination],
   inject: ["theme"],
   components: {
     Comment,
@@ -92,17 +92,6 @@ export default {
     this.fetchComments();
   },
   computed: {
-    listConfig() {
-      const slugStory = this.story.slug;
-      const filters = {
-        offset: (this.currentPage - 1) * this.limit,
-        limit: this.limit
-      };
-      return {
-        slugStory,
-        filters
-      };
-    },
     pages() {
       if (this.isCommentsLoading || this.commentsCount <= this.limit) {
         return 0;
@@ -120,17 +109,16 @@ export default {
   },
   watch: {
     currentPage(newValue) {
-      this.listConfig.filters.offset = (newValue - 1) * this.limit;
+      this.filters.offset = (newValue - 1) * this.limit;
       this.fetchComments();
     }
   },
   methods: {
     fetchComments() {
-      this.$store.dispatch(FETCH_COMMENTS, this.listConfig);
-    },
-    resetPagination() {
-      this.listConfig.offset = 0;
-      this.currentPage = 1;
+      this.$store.dispatch(FETCH_COMMENTS, {
+        slugStory: this.story.slug,
+        filters: this.filters
+      });
     }
   }
 };

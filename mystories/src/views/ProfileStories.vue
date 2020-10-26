@@ -2,19 +2,19 @@
   <v-row class="d-flex justify-center">
     <v-col>
       <v-card color="basil" class="mx-auto">
-        <RwvStoryList type="feed" :owner="owner"></RwvStoryList>
+        <StoryList type="feed" :owner="owner"></StoryList>
       </v-card>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import RwvStoryList from "../components/StoryList.vue";
+import StoryList from "../components/StoryList.vue";
 
 export default {
   name: "ProfileStories",
   components: {
-    RwvStoryList
+    StoryList
   },
   computed: {
     owner() {
