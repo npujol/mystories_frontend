@@ -20,7 +20,7 @@
       </v-expansion-panel>
     </v-expansion-panels>
     <v-spacer></v-spacer>
-    <CommentsList class="ma-2" :story="story"></CommentsList>
+    <CommentsList :story="story"></CommentsList>
   </v-card>
 </template>
 

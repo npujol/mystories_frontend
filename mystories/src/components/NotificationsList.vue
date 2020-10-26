@@ -76,7 +76,7 @@ export default {
   },
   watch: {
     currentPage(newValue) {
-      this.listConfig.offset = (newValue - 1) * this.limit;
+      this.filters.offset = (newValue - 1) * this.limit;
       this.fetchMessages();
     }
   },
@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     fetchMessages() {
-      this.$store.dispatch(FETCH_MESSAGES, this.listConfig);
+      this.$store.dispatch(FETCH_MESSAGES, this.filters);
     }
   }
 };

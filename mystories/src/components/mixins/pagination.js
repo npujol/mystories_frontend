@@ -1,12 +1,14 @@
+import { mapGetters } from "vuex";
+
 export const pagination = {
   data() {
     return {
-      currentPage: 1,
-      limit: 10
+      currentPage: 1
     };
   },
   computed: {
-    listConfig() {
+    ...mapGetters(["limit"]),
+    filters() {
       const filters = {
         offset: (this.currentPage - 1) * this.limit,
         limit: this.limit
