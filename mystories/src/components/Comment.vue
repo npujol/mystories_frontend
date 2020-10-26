@@ -57,7 +57,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { COMMENT_DELETE } from "../store/actions.type.js";
+import { COMMENT_DELETE, FETCH_COMMENTS } from "../store/actions.type.js";
 import { linkTo } from "./mixins/linkTo.js";
 
 export default {
@@ -90,12 +90,16 @@ export default {
   methods: {
     async destroy() {
       this.inProgress = true;
-      await this.$store.dispatch(COMMENT_DELETE, {
-        slug: this.slug,
+      const data = await this.$store.dispatch(COMMENT_DELETE, {
+        slugStory: this.slug,
         commentId: this.comment.id
       });
       this.inProgress = false;
-      this.$router.go();
+      this.$store.dispatch(FETCH_COMMENTS, {
+        slugStory: this.slug,
+        offset: 0,
+        limit: this.limit
+      });
     }
   }
 };

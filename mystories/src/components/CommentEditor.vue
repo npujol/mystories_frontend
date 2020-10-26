@@ -22,7 +22,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="primary" @click="clear">Clear</v-btn>
+        <v-btn color="error" @click="clear">Cancel</v-btn>
         <v-btn color="primary" @click="submit" :disabled="invalid || !validated"
           >OK</v-btn
         >
@@ -60,7 +60,7 @@ export default {
       if (validated) {
         try {
           const data = await this.$store.dispatch(COMMENT_CREATE, {
-            slug: this.slug,
+            slugStory: this.slug,
             comment: this.comment
           });
           this.comment = null;

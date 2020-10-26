@@ -52,7 +52,7 @@ import { pagination } from "../components/mixins/pagination.js";
 import { FETCH_COMMENTS } from "../store/actions.type.js";
 
 export default {
-  name: "StoryList",
+  name: "CommentsList",
   mixins: [pagination],
   inject: ["theme"],
   components: {
@@ -79,14 +79,8 @@ export default {
   props: {
     story: {
       type: Object,
-      required: false,
-      default: null
+      required: true
     }
-  },
-  data() {
-    return {
-      currentPage: 1
-    };
   },
   mounted() {
     this.fetchComments();
@@ -102,7 +96,6 @@ export default {
       "commentsCount",
       "isCommentsLoading",
       "comments",
-      "limit",
       "isAuthenticated",
       "currentUser"
     ])
@@ -114,11 +107,13 @@ export default {
     }
   },
   methods: {
-    fetchComments() {
-      this.$store.dispatch(FETCH_COMMENTS, {
-        slugStory: this.story.slug,
-        filters: this.filters
-      });
+    async fetchComments() {
+      if (this.story) {
+        const data = await this.$store.dispatch(FETCH_COMMENTS, {
+          slugStory: this.story.slug,
+          filters: this.filters
+        });
+      }
     }
   }
 };

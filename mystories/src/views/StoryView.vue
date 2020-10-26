@@ -30,14 +30,10 @@ import marked from "marked";
 import CommentsList from "../components/CommentsList.vue";
 import StoryPreview from "../components/StoryPreview.vue";
 import { linkTo } from "../components/mixins/linkTo.js";
-import {
-  FETCH_STORY,
-  FETCH_COMMENTS,
-  FETCH_STORY_AUDIO
-} from "../store/actions.type.js";
+import { FETCH_STORY, FETCH_STORY_AUDIO } from "../store/actions.type.js";
 
 export default {
-  name: "rwv-story",
+  name: "StoryView",
   props: {
     slug: {
       type: String,
@@ -55,9 +51,7 @@ export default {
     };
   },
   mounted() {
-    this.$store.dispatch(FETCH_STORY, this.slug);
-    this.$store.dispatch(FETCH_COMMENTS, this.slug);
-    this.getAudio();
+    this.getData();
   },
   computed: {
     ...mapGetters(["story", "currentUser", "isAuthenticated"]),
@@ -72,12 +66,16 @@ export default {
     async getAudio() {
       try {
         const data = await this.$store.dispatch(FETCH_STORY_AUDIO, {
-          storySlug: this.slug
+          slug: this.slug
         });
         this.storyAudio = data;
       } catch (error) {
         this.storyAudio = null;
       }
+    },
+    async getData() {
+      await this.$store.dispatch(FETCH_STORY, { slug: this.slug });
+      this.getAudio();
     }
   }
 };
