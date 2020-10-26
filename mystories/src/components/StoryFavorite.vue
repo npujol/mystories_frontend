@@ -1,7 +1,18 @@
 <template>
-  <v-btn icon :color="color" @click="toggleFavorite()">
-    <v-icon>mdi-heart</v-icon>
-  </v-btn>
+  <v-tooltip top>
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn
+        v-bind="attrs"
+        v-on="on"
+        icon
+        :color="color"
+        @click="toggleFavorite"
+      >
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>
+    </template>
+    <span>{{ label }}</span>
+  </v-tooltip>
 </template>
 
 <script>
@@ -9,17 +20,19 @@ import { mapGetters } from "vuex";
 import {
   STORY_FAVORITE_CREATE,
   STORY_FAVORITE_DELETE
-} from "@/store/actions.type.js";
+} from "../store/actions.type.js";
 
 export default {
-  name: "RwvStoryActions",
+  name: "StoryFavorite",
   props: {
     story: { type: Object, required: true }
   },
   computed: {
-    ...mapGetters(["currentUser", "isAuthenticated"]),
-    favoriteStoryLabel() {
-      return this.story.favorited === "true" ? "Favorite" : "";
+    ...mapGetters(["isAuthenticated"]),
+    label() {
+      return this.story.favorited === "true"
+        ? "Remove Favorite"
+        : "Add Favorite";
     },
     color() {
       return this.story.favorited === "true" ? "error" : "white";

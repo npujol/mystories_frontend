@@ -12,9 +12,10 @@
       <div class="text--aling-center" v-if="stories.length === 0">
         No stories are here... yet.
       </div>
-      <RwvStoryPreview
-        v-for="(story, index) in stories"
+      <StoryPreview
         :story="story"
+        :isPreview="true"
+        v-for="(story, index) in stories"
         :key="story.title + index"
         class="ma-2"
       />
@@ -30,14 +31,14 @@
 
 <script>
 import { mapGetters } from "vuex";
-import RwvStoryPreview from "./VStoryPreview.vue";
+import StoryPreview from "./StoryPreview.vue";
 import { FETCH_STORIES } from "../store/actions.type.js";
 
 export default {
   name: "RwvStoryList",
   inject: ["theme"],
   components: {
-    RwvStoryPreview,
+    StoryPreview,
     VBoilerplate: {
       functional: true,
       render(h, { data, props, children }) {

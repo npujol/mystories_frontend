@@ -15,7 +15,7 @@ import {
 import RwvListErrors from "@/components/ListErrors.vue";
 
 export default {
-  name: "RwvStoryActions",
+  name: "StoryActions",
   props: {
     username: { type: String, required: true }
   },

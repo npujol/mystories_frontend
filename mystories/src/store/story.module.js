@@ -145,8 +145,8 @@ export const actions = {
     context.dispatch(STORY_RESET_STATE);
     return data;
   },
-  [STORY_DELETE](slug) {
-    return storiesApi.storiesDelete(slug);
+  [STORY_DELETE](context, payload) {
+    return storiesApi.storiesDelete(payload.slug);
   },
   async [STORY_EDIT](context, payload) {
     const { story, generateAudio, image } = payload;
