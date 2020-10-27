@@ -2,6 +2,7 @@ export const SET_AUTH = "setAuth";
 export const SET_USER = "setUser";
 export const SET_PROFILE = "setProfile";
 export const SET_STORY = "setStory";
+export const SET_STORY_PRIVATE = "setStoryPrivate";
 export const SET_COMMENTS_START = "setCommentsStart";
 export const SET_MESSAGES = "setMessages";
 export const SET_MESSAGE = "setMessage";
