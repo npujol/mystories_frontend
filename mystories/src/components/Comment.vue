@@ -13,7 +13,7 @@
       <v-list-item class="grow">
         <v-list-item-avatar color="grey darken-3">
           <v-img
-            :src="comment.owner.image"
+            :src="preview"
             class="elevation-6"
             alt=""
             @click="linkTo('profile', { username: comment.owner.username })"

@@ -112,7 +112,7 @@ export default {
     this.fetchStories();
   },
   methods: {
-    fetchStories() {
+    async fetchStories() {
       if (this.owner) {
         this.filters.ownerUserUsername = this.owner;
       }
@@ -122,7 +122,7 @@ export default {
       if (this.favorited) {
         this.filters.favoritedByUserUsername = this.favorited;
       }
-      this.$store.dispatch(FETCH_STORIES, {
+      await this.$store.dispatch(FETCH_STORIES, {
         type: this,
         filters: this.filters
       });

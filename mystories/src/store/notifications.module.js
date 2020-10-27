@@ -11,13 +11,14 @@ import {
 import {
   SET_MESSAGES,
   SET_MESSAGE,
-  SET_MESSAGE_COUNT
+  SET_MESSAGE_COUNT,
+  SET_MESSAGES_START
 } from "./mutations.type.js";
 
 const notificationsApi = new NotificationsApi();
 const state = {
-  messages: [],
   countNewMessages: 0,
+  messages: [],
   countMessages: 0,
   isMessagesLoading: true,
   message: null
@@ -43,6 +44,7 @@ const getters = {
 
 const actions = {
   async [FETCH_MESSAGE](context, payload) {
+    context.commit(SET_MESSAGES_START);
     const data = await notificationsApi.notificationsRead(payload);
     context.commit(SET_MESSAGE, data);
     return data;
@@ -83,6 +85,9 @@ const actions = {
 const mutations = {
   [SET_MESSAGE_COUNT](state, data) {
     state.countNewMessages = data;
+  },
+  [SET_MESSAGES_START](state) {
+    state.isMessagesLoading = true;
   },
   [SET_MESSAGES](state, data) {
     state.messages = data.results;

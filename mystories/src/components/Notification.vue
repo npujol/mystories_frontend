@@ -47,7 +47,7 @@
               <v-list-item class="grow">
                 <v-list-item-avatar color="grey darken-3">
                   <v-img
-                    :src="message.owner.image"
+                    :src="preview"
                     class="elevation-6"
                     alt=""
                     @click="
@@ -102,12 +102,7 @@ export default {
     return {
       dialog: false,
       inProgress: false,
-      configList: {
-        filters: {
-          offset: 0,
-          limit: this.limit
-        }
-      }
+      preview: "https://picsum.photos/510/300?random"
     };
   },
   props: {
@@ -115,6 +110,11 @@ export default {
       type: Object,
       required: true,
       default: null
+    }
+  },
+  mounted() {
+    if (this.message.owner.image) {
+      this.preview = this.message.owner.image;
     }
   },
   computed: {
@@ -141,7 +141,7 @@ export default {
         pk,
         opened
       });
-      this.$router.go();
+      this.fetchMessages();
     },
     closeDialog() {
       this.dialog = false;
@@ -151,7 +151,10 @@ export default {
       this.inProgress = true;
       await this.$store.dispatch(MESSAGE_DELETE, { pk: this.message.pk });
       this.inProgress = false;
-      this.$store.dispatch(FETCH_MESSAGES, {
+      this.fetchMessages();
+    },
+    async fetchMessages() {
+      await this.$store.dispatch(FETCH_MESSAGES, {
         offset: 0,
         limit: this.limit
       });
