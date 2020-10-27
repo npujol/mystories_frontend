@@ -1,7 +1,7 @@
 <template>
   <!-- Used when user is also the owner -->
   <div v-if="isCurrentUser">
-    <v-tooltip top>
+    <v-tooltip top v-if="isPreview">
       <template v-slot:activator="{ on, attrs }">
         <v-btn
           v-bind="attrs"
