@@ -221,10 +221,7 @@ export default {
     async getEditData() {
       if (this.story.slug) {
         try {
-          await this.$store.dispatch(FETCH_STORY_AUDIO, {
-            slug: this.story.slug
-          });
-          this.generateAudio = this.storyAudio ? true : false;
+          this.generateAudio = this.story.hadAudio === "true" ? true : false;
         } catch {
           if (this.isNew) {
             this.$router.push({ name: "home" });

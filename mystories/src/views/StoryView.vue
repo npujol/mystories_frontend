@@ -2,7 +2,7 @@
   <v-card>
     <StoryPreview :story="story" :isPreview="false" />
     <v-expansion-panels>
-      <v-expansion-panel v-if="hadAudio">
+      <v-expansion-panel v-if="storyAudio">
         <v-expansion-panel-header>Audio</v-expansion-panel-header>
         <v-expansion-panel-content>
           <vuetify-audio
@@ -55,9 +55,6 @@ export default {
   },
   computed: {
     ...mapGetters(["story", "currentUser", "isAuthenticated"]),
-    hadAudio() {
-      return this.storyAudio !== null;
-    },
     isCurrentUser() {
       return this.currentUser.username === this.story.owner.username;
     }
@@ -75,7 +72,9 @@ export default {
     },
     async getData() {
       await this.$store.dispatch(FETCH_STORY, { slug: this.slug });
-      this.getAudio();
+      if (this.story.hadAudio === "true") {
+        this.getAudio();
+      }
     }
   }
 };
