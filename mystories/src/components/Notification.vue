@@ -8,7 +8,7 @@
           grow
           prominent
           text
-          style="min-width: 100px; max-width: 95%;"
+          style="min-width: 100px; max-width: 95%"
           class="flex-grow-1 flex-shrink-0 pa-2"
         >
           <v-row align="center">
@@ -35,9 +35,7 @@
         <v-dialog v-model="dialog" max-width="500px">
           <v-card class="mx-auto" color="primary" dark max-width="500">
             <v-card-title>
-              <v-icon medium left>
-                mdi-bell
-              </v-icon>
+              <v-icon medium left> mdi-bell </v-icon>
               <span class="title font-weight-light">Notification</span>
             </v-card-title>
 
@@ -76,9 +74,7 @@
                     small
                     @click="closeDialog()"
                   >
-                    <v-icon>
-                      mdi-close
-                    </v-icon>
+                    <v-icon> mdi-close </v-icon>
                   </v-btn>
                 </v-row>
               </v-list-item>

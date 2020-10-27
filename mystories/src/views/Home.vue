@@ -7,7 +7,7 @@
         button
         right
         fixed
-        @click="linkTo('story-edit', { username: currentUser.username })"
+        @click="linkTo('story-new', {})"
       >
         <v-icon>mdi-plus</v-icon>
       </v-btn>
@@ -116,7 +116,7 @@ export default {
   computed: {
     ...mapGetters(["isAuthenticated", "tags", "currentUser"]),
     tag() {
-      return this.tags.find(tag => tag.tag === this.$route.params.tag);
+      return this.tags.find((tag) => tag.tag === this.$route.params.tag);
     },
     owner() {
       return this.$route.params.owner;

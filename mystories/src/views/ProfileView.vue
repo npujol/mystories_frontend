@@ -7,7 +7,7 @@
         button
         right
         fixed
-        @click="linkTo('story-edit', { username: currentUser.username })"
+        @click="linkTo('story-new', {})"
       >
         <v-icon>mdi-plus</v-icon>
       </v-btn>
@@ -131,7 +131,7 @@ export default {
   },
   computed: {
     ...mapState({
-      errors: state => state.auth.errors
+      errors: (state) => state.auth.errors
     }),
     ...mapGetters(["currentUser", "profile", "isAuthenticated"]),
     followUserColor() {

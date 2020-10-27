@@ -1,6 +1,6 @@
 <template>
   <div v-if="isAuthenticated">
-    <div v-if="isMessagesLoading">
+    <div class="d-flex text-center justify-center" v-if="isMessagesLoading">
       Loading notifications...
       <v-boilerplate
         v-for="(msg, index) in messages"
@@ -11,10 +11,13 @@
       ></v-boilerplate>
     </div>
     <div v-else>
-      <div v-if="messages.length === 0">
+      <div
+        class="d-flex text-center justify-center"
+        v-if="messages.length === 0"
+      >
         No notifications are here... yet.
       </div>
-      <RwvNotification
+      <Notification
         v-else
         v-for="(msg, index) in messages"
         :message="msg"
@@ -32,7 +35,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import RwvNotification from "./Notification.vue";
+import Notification from "./Notification.vue";
 import { FETCH_MESSAGES } from "../store/actions.type.js";
 import { pagination } from "./mixins/pagination.js";
 
@@ -41,7 +44,7 @@ export default {
   mixins: [pagination],
   inject: ["theme"],
   components: {
-    RwvNotification,
+    Notification,
     VBoilerplate: {
       functional: true,
       render(h, { data, props, children }) {

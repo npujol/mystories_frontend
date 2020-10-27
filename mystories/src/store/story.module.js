@@ -21,7 +21,8 @@ import {
   TAG_CREATE,
   TAG_DELETE,
   UPDATE_STORY_IN_LIST,
-  SET_AUDIO
+  SET_AUDIO,
+  SET_STORY_PRIVATE
 } from "./mutations.type.js";
 
 const storiesApi = new StoriesApi();
@@ -40,7 +41,7 @@ const initialState = {
     bodyMarkdown: "",
     tags: []
   },
-  storyAudio: null,
+  storyAudio: null
 };
 const getters = {
   story(state) {
@@ -55,13 +56,15 @@ export const state = { ...initialState };
 
 export const actions = {
   async [FETCH_STORY](context, payload) {
-    // avoid extraneous network call if story exists
     const data = await storiesApi.storiesRead(payload.slug);
     context.commit(SET_STORY, data);
     return data;
   },
   async [FETCH_STORY_PRIVATE](context, payload) {
+    const story = await storiesApi.storiesRead(payload.slug);
+    context.commit(SET_STORY, story);
     const data = await storiesApi.storiesGetBodyMarkdown(payload.slug);
+    context.commit(SET_STORY_PRIVATE, data);
     return data;
   },
   async [FETCH_STORY_AUDIO](context, payload) {
@@ -129,7 +132,6 @@ export const actions = {
       language: story.language,
       tags: story.tags
     });
-    context.dispatch(STORY_RESET_STATE);
     return data;
   },
   [TAG_STORY_EDIT_CREATE](context, tag) {
@@ -150,8 +152,11 @@ export const actions = {
 
 /* eslint no-param-reassign: ["error", { "props": false }] */
 export const mutations = {
-  [SET_STORY](state, story) {
-    state.story = story;
+  [SET_STORY](state, data) {
+    state.story = data;
+  },
+  [SET_STORY_PRIVATE](state, data) {
+    state.story.bodyMarkdown = data.bodyMarkdown;
   },
   [SET_AUDIO](state, data) {
     state.storyAudio = data;
@@ -162,7 +167,7 @@ export const mutations = {
     }
   },
   [TAG_DELETE](state, tag) {
-    state.story.tags = state.story.tags.filter(t => t !== tag);
+    state.story.tags = state.story.tags.filter((t) => t !== tag);
   },
   [RESET_STATE](state) {
     for (const f in state) {

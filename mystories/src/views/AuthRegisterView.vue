@@ -2,16 +2,14 @@
   <ValidationObserver ref="obs">
     <v-card slot-scope="{ invalid, validated }">
       <v-card-title class="d-flex text-center justify-center">
-        <h3 class="d-flex font-weight-bold basil--text">
-          Register
-        </h3>
+        <h3 class="d-flex font-weight-bold basil--text">Register</h3>
       </v-card-title>
       <v-alert v-if="errors && errors.error" dismissible type="error">
         {{ errors.error | error }}
       </v-alert>
       <v-card-text>
         <v-form>
-          <ValidationProvider name="username" rules="required|alpha">
+          <ValidationProvider immediatename="username" rules="required|alpha">
             <v-text-field
               slot-scope="{ errors, valid }"
               v-model="username"
@@ -24,7 +22,7 @@
               required
             ></v-text-field>
           </ValidationProvider>
-          <ValidationProvider name="email" rules="required|email">
+          <ValidationProvider immediatename="email" rules="required|email">
             <v-text-field
               slot-scope="{ errors, valid }"
               v-model="email"
@@ -58,9 +56,7 @@
         </v-form>
       </v-card-text>
       <v-card-actions>
-        <router-link :to="{ name: 'login' }">
-          Have an account?
-        </router-link>
+        <router-link :to="{ name: 'login' }"> Have an account? </router-link>
         <v-spacer></v-spacer>
         <v-btn color="primary" @click="clear">Clear</v-btn>
         <v-btn color="primary" @click="submit" :disabled="invalid || !validated"
@@ -88,7 +84,7 @@ export default {
   },
   computed: {
     ...mapState({
-      errors: state => state.auth.errors
+      errors: (state) => state.auth.errors
     })
   },
   methods: {

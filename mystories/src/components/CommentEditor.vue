@@ -2,13 +2,11 @@
   <ValidationObserver ref="obs">
     <v-card slot-scope="{ invalid, validated }">
       <v-card-title class="d-flex text-center justify-center">
-        <h3 class="d-flex font-weight-bold basil--text">
-          Add comment
-        </h3>
+        <h3 class="d-flex font-weight-bold basil--text">Add comment</h3>
       </v-card-title>
       <v-card-text>
         <v-form>
-          <ValidationProvider name="comment" rules="required">
+          <ValidationProvider immediatename="comment" rules="required">
             <v-text-field
               slot-scope="{ errors, valid }"
               v-model="comment"
