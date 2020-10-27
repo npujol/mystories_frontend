@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <v-app>
-      <RwvHeader />
+      <v-alert v-if="errors && errors.error" dismissible type="error">
+        {{ errors.error | error }}
+      </v-alert>
+      <Header />
       <v-main>
         <v-container class="fill-height" fluid>
           <v-row justify="center" align="center">
@@ -18,6 +21,7 @@
               bottom
               right
               fixed
+              small
               @click="toTop"
             >
               <v-icon>mdi-chevron-up</v-icon>
@@ -25,14 +29,15 @@
           </v-fab-transition>
         </v-container>
       </v-main>
-      <RwvFooter />
+      <Footer />
     </v-app>
   </div>
 </template>
 
 <script>
-import RwvHeader from "./components/TheHeader.vue";
-import RwvFooter from "./components/TheFooter.vue";
+import { mapState } from "vuex";
+import Header from "./components/TheHeader.vue";
+import Footer from "./components/TheFooter.vue";
 
 export default {
   name: "App",
@@ -41,25 +46,16 @@ export default {
     fab: false
   }),
   components: {
-    RwvHeader,
-    RwvFooter
+    Header,
+    Footer
   },
   created() {
     this.$vuetify.theme.dark = true;
   },
   computed: {
-    activeFab() {
-      switch (this.tabs) {
-        case "one":
-          return { class: "purple", icon: "account_circle" };
-        case "two":
-          return { class: "red", icon: "edit" };
-        case "three":
-          return { class: "green", icon: "keyboard_arrow_up" };
-        default:
-          return {};
-      }
-    }
+    ...mapState({
+      errors: (state) => state.auth.errors
+    })
   },
   methods: {
     onScroll(e) {
