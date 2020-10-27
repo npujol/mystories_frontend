@@ -2,9 +2,7 @@
   <ValidationObserver ref="obs">
     <v-card slot-scope="{ invalid, validated }">
       <v-card-title class="d-flex text-center justify-center">
-        <h3 class="d-flex font-weight-bold basil--text">
-          Story
-        </h3>
+        <h3 class="d-flex font-weight-bold basil--text">Story</h3>
       </v-card-title>
       <v-alert v-if="errors && errors.error" dismissible type="error">
         {{ errors.error | error }}
@@ -26,7 +24,7 @@
         </v-file-input>
 
         <v-form>
-          <ValidationProvider name="title" rules="required|alpha_num">
+          <ValidationProvider immediate name="title" rules="required|alpha_num">
             <v-text-field
               slot-scope="{ errors, valid }"
               :success="valid"
@@ -75,7 +73,11 @@
             v-model="generateAudio"
             label="Generate Audio"
           ></v-checkbox>
-          <ValidationProvider name="description" rules="required|max:250">
+          <ValidationProvider
+            immediate
+            name="description"
+            rules="required|max:250"
+          >
             <v-textarea
               slot-scope="{ errors, valid }"
               :success="valid"
@@ -87,7 +89,7 @@
               rows="5"
             ></v-textarea>
           </ValidationProvider>
-          <ValidationProvider name="bodyMarkdown" rules="required">
+          <ValidationProvider immediate name="bodyMarkdown" rules="required">
             <v-textarea
               slot-scope="{ errors, valid }"
               :success="valid"
@@ -164,7 +166,7 @@ export default {
   },
   computed: {
     ...mapState({
-      errors: state => state.auth.errors
+      errors: (state) => state.auth.errors
     }),
     ...mapGetters(["storyAudio"]),
     hadAudio() {
@@ -222,7 +224,7 @@ export default {
           await this.$store.dispatch(FETCH_STORY_AUDIO, {
             slug: this.story.slug
           });
-          this.generateAudio = this.storyAudio !== null;
+          this.generateAudio = this.storyAudio ? true : false;
         } catch {
           if (this.isNew) {
             this.$router.push({ name: "home" });

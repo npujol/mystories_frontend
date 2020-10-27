@@ -1,9 +1,7 @@
 <template>
   <v-card>
     <v-card-title class="d-flex text-center justify-center">
-      <h3 class="d-flex font-weight-bold basil--text">
-        Comments
-      </h3>
+      <h3 class="d-flex font-weight-bold basil--text">Comments</h3>
     </v-card-title>
     <div class="mx-auto" aling="center">
       <CommentEditor v-if="isAuthenticated" :slug="story.slug"> </CommentEditor>

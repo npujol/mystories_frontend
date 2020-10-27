@@ -33,14 +33,14 @@ const getters = {
 
 const actions = {
   [LOGIN](context, payload) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       authApi
         .authLoginCreate(payload)
-        .then(data => {
+        .then((data) => {
           context.commit(SET_AUTH, data);
           resolve(data);
         })
-        .catch(response => {
+        .catch((response) => {
           if (response.response.text) {
             var errors = JSON.parse(response.response.text).errors;
           } else {
@@ -58,11 +58,11 @@ const actions = {
     return new Promise((resolve, reject) => {
       authApi
         .authRegistrationCreate(payload)
-        .then(data => {
+        .then((data) => {
           context.commit(SET_AUTH, data);
           resolve(data);
         })
-        .catch(response => {
+        .catch((response) => {
           if (response.response.text) {
             var errors = JSON.parse(response.response.text).errors;
           } else {

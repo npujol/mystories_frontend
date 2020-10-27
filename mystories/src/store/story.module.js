@@ -167,7 +167,7 @@ export const mutations = {
     }
   },
   [TAG_DELETE](state, tag) {
-    state.story.tags = state.story.tags.filter(t => t !== tag);
+    state.story.tags = state.story.tags.filter((t) => t !== tag);
   },
   [RESET_STATE](state) {
     for (const f in state) {

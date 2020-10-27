@@ -73,7 +73,7 @@ const mutations = {
     state.tags = data.results;
   },
   [UPDATE_STORY_IN_LIST](state, data) {
-    state.stories = state.stories.map(story => {
+    state.stories = state.stories.map((story) => {
       if (story.slug !== data.slug) {
         return story;
       }

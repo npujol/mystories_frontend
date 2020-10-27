@@ -16,9 +16,7 @@
     <v-app-bar app dark clipped-left>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title @click="linkTo('home', {})">
-        <h3 class="basil--text">
-          MyStories
-        </h3>
+        <h3 class="basil--text">MyStories</h3>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <template v-if="isAuthenticated && currentUser.profile">

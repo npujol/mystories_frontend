@@ -1,9 +1,7 @@
 <template>
   <v-card class="mx-auto" dark outlined>
     <v-card-title>
-      <v-icon medium left>
-        mdi-comment
-      </v-icon>
+      <v-icon medium left> mdi-comment </v-icon>
       <span class="title font-weight-light"> Comment</span>
     </v-card-title>
 
@@ -43,9 +41,7 @@
               small
               @click="destroy()"
             >
-              <v-icon>
-                mdi-delete
-              </v-icon>
+              <v-icon> mdi-delete </v-icon>
             </v-btn>
           </template>
           <span>Delete</span>

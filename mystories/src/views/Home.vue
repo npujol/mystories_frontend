@@ -116,7 +116,7 @@ export default {
   computed: {
     ...mapGetters(["isAuthenticated", "tags", "currentUser"]),
     tag() {
-      return this.tags.find(tag => tag.tag === this.$route.params.tag);
+      return this.tags.find((tag) => tag.tag === this.$route.params.tag);
     },
     owner() {
       return this.$route.params.owner;

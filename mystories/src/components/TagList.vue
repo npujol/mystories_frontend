@@ -1,8 +1,8 @@
 <template>
-  <div class="d-flex  mx-auto" aling="center">
+  <div class="d-flex mx-auto" aling="center">
     <v-chip-group
       column
-      class="d-flex  mx-auto"
+      class="d-flex mx-auto"
       aling="center"
       active-class="primary--text"
     >

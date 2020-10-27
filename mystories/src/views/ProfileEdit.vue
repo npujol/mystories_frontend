@@ -2,9 +2,7 @@
   <ValidationObserver ref="obs">
     <v-card slot-scope="{ invalid, validated }">
       <v-card-title class="d-flex text-center justify-center">
-        <h3 class="d-flex font-weight-bold basil--text">
-          Settings
-        </h3>
+        <h3 class="d-flex font-weight-bold basil--text">Settings</h3>
       </v-card-title>
       <v-alert v-if="errors && errors.error" dismissible type="error">
         {{ errors.error | error }}
@@ -39,7 +37,7 @@
           disabled
         ></v-text-field>
         <v-form>
-          <ValidationProvider name="bio" rules="required">
+          <ValidationProvider immediatename="bio" rules="required">
             <v-textarea
               slot-scope="{ errors, valid }"
               :success="valid"
@@ -85,7 +83,7 @@ export default {
   data() {
     return {
       rules: {
-        photo: v =>
+        photo: (v) =>
           !v || v.size < 2000000 || "Avatar size should be less than 2 MB!"
       }
     };
@@ -105,7 +103,7 @@ export default {
   },
   computed: {
     ...mapState({
-      errors: state => state.auth.errors
+      errors: (state) => state.auth.errors
     }),
     ...mapGetters(["currentUser", "profile"])
   },
