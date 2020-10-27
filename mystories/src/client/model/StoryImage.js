@@ -50,6 +50,8 @@ export class StoryImage {
         obj.image = ApiClient.convertToType(data['image'], 'String');
       if (data.hasOwnProperty('description'))
         obj.description = ApiClient.convertToType(data['description'], 'String');
+      if (data.hasOwnProperty('hadAudio'))
+        obj.hadAudio = ApiClient.convertToType(data['hadAudio'], 'String');
       if (data.hasOwnProperty('favorited'))
         obj.favorited = ApiClient.convertToType(data['favorited'], 'String');
       if (data.hasOwnProperty('favoritesCount'))
@@ -116,6 +118,11 @@ StoryImage.prototype.image = undefined;
  * @member {String} description
  */
 StoryImage.prototype.description = undefined;
+
+/**
+ * @member {String} hadAudio
+ */
+StoryImage.prototype.hadAudio = undefined;
 
 /**
  * @member {String} favorited

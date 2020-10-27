@@ -52,6 +52,8 @@ export class Story {
         obj.body = ApiClient.convertToType(data['body'], 'String');
       if (data.hasOwnProperty('body_markdown'))
         obj.bodyMarkdown = ApiClient.convertToType(data['body_markdown'], 'String');
+      if (data.hasOwnProperty('hadAudio'))
+        obj.hadAudio = ApiClient.convertToType(data['hadAudio'], 'String');
       if (data.hasOwnProperty('language'))
         obj.language = ApiClient.convertToType(data['language'], 'String');
       if (data.hasOwnProperty('image'))
@@ -91,6 +93,11 @@ Story.prototype.body = undefined;
  * @member {String} bodyMarkdown
  */
 Story.prototype.bodyMarkdown = undefined;
+
+/**
+ * @member {String} hadAudio
+ */
+Story.prototype.hadAudio = undefined;
 
 /**
  * Allowed values for the <code>language</code> property.

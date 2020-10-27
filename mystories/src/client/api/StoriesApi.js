@@ -629,55 +629,6 @@ export class StoriesApi {
 
 
     /**
-     * General ViewSet description
-     * @param {String} slug 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Story} and HTTP response
-     */
-    storiesHadAudioWithHttpInfo(slug) {
-      let postBody = null;
-
-      // verify the required parameter 'slug' is set
-      if (slug === undefined || slug === null) {
-        throw new Error("Missing the required parameter 'slug' when calling storiesHadAudio");
-      }
-
-
-      let pathParams = {
-        'slug': slug
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = ['api_key'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = Story;
-
-      return this.apiClient.callApi(
-        '/stories/{slug}/had_audio', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType
-      );
-    }
-
-    /**
-     * General ViewSet description
-     * @param {String} slug 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Story}
-     */
-    storiesHadAudio(slug) {
-      return this.storiesHadAudioWithHttpInfo(slug)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
-    }
-
-
-    /**
      * List the stories
      * @param {Object} opts Optional parameters
      * @param {String} opts.tagsTag 
