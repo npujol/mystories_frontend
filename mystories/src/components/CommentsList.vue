@@ -1,15 +1,31 @@
 <template>
-  <div>
+  <v-card>
+    <v-card-title class="d-flex text-center justify-center">
+      <h3 class="d-flex font-weight-bold basil--text">
+        Comments
+      </h3>
+    </v-card-title>
     <div class="mx-auto" aling="center">
       <CommentEditor v-if="isAuthenticated" :slug="story.slug"> </CommentEditor>
-      <p aling="center" v-else>
-        <router-link :to="{ name: 'login' }">Sign in</router-link>
+      <div class="d-flex justify-space-around" v-else>
+        You have to
+        <p
+          class="text-decoration-underline primary--text"
+          @click="linkTo('login', {})"
+        >
+          Log in
+        </p>
         or
-        <router-link :to="{ name: 'register' }">Sign up</router-link>
-        to add comments on this story.
-      </p>
+        <p
+          class="text-decoration-underline primary--text"
+          @click="linkTo('register', {})"
+        >
+          Sign up
+        </p>
+        to be able to comment on this story.
+      </div>
     </div>
-    <div v-if="isCommentsLoading">
+    <div class="d-flex text-center justify-center" v-if="isCommentsLoading">
       Loading comments...
       <v-boilerplate
         v-for="(story, index) in comments"
@@ -20,7 +36,7 @@
       ></v-boilerplate>
     </div>
     <div v-else>
-      <div class="mb-2 justify-center" v-if="commentsCount === 0">
+      <div class="d-flex text-center justify-center" v-if="commentsCount === 0">
         No comments are here... yet.
       </div>
       <div class="mx-auto" aling="center">
@@ -41,7 +57,7 @@
       v-model="currentPage"
       :length="pages"
     ></v-pagination>
-  </div>
+  </v-card>
 </template>
 
 <script>
@@ -49,11 +65,12 @@ import { mapGetters } from "vuex";
 import Comment from "../components/Comment.vue";
 import CommentEditor from "../components/CommentEditor.vue";
 import { pagination } from "../components/mixins/pagination.js";
+import { linkTo } from "../components/mixins/linkTo.js";
 import { FETCH_COMMENTS } from "../store/actions.type.js";
 
 export default {
   name: "CommentsList",
-  mixins: [pagination],
+  mixins: [pagination, linkTo],
   inject: ["theme"],
   components: {
     Comment,
@@ -108,7 +125,7 @@ export default {
   },
   methods: {
     async fetchComments() {
-      if (this.story) {
+      if (this.story.slug) {
         const data = await this.$store.dispatch(FETCH_COMMENTS, {
           slugStory: this.story.slug,
           filters: this.filters
