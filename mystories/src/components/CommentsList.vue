@@ -23,31 +23,25 @@
         to be able to comment on this story.
       </div>
     </div>
-    <div class="d-flex text-center justify-center" v-if="isCommentsLoading">
-      Loading comments...
+    <div v-if="isCommentsLoading">
       <v-boilerplate
-        v-for="(story, index) in comments"
+        v-for="(comment, index) in comments"
         :key="index"
-        class="mb-2"
-        name="loading"
-        type="list-item-avatar, list-item-content, list-item-title, list-item-subtitle, image, actions"
+        type="list-item-content, list-item-title, list-item-subtitle, list-item-avatar, actions"
       ></v-boilerplate>
     </div>
     <div v-else>
       <div class="d-flex text-center justify-center" v-if="commentsCount === 0">
         No comments are here... yet.
       </div>
-      <div class="mx-auto" aling="center">
-        <v-spacer></v-spacer>
-        <Comment
-          class="mb-2"
-          v-for="(comment, index) in comments"
-          :slug="story.slug"
-          :comment="comment"
-          :key="index"
-        >
-        </Comment>
-      </div>
+      <Comment
+        class="mb-2"
+        v-for="(comment, index) in comments"
+        :slug="story.slug"
+        :comment="comment"
+        :key="index"
+      >
+      </Comment>
     </div>
     <v-pagination
       v-if="pages > 0"
@@ -97,9 +91,6 @@ export default {
       required: true
     }
   },
-  mounted() {
-    this.fetchComments();
-  },
   computed: {
     pages() {
       if (this.isCommentsLoading || this.commentsCount <= this.limit) {
@@ -111,9 +102,11 @@ export default {
       "commentsCount",
       "isCommentsLoading",
       "comments",
-      "isAuthenticated",
-      "currentUser"
+      "isAuthenticated"
     ])
+  },
+  mounted() {
+    this.fetchComments();
   },
   watch: {
     currentPage(newValue) {

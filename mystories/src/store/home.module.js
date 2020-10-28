@@ -4,7 +4,8 @@ import {
   FETCH_START,
   FETCH_END,
   SET_TAGS,
-  UPDATE_STORY_IN_LIST
+  UPDATE_STORY_IN_LIST,
+  SET_ERROR
 } from "./mutations.type.js";
 
 const storiesApi = new StoriesApi();
@@ -42,20 +43,23 @@ const getters = {
 
 const actions = {
   async [FETCH_STORIES](context, payload) {
-    context.commit(FETCH_START);
-    const data = await storiesApi.storiesList(payload.filters);
-    context.commit(FETCH_END, data);
-    return data;
+    try {
+      context.commit(FETCH_START);
+      const data = await storiesApi.storiesList(payload.filters);
+      context.commit(FETCH_END, data);
+      return data;
+    } catch (error) {
+      context.commit(SET_ERROR, error);
+    }
   },
   async [FETCH_TAGS](context) {
-    const data = await tagsApi.tagsList();
-    context.commit(SET_TAGS, data);
-    return data;
-  },
-  async [FETCH_TAGS](context) {
-    const data = await tagsApi.tagsList();
-    context.commit(SET_TAGS, data);
-    return data;
+    try {
+      const data = await tagsApi.tagsList();
+      context.commit(SET_TAGS, data);
+      return data;
+    } catch (error) {
+      context.commit(SET_ERROR, error);
+    }
   }
 };
 
@@ -77,9 +81,6 @@ const mutations = {
       if (story.slug !== data.slug) {
         return story;
       }
-      // We could just return data, but it seems dangerous to
-      // mix the results of different api calls, so we
-      // protect ourselves by copying the information.
       story.favorited = data.favorited;
       story.favoritesCount = data.favoritesCount;
       return story;

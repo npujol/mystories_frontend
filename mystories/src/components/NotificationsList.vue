@@ -1,13 +1,10 @@
 <template>
   <div v-if="isAuthenticated">
-    <div class="d-flex text-center justify-center" v-if="isMessagesLoading">
-      Loading notifications...
+    <div v-if="isMessagesLoading">
       <v-boilerplate
         v-for="(msg, index) in messages"
         :key="index"
-        class="mb-2"
-        name="loading"
-        type="list-item-avatar, list-item-content, list-item-title, list-item-subtitle, image, actions"
+        type=" list-item-content, list-item-title, list-item-avatar,list-item-subtitle, image, actions"
       ></v-boilerplate>
     </div>
     <div v-else>
@@ -36,8 +33,8 @@
 <script>
 import { mapGetters } from "vuex";
 import Notification from "./Notification.vue";
-import { FETCH_MESSAGES } from "../store/actions.type.js";
 import { pagination } from "./mixins/pagination.js";
+import { FETCH_MESSAGES } from "../store/actions.type.js";
 
 export default {
   name: "NotificationsList",
@@ -71,11 +68,14 @@ export default {
       return Math.ceil(this.countMessages / this.limit);
     },
     ...mapGetters([
-      "messages",
       "isMessagesLoading",
       "countMessages",
+      "messages",
       "isAuthenticated"
     ])
+  },
+  mounted() {
+    this.fetchMessages();
   },
   watch: {
     currentPage(newValue) {
@@ -83,12 +83,9 @@ export default {
       this.fetchMessages();
     }
   },
-  mounted() {
-    this.fetchMessages();
-  },
   methods: {
-    fetchMessages() {
-      this.$store.dispatch(FETCH_MESSAGES, this.filters);
+    async fetchMessages() {
+      await this.$store.dispatch(FETCH_MESSAGES, this.filters);
     }
   }
 };

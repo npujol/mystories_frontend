@@ -7,6 +7,7 @@ export const SET_COMMENTS_START = "setCommentsStart";
 export const SET_MESSAGES = "setMessages";
 export const SET_MESSAGE = "setMessage";
 export const SET_MESSAGE_COUNT = "setMessageCount";
+export const SET_MESSAGES_START = "setMessageStart";
 export const SET_AUDIO = "setAudio";
 export const SET_COMMENTS = "setComments";
 export const SET_ERROR = "setError";

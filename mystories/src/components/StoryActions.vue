@@ -1,7 +1,7 @@
 <template>
   <!-- Used when user is also the owner -->
   <div v-if="isCurrentUser">
-    <v-tooltip top>
+    <v-tooltip top v-if="isPreview">
       <template v-slot:activator="{ on, attrs }">
         <v-btn
           v-bind="attrs"
@@ -45,14 +45,14 @@
   </div>
   <!-- Used in StoryView when user is not the owner -->
   <div v-else>
-    <RwvStoryFavorite v-if="!isCurrentUser" :story="story"></RwvStoryFavorite>
+    <StoryFavorite v-if="!isCurrentUser" :story="story"></StoryFavorite>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import { STORY_DELETE } from "../store/actions.type.js";
-import RwvStoryFavorite from "../components/StoryFavorite.vue";
+import StoryFavorite from "../components/StoryFavorite.vue";
 import { linkTo } from "./mixins/linkTo.js";
 
 export default {
@@ -68,7 +68,7 @@ export default {
     isPreview: { type: Boolean, required: true }
   },
   components: {
-    RwvStoryFavorite
+    StoryFavorite
   },
   computed: {
     ...mapGetters(["currentUser", "isAuthenticated"]),
