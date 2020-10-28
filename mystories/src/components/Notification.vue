@@ -58,6 +58,7 @@
 
                 <v-list-item-content>
                   <v-list-item-title
+                    class="text-decoration-underline primary--text"
                     @click="
                       linkTo('profile', { username: message.owner.username })
                     "
