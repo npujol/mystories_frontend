@@ -170,7 +170,7 @@ export default {
     }),
     ...mapGetters(["storyAudio"]),
     hadAudio() {
-      return this.storyAudio !== null;
+      return this.story.hadAudioAudio !== null;
     }
   },
   methods: {
